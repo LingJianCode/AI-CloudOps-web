@@ -258,7 +258,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, defineExpose } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { message } from 'ant-design-vue'
 import {
   PlusOutlined,

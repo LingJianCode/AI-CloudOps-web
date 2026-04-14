@@ -13,13 +13,6 @@ div[aria-hidden="true"][tabindex="0"] {
   tabindex: -1 !important;
 }
 
-/* Modern browsers: use inert attribute instead of aria-hidden for better accessibility */
-@supports (inert: true) {
-  div[aria-hidden="true"][tabindex="0"] {
-    inert: true;
-  }
-}
-
 /* 就绪状态显示样式 */
 .pod-ready {
   min-width: 80px;
