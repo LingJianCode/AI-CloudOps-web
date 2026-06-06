@@ -16,9 +16,9 @@ export const InstanceStatus = {
 
 // 工单优先级常量
 export const Priority = {
-  Low: 1,     // 低
+  High: 1,    // 高
   Normal: 2,  // 普通
-  High: 3,    // 高
+  Low: 3,     // 低
 } as const;
 
 // 流转记录类型常量

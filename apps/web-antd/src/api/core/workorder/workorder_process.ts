@@ -20,9 +20,13 @@ export const ProcessStepType = {
 // 可执行动作常量
 export const Action = {
   Start: 'start', // 开始动作
+  Submit: 'submit', // 提交动作
   Approve: 'approve', // 审批动作
   Reject: 'reject', // 驳回动作
+  Assign: 'assign', // 指派动作
   Complete: 'complete', // 完成动作
+  Return: 'return', // 退回动作
+  Cancel: 'cancel', // 取消动作
   Notify: 'notify', // 通知动作
 } as const;
 
@@ -65,7 +69,17 @@ export interface ProcessStep {
 // 流程连接条件类型
 export interface ConnectionCondition {
   field_key: string; // 表单字段标识
-  operator: 'eq' | 'ne' | 'gt' | 'lt' | 'gte' | 'lte' | 'in' | 'not_in' | 'contains' | 'not_contains'; // 比较操作符
+  operator:
+    | 'eq'
+    | 'ne'
+    | 'gt'
+    | 'lt'
+    | 'gte'
+    | 'lte'
+    | 'in'
+    | 'not_in'
+    | 'contains'
+    | 'not_contains'; // 比较操作符
   value: any; // 比较值
   label?: string; // 条件显示名称
 }
@@ -84,6 +98,48 @@ export interface ProcessConnection {
 export interface ProcessDefinition {
   steps: ProcessStep[]; // 步骤列表
   connections: ProcessConnection[]; // 连接列表
+}
+
+export function createDefaultProcessDefinition(): ProcessDefinition {
+  return {
+    steps: [
+      {
+        id: ProcessStepType.Start,
+        type: ProcessStepType.Start,
+        name: '开始',
+        actions: [Action.Submit],
+        sort_order: 1,
+      },
+      {
+        id: ProcessStepType.Approval,
+        type: ProcessStepType.Approval,
+        name: '审批',
+        assignee_type: AssigneeType.Group,
+        assignee_ids: [],
+        actions: [Action.Approve, Action.Reject, Action.Assign],
+        sort_order: 2,
+      },
+      {
+        id: ProcessStepType.End,
+        type: ProcessStepType.End,
+        name: '结束',
+        actions: [],
+        sort_order: 3,
+      },
+    ],
+    connections: [
+      {
+        id: 'start_to_approval',
+        from: ProcessStepType.Start,
+        to: ProcessStepType.Approval,
+      },
+      {
+        id: 'approval_to_end',
+        from: ProcessStepType.Approval,
+        to: ProcessStepType.End,
+      },
+    ],
+  };
 }
 
 // 将 ProcessDefinition 应用于流程相关请求的定义
@@ -131,32 +187,22 @@ export interface ListWorkorderProcessReq {
   is_default?: 1 | 2; // 是否为默认流程
 }
 
-export async function createWorkorderProcess(
-  data: CreateWorkorderProcessReq,
-) {
+export async function createWorkorderProcess(data: CreateWorkorderProcessReq) {
   return requestClient.post('/workorder/process/create', data);
 }
 
-export async function updateWorkorderProcess(
-  data: UpdateWorkorderProcessReq,
-) {
+export async function updateWorkorderProcess(data: UpdateWorkorderProcessReq) {
   return requestClient.put(`/workorder/process/update/${data.id}`, data);
 }
 
-export async function deleteWorkorderProcess(
-  data: DeleteWorkorderProcessReq,
-) {
+export async function deleteWorkorderProcess(data: DeleteWorkorderProcessReq) {
   return requestClient.delete(`/workorder/process/delete/${data.id}`);
 }
 
-export async function listWorkorderProcess(
-  params: ListWorkorderProcessReq,
-) {
+export async function listWorkorderProcess(params: ListWorkorderProcessReq) {
   return requestClient.get('/workorder/process/list', { params });
 }
 
-export async function detailWorkorderProcess(
-  data: DetailWorkorderProcessReq,
-) {
+export async function detailWorkorderProcess(data: DetailWorkorderProcessReq) {
   return requestClient.get(`/workorder/process/detail/${data.id}`);
 }

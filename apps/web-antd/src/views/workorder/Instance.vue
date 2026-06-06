@@ -2,7 +2,11 @@
   <div class="instance-management-container">
     <div class="page-header">
       <div class="header-actions">
-        <a-button type="primary" @click="handleCreateInstance" class="btn-create">
+        <a-button
+          type="primary"
+          @click="handleCreateInstance"
+          class="btn-create"
+        >
           <template #icon>
             <PlusOutlined />
           </template>
@@ -15,8 +19,13 @@
           从模板创建
         </a-button>
         <div class="search-filters">
-          <a-input-search v-model:value="searchQuery" placeholder="搜索工单标题或编号..." class="search-input"
-            @search="handleSearch" allow-clear />
+          <a-input-search
+            v-model:value="searchQuery"
+            placeholder="搜索工单标题或编号..."
+            class="search-input"
+            @search="handleSearch"
+            allow-clear
+          />
 
           <a-button type="default" @click="handleExport">
             <template #icon>
@@ -24,25 +33,55 @@
             </template>
             导出
           </a-button>
-          <a-select v-model:value="statusFilter" placeholder="状态" class="status-filter" @change="handleStatusChange">
+          <a-select
+            v-model:value="statusFilter"
+            placeholder="状态"
+            class="status-filter"
+            @change="handleStatusChange"
+          >
             <a-select-option :value="undefined">全部状态</a-select-option>
-            <a-select-option :value="InstanceStatus.Draft">草稿</a-select-option>
-            <a-select-option :value="InstanceStatus.Pending">待处理</a-select-option>
-            <a-select-option :value="InstanceStatus.Processing">处理中</a-select-option>
-            <a-select-option :value="InstanceStatus.Completed">已完成</a-select-option>
-            <a-select-option :value="InstanceStatus.Rejected">已拒绝</a-select-option>
-            <a-select-option :value="InstanceStatus.Cancelled">已取消</a-select-option>
+            <a-select-option :value="InstanceStatus.Draft"
+              >草稿</a-select-option
+            >
+            <a-select-option :value="InstanceStatus.Pending"
+              >待处理</a-select-option
+            >
+            <a-select-option :value="InstanceStatus.Processing"
+              >处理中</a-select-option
+            >
+            <a-select-option :value="InstanceStatus.Completed"
+              >已完成</a-select-option
+            >
+            <a-select-option :value="InstanceStatus.Rejected"
+              >已拒绝</a-select-option
+            >
+            <a-select-option :value="InstanceStatus.Cancelled"
+              >已取消</a-select-option
+            >
           </a-select>
-          <a-select v-model:value="priorityFilter" placeholder="优先级" class="priority-filter"
-            @change="handlePriorityChange">
+          <a-select
+            v-model:value="priorityFilter"
+            placeholder="优先级"
+            class="priority-filter"
+            @change="handlePriorityChange"
+          >
             <a-select-option :value="undefined">全部优先级</a-select-option>
             <a-select-option :value="Priority.Low">低</a-select-option>
             <a-select-option :value="Priority.Normal">普通</a-select-option>
             <a-select-option :value="Priority.High">高</a-select-option>
           </a-select>
-          <a-select v-model:value="processFilter" placeholder="流程" class="process-filter" @change="handleProcessChange">
+          <a-select
+            v-model:value="processFilter"
+            placeholder="流程"
+            class="process-filter"
+            @change="handleProcessChange"
+          >
             <a-select-option :value="undefined">全部流程</a-select-option>
-            <a-select-option v-for="process in processes" :key="process.id" :value="process.id">
+            <a-select-option
+              v-for="process in processes"
+              :key="process.id"
+              :value="process.id"
+            >
               {{ process.name }}
             </a-select-option>
           </a-select>
@@ -54,7 +93,11 @@
       <a-row :gutter="16">
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="总工单数" :value="stats.total" :value-style="{ color: '#3f8600' }">
+            <a-statistic
+              title="总工单数"
+              :value="stats.total"
+              :value-style="{ color: '#3f8600' }"
+            >
               <template #prefix>
                 <FileTextOutlined />
               </template>
@@ -63,7 +106,11 @@
         </a-col>
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="待处理" :value="stats.pending" :value-style="{ color: '#faad14' }">
+            <a-statistic
+              title="待处理"
+              :value="stats.pending"
+              :value-style="{ color: '#faad14' }"
+            >
               <template #prefix>
                 <ClockCircleOutlined />
               </template>
@@ -72,7 +119,11 @@
         </a-col>
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="处理中" :value="stats.processing" :value-style="{ color: '#1890ff' }">
+            <a-statistic
+              title="处理中"
+              :value="stats.processing"
+              :value-style="{ color: '#1890ff' }"
+            >
               <template #prefix>
                 <LoadingOutlined />
               </template>
@@ -81,7 +132,11 @@
         </a-col>
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="已完成" :value="stats.completed" :value-style="{ color: '#52c41a' }">
+            <a-statistic
+              title="已完成"
+              :value="stats.completed"
+              :value-style="{ color: '#52c41a' }"
+            >
               <template #prefix>
                 <CheckCircleOutlined />
               </template>
@@ -93,12 +148,23 @@
 
     <div class="table-container">
       <a-card>
-        <a-table :data-source="instanceList" :columns="columns" :pagination="paginationConfig" :loading="loading"
-          row-key="id" bordered :scroll="{ x: 1400 }" @change="handleTableChange">
+        <a-table
+          :data-source="instanceList"
+          :columns="columns"
+          :pagination="paginationConfig"
+          :loading="loading"
+          row-key="id"
+          bordered
+          :scroll="{ x: 1400 }"
+          @change="handleTableChange"
+        >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'title'">
               <div class="instance-title-cell">
-                <div class="priority-badge" :class="getPriorityClass(record.priority)"></div>
+                <div
+                  class="priority-badge"
+                  :class="getPriorityClass(record.priority)"
+                ></div>
                 <div class="title-content">
                   <div class="title-text">{{ record.title }}</div>
                   <div class="serial-number">{{ record.serial_number }}</div>
@@ -120,7 +186,12 @@
 
             <template v-if="column.key === 'operator'">
               <div class="operator-info">
-                <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(record.operator_name || '') }">
+                <a-avatar
+                  size="small"
+                  :style="{
+                    backgroundColor: getAvatarColor(record.operator_name || ''),
+                  }"
+                >
                   {{ getInitials(record.operator_name) }}
                 </a-avatar>
                 <span class="operator-name">{{ record.operator_name }}</span>
@@ -129,16 +200,28 @@
 
             <template v-if="column.key === 'assignee'">
               <div class="assignee-info" v-if="record.assignee_id">
-                <a-avatar size="small"
-                  :style="{ backgroundColor: getAvatarColor(getAssigneeName(record.assignee_id)) }">
+                <a-avatar
+                  size="small"
+                  :style="{
+                    backgroundColor: getAvatarColor(
+                      getAssigneeName(record.assignee_id),
+                    ),
+                  }"
+                >
                   {{ getInitials(getAssigneeName(record.assignee_id)) }}
                 </a-avatar>
-                <span class="assignee-name">{{ getAssigneeName(record.assignee_id) }}</span>
+                <span class="assignee-name">{{
+                  getAssigneeName(record.assignee_id)
+                }}</span>
               </div>
-              <span v-else style="color: #ff7875;">
+              <span v-else style="color: #ff7875">
                 未分配
-                <a-tooltip title="需要先分配处理人才能执行审批、拒绝、完成等操作">
-                  <InfoCircleOutlined style="margin-left: 4px; font-size: 12px;" />
+                <a-tooltip
+                  title="需要先分配处理人才能执行审批、拒绝、完成等操作"
+                >
+                  <InfoCircleOutlined
+                    style="margin-left: 4px; font-size: 12px"
+                  />
                 </a-tooltip>
               </span>
             </template>
@@ -152,11 +235,19 @@
 
             <template v-if="column.key === 'action'">
               <div class="action-buttons">
-                <a-button type="primary" size="small" @click="handleViewInstance(record)">
+                <a-button
+                  type="primary"
+                  size="small"
+                  @click="handleViewInstance(record)"
+                >
                   查看
                 </a-button>
-                <a-button type="default" size="small" @click="handleEditInstance(record)"
-                  v-if="record.status === InstanceStatus.Draft">
+                <a-button
+                  type="default"
+                  size="small"
+                  @click="handleEditInstance(record)"
+                  v-if="record.status === InstanceStatus.Draft"
+                >
                   编辑
                 </a-button>
                 <a-dropdown>
@@ -172,32 +263,74 @@
                         <PlayCircleOutlined /> 查看流转
                       </a-menu-item>
                       <a-menu-divider />
-                      <a-menu-item key="submit" v-if="record.status === InstanceStatus.Draft">
+                      <a-menu-item
+                        key="submit"
+                        v-if="record.status === InstanceStatus.Draft"
+                      >
                         提交工单
                       </a-menu-item>
-                      <a-menu-item key="assign"
-                        v-if="[InstanceStatus.Pending, InstanceStatus.Processing].includes(record.status)">
+                      <a-menu-item
+                        key="assign"
+                        v-if="
+                          [
+                            InstanceStatus.Pending,
+                            InstanceStatus.Processing,
+                          ].includes(record.status)
+                        "
+                      >
                         分配处理人
                       </a-menu-item>
-                      <a-menu-item key="approve"
-                        v-if="[InstanceStatus.Pending, InstanceStatus.Processing].includes(record.status) && record.assignee_id">
+                      <a-menu-item
+                        key="approve"
+                        v-if="
+                          [
+                            InstanceStatus.Pending,
+                            InstanceStatus.Processing,
+                          ].includes(record.status) && record.assignee_id
+                        "
+                      >
                         审批通过
                       </a-menu-item>
-                      <a-menu-item key="reject"
-                        v-if="[InstanceStatus.Pending, InstanceStatus.Processing].includes(record.status) && record.assignee_id">
+                      <a-menu-item
+                        key="reject"
+                        v-if="
+                          [
+                            InstanceStatus.Pending,
+                            InstanceStatus.Processing,
+                          ].includes(record.status) && record.assignee_id
+                        "
+                      >
                         拒绝工单
                       </a-menu-item>
-                      <a-menu-item key="complete"
-                        v-if="[InstanceStatus.Pending, InstanceStatus.Processing].includes(record.status) && record.assignee_id">
+                      <a-menu-item
+                        key="complete"
+                        v-if="
+                          [
+                            InstanceStatus.Pending,
+                            InstanceStatus.Processing,
+                          ].includes(record.status) && record.assignee_id
+                        "
+                      >
                         完成工单
                       </a-menu-item>
-                      <a-menu-item key="return"
-                        v-if="[InstanceStatus.Pending, InstanceStatus.Processing].includes(record.status) && record.assignee_id">
+                      <a-menu-item
+                        key="return"
+                        v-if="
+                          [
+                            InstanceStatus.Pending,
+                            InstanceStatus.Processing,
+                          ].includes(record.status) && record.assignee_id
+                        "
+                      >
                         退回工单
                       </a-menu-item>
                       <a-menu-divider />
 
-                      <a-menu-item key="delete" danger v-if="canDeleteInstance(record)">
+                      <a-menu-item
+                        key="delete"
+                        danger
+                        v-if="canDeleteInstance(record)"
+                      >
                         删除
                       </a-menu-item>
                     </a-menu>
@@ -215,19 +348,41 @@
     </div>
 
     <!-- 工单创建/编辑对话框 -->
-    <a-modal :open="instanceDialog.visible" :title="instanceDialog.isEdit ? '编辑工单' : '创建工单'" :width="formDialogWidth"
-      @ok="saveInstance" @cancel="() => { instanceDialog.visible = false }" :destroy-on-close="true"
-      class="responsive-modal instance-form-modal" :confirm-loading="loading">
-      <a-form ref="formRef" :model="instanceDialog.form" :rules="formRules" layout="vertical">
+    <a-modal
+      :open="instanceDialog.visible"
+      :title="instanceDialog.isEdit ? '编辑工单' : '创建工单'"
+      :width="formDialogWidth"
+      @ok="saveInstance"
+      @cancel="
+        () => {
+          instanceDialog.visible = false;
+        }
+      "
+      :destroy-on-close="true"
+      class="responsive-modal instance-form-modal"
+      :confirm-loading="loading"
+    >
+      <a-form
+        ref="formRef"
+        :model="instanceDialog.form"
+        :rules="formRules"
+        layout="vertical"
+      >
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="工单标题" name="title">
-              <a-input v-model:value="instanceDialog.form.title" placeholder="请输入工单标题" />
+              <a-input
+                v-model:value="instanceDialog.form.title"
+                placeholder="请输入工单标题"
+              />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="优先级" name="priority">
-              <a-select v-model:value="instanceDialog.form.priority" placeholder="请选择优先级">
+              <a-select
+                v-model:value="instanceDialog.form.priority"
+                placeholder="请选择优先级"
+              >
                 <a-select-option :value="Priority.Low">低</a-select-option>
                 <a-select-option :value="Priority.Normal">普通</a-select-option>
                 <a-select-option :value="Priority.High">高</a-select-option>
@@ -239,40 +394,72 @@
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="关联流程" name="process_id">
-              <a-select v-model:value="instanceDialog.form.process_id" placeholder="请选择流程" style="width: 100%"
-                show-search :filter-option="false" option-label-prop="children"
-                :not-found-content="processSelectorLoading ? undefined : (processSearchKeyword ? '无搜索结果' : '无数据')"
-                @search="handleProcessSearch" @dropdown-visible-change="handleProcessDropdownChange"
-                @popup-scroll="handleProcessScroll" allow-clear :loading="processSelectorLoading"
-                @change="handleProcessSelectChange">
+              <a-select
+                v-model:value="instanceDialog.form.process_id"
+                placeholder="请选择流程"
+                style="width: 100%"
+                show-search
+                :filter-option="false"
+                option-label-prop="children"
+                :not-found-content="
+                  processSelectorLoading
+                    ? undefined
+                    : processSearchKeyword
+                      ? '无搜索结果'
+                      : '无数据'
+                "
+                @search="handleProcessSearch"
+                @dropdown-visible-change="handleProcessDropdownChange"
+                @popup-scroll="handleProcessScroll"
+                allow-clear
+                :loading="processSelectorLoading"
+                @change="handleProcessSelectChange"
+              >
                 <template #notFoundContent>
                   <div v-if="processSelectorLoading" class="selector-loading">
                     <a-spin size="small" />
-                    <span style="margin-left: 8px;">加载中...</span>
+                    <span style="margin-left: 8px">加载中...</span>
                   </div>
                   <div v-else class="selector-empty">
                     {{ processSearchKeyword ? '无搜索结果' : '暂无流程数据' }}
                   </div>
                 </template>
 
-                <a-select-option v-for="process in dialogProcesses" :key="process.id" :value="process.id">
+                <a-select-option
+                  v-for="process in dialogProcesses"
+                  :key="process.id"
+                  :value="process.id"
+                >
                   <div class="process-option">
                     <span class="process-name">{{ process.name }}</span>
-                    <span v-if="process.description" class="process-desc">{{ process.description }}</span>
+                    <span v-if="process.description" class="process-desc">{{
+                      process.description
+                    }}</span>
                   </div>
                 </a-select-option>
 
-                <a-select-option v-if="processPagination.hasMore" :value="'__load_more_process__'" disabled
-                  class="load-more-option">
-                  <div class="load-more-content" @click.stop="loadMoreProcesses">
-                    <a-button type="link" size="small" :loading="processSelectorLoading"
-                      style="padding: 0; height: auto; font-size: 12px;">
+                <a-select-option
+                  v-if="processPagination.hasMore"
+                  :value="'__load_more_process__'"
+                  disabled
+                  class="load-more-option"
+                >
+                  <div
+                    class="load-more-content"
+                    @click.stop="loadMoreProcesses"
+                  >
+                    <a-button
+                      type="link"
+                      size="small"
+                      :loading="processSelectorLoading"
+                      style="padding: 0; height: auto; font-size: 12px"
+                    >
                       <template v-if="!processSelectorLoading">
-                        加载更多 ({{ processPagination.current }}/{{ processTotalPages }})
+                        加载更多 ({{ processPagination.current }}/{{
+                          processTotalPages
+                        }})
                       </template>
-                      <template v-else>
-                        正在加载...
-                      </template>
+                      <template v-else> 正在加载... </template>
                     </a-button>
                   </div>
                 </a-select-option>
@@ -281,43 +468,77 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="指定处理人" name="assignee_id">
-              <a-select v-model:value="instanceDialog.form.assignee_id" placeholder="请选择处理人" style="width: 100%"
-                show-search :filter-option="false" option-label-prop="children"
-                :not-found-content="userSelectorLoading ? undefined : (userSearchKeyword ? '无搜索结果' : '无数据')"
-                @search="handleUserSearch" @dropdown-visible-change="handleUserDropdownChange"
-                @popup-scroll="handleUserScroll" @change="handleAssigneeChange" allow-clear
-                :loading="userSelectorLoading">
+              <a-select
+                v-model:value="instanceDialog.form.assignee_id"
+                placeholder="请选择处理人"
+                style="width: 100%"
+                show-search
+                :filter-option="false"
+                option-label-prop="children"
+                :not-found-content="
+                  userSelectorLoading
+                    ? undefined
+                    : userSearchKeyword
+                      ? '无搜索结果'
+                      : '无数据'
+                "
+                @search="handleUserSearch"
+                @dropdown-visible-change="handleUserDropdownChange"
+                @popup-scroll="handleUserScroll"
+                @change="handleAssigneeChange"
+                allow-clear
+                :loading="userSelectorLoading"
+              >
                 <template #notFoundContent>
                   <div v-if="userSelectorLoading" class="selector-loading">
                     <a-spin size="small" />
-                    <span style="margin-left: 8px;">加载中...</span>
+                    <span style="margin-left: 8px">加载中...</span>
                   </div>
                   <div v-else class="selector-empty">
                     {{ userSearchKeyword ? '无搜索结果' : '暂无用户数据' }}
                   </div>
                 </template>
 
-                <a-select-option v-for="user in dialogUsers" :key="user.id" :value="user.id">
+                <a-select-option
+                  v-for="user in dialogUsers"
+                  :key="user.id"
+                  :value="user.id"
+                >
                   <div class="user-option">
-                    <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(user.username) }">
+                    <a-avatar
+                      size="small"
+                      :style="{
+                        backgroundColor: getAvatarColor(user.username),
+                      }"
+                    >
                       {{ getInitials(user.username) }}
                     </a-avatar>
                     <span class="user-name">{{ user.username }}</span>
-                    <span v-if="user.real_name" class="user-real-name">({{ user.real_name }})</span>
+                    <span v-if="user.real_name" class="user-real-name"
+                      >({{ user.real_name }})</span
+                    >
                   </div>
                 </a-select-option>
 
-                <a-select-option v-if="userPagination.hasMore" :value="'__load_more_user__'" disabled
-                  class="load-more-option">
+                <a-select-option
+                  v-if="userPagination.hasMore"
+                  :value="'__load_more_user__'"
+                  disabled
+                  class="load-more-option"
+                >
                   <div class="load-more-content" @click.stop="loadMoreUsers">
-                    <a-button type="link" size="small" :loading="userSelectorLoading"
-                      style="padding: 0; height: auto; font-size: 12px;">
+                    <a-button
+                      type="link"
+                      size="small"
+                      :loading="userSelectorLoading"
+                      style="padding: 0; height: auto; font-size: 12px"
+                    >
                       <template v-if="!userSelectorLoading">
-                        加载更多 ({{ userPagination.current }}/{{ userTotalPages }})
+                        加载更多 ({{ userPagination.current }}/{{
+                          userTotalPages
+                        }})
                       </template>
-                      <template v-else>
-                        正在加载...
-                      </template>
+                      <template v-else> 正在加载... </template>
                     </a-button>
                   </div>
                 </a-select-option>
@@ -329,37 +550,74 @@
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="截止时间" name="due_date">
-              <a-date-picker v-model:value="instanceDialog.form.due_date" placeholder="请选择截止时间" style="width: 100%"
-                format="YYYY-MM-DD HH:mm:ss" show-time :show-today="false"
-                :disabled-date="(current: any) => current && current < new Date().setHours(0, 0, 0, 0)" />
+              <a-date-picker
+                v-model:value="instanceDialog.form.due_date"
+                placeholder="请选择截止时间"
+                style="width: 100%"
+                format="YYYY-MM-DD HH:mm:ss"
+                show-time
+                :show-today="false"
+                :disabled-date="
+                  (current: any) =>
+                    current && current < new Date().setHours(0, 0, 0, 0)
+                "
+              />
             </a-form-item>
           </a-col>
           <a-col :span="12">
             <a-form-item label="标签" name="tags">
-              <a-select v-model:value="instanceDialog.form.tags" mode="tags" placeholder="请输入标签" style="width: 100%"
-                :max-tag-count="5" :max-tag-text-length="20" allow-clear />
+              <a-select
+                v-model:value="instanceDialog.form.tags"
+                mode="tags"
+                placeholder="请输入标签"
+                style="width: 100%"
+                :max-tag-count="5"
+                :max-tag-text-length="20"
+                allow-clear
+              />
             </a-form-item>
           </a-col>
         </a-row>
 
         <a-form-item label="描述" name="description">
-          <a-textarea v-model:value="instanceDialog.form.description" :rows="4" placeholder="请输入工单描述" />
+          <a-textarea
+            v-model:value="instanceDialog.form.description"
+            :rows="4"
+            placeholder="请输入工单描述"
+          />
         </a-form-item>
 
-        <a-form-item label="表单数据" name="form_data" v-if="instanceDialog.form.process_id">
+        <a-form-item
+          label="表单数据"
+          name="form_data"
+          v-if="instanceDialog.form.process_id"
+        >
           <div class="form-data-section">
             <div class="section-header">
               <h4>表单字段数据</h4>
               <div class="header-actions">
-                <a-segmented v-model:value="formEditMode" :options="[
-                  { label: '可视化编辑', value: 'visual' },
-                  { label: 'JSON模式', value: 'json' }
-                ]" @change="handleModeSwitch" size="small" />
+                <a-segmented
+                  v-model:value="formEditMode"
+                  :options="[
+                    { label: '可视化编辑', value: 'visual' },
+                    { label: 'JSON模式', value: 'json' },
+                  ]"
+                  @change="handleModeSwitch"
+                  size="small"
+                />
                 <template v-if="formEditMode === 'json'">
-                  <a-button size="small" @click="formatFormDataJson" :disabled="!instanceDialog.form.form_data_json">
+                  <a-button
+                    size="small"
+                    @click="formatFormDataJson"
+                    :disabled="!instanceDialog.form.form_data_json"
+                  >
                     格式化
                   </a-button>
-                  <a-button size="small" @click="validateFormDataJson" :disabled="!instanceDialog.form.form_data_json">
+                  <a-button
+                    size="small"
+                    @click="validateFormDataJson"
+                    :disabled="!instanceDialog.form.form_data_json"
+                  >
                     验证
                   </a-button>
                 </template>
@@ -369,91 +627,191 @@
             <!-- 可视化表单编辑器 -->
             <div v-if="formEditMode === 'visual'" class="visual-form-editor">
               <a-spin :spinning="formDesignLoading" tip="加载表单设计中...">
-                <div v-if="currentFormDesign?.schema?.fields?.length" class="visual-form-fields">
+                <div
+                  v-if="currentFormDesign?.schema?.fields?.length"
+                  class="visual-form-fields"
+                >
                   <a-row :gutter="16">
-                    <template v-for="field in currentFormDesign.schema.fields" :key="field.name">
-                      <a-col :span="getFieldColSpan(field.type)" class="form-field-col">
+                    <template
+                      v-for="field in currentFormDesign.schema.fields"
+                      :key="field.name"
+                    >
+                      <a-col
+                        :span="getFieldColSpan(field.type)"
+                        class="form-field-col"
+                      >
                         <!-- 文本输入框 -->
-                        <a-form-item v-if="field.type === FormFieldType.Text" :label="field.label"
-                          :required="field.required === 1">
-                          <a-input v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请输入${field.label}`" @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-if="field.type === FormFieldType.Text"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-input
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请输入${field.label}`
+                            "
+                            @change="handleVisualFormChange"
+                          />
                         </a-form-item>
 
                         <!-- 数字输入框 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Number" :label="field.label"
-                          :required="field.required === 1">
-                          <a-input-number v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请输入${field.label}`" style="width: 100%"
-                            @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Number"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-input-number
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请输入${field.label}`
+                            "
+                            style="width: 100%"
+                            @change="handleVisualFormChange"
+                          />
                         </a-form-item>
 
                         <!-- 密码输入框 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Password" :label="field.label"
-                          :required="field.required === 1">
-                          <a-input-password v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请输入${field.label}`" @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Password"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-input-password
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请输入${field.label}`
+                            "
+                            @change="handleVisualFormChange"
+                          />
                         </a-form-item>
 
                         <!-- 多行文本框 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Textarea" :label="field.label"
-                          :required="field.required === 1">
-                          <a-textarea v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请输入${field.label}`" :rows="3"
-                            @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Textarea"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-textarea
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请输入${field.label}`
+                            "
+                            :rows="3"
+                            @change="handleVisualFormChange"
+                          />
                         </a-form-item>
 
                         <!-- 下拉选择框 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Select" :label="field.label"
-                          :required="field.required === 1">
-                          <a-select v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请选择${field.label}`" @change="handleVisualFormChange">
-                            <a-select-option v-for="option in field.options" :key="option" :value="option">
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Select"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-select
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请选择${field.label}`
+                            "
+                            @change="handleVisualFormChange"
+                          >
+                            <a-select-option
+                              v-for="option in field.options"
+                              :key="option"
+                              :value="option"
+                            >
                               {{ option }}
                             </a-select-option>
                           </a-select>
                         </a-form-item>
 
                         <!-- 单选框 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Radio" :label="field.label"
-                          :required="field.required === 1">
-                          <a-radio-group v-model:value="visualFormData[field.name]" @change="handleVisualFormChange">
-                            <a-radio v-for="option in field.options" :key="option" :value="option">
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Radio"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-radio-group
+                            v-model:value="visualFormData[field.name]"
+                            @change="handleVisualFormChange"
+                          >
+                            <a-radio
+                              v-for="option in field.options"
+                              :key="option"
+                              :value="option"
+                            >
                               {{ option }}
                             </a-radio>
                           </a-radio-group>
                         </a-form-item>
 
                         <!-- 复选框 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Checkbox" :label="field.label"
-                          :required="field.required === 1">
-                          <a-checkbox-group v-model:value="visualFormData[field.name]" @change="handleVisualFormChange">
-                            <a-checkbox v-for="option in field.options" :key="option" :value="option">
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Checkbox"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-checkbox-group
+                            v-model:value="visualFormData[field.name]"
+                            @change="handleVisualFormChange"
+                          >
+                            <a-checkbox
+                              v-for="option in field.options"
+                              :key="option"
+                              :value="option"
+                            >
                               {{ option }}
                             </a-checkbox>
                           </a-checkbox-group>
                         </a-form-item>
 
                         <!-- 日期选择器 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Date" :label="field.label"
-                          :required="field.required === 1">
-                          <a-date-picker v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请选择${field.label}`" style="width: 100%"
-                            @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Date"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-date-picker
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请选择${field.label}`
+                            "
+                            style="width: 100%"
+                            @change="handleVisualFormChange"
+                          />
                         </a-form-item>
 
                         <!-- 开关 -->
-                        <a-form-item v-else-if="field.type === FormFieldType.Switch" :label="field.label"
-                          :required="field.required === 1">
-                          <a-switch v-model:checked="visualFormData[field.name]" @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-else-if="field.type === FormFieldType.Switch"
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-switch
+                            v-model:checked="visualFormData[field.name]"
+                            @change="handleVisualFormChange"
+                          />
                         </a-form-item>
 
                         <!-- 未知字段类型 -->
-                        <a-form-item v-else :label="field.label" :required="field.required === 1">
-                          <a-input v-model:value="visualFormData[field.name]"
-                            :placeholder="field.placeholder || `请输入${field.label}`" @change="handleVisualFormChange" />
+                        <a-form-item
+                          v-else
+                          :label="field.label"
+                          :required="field.required === 1"
+                        >
+                          <a-input
+                            v-model:value="visualFormData[field.name]"
+                            :placeholder="
+                              field.placeholder || `请输入${field.label}`
+                            "
+                            @change="handleVisualFormChange"
+                          />
                           <div class="field-type-warning">
-                            <a-alert type="warning" :message="`未知字段类型: ${field.type}`" size="small" />
+                            <a-alert
+                              type="warning"
+                              :message="`未知字段类型: ${field.type}`"
+                              size="small"
+                            />
                           </div>
                         </a-form-item>
                       </a-col>
@@ -462,9 +820,15 @@
                 </div>
 
                 <div v-else-if="!formDesignLoading" class="no-form-design">
-                  <a-empty description="该流程暂无表单设计或表单字段为空" :image="false">
+                  <a-empty
+                    description="该流程暂无表单设计或表单字段为空"
+                    :image="false"
+                  >
                     <template #extra>
-                      <a-button type="primary" @click="handleModeSwitch('json')">
+                      <a-button
+                        type="primary"
+                        @click="handleModeSwitch('json')"
+                      >
                         切换到JSON模式
                       </a-button>
                     </template>
@@ -475,18 +839,31 @@
 
             <!-- JSON编辑器 -->
             <div v-else class="json-form-editor">
-              <a-textarea v-model:value="instanceDialog.form.form_data_json" placeholder="请输入表单数据JSON..." :rows="8"
-                class="json-editor" :class="{ 'json-error': formDataValidationError }" />
+              <a-textarea
+                v-model:value="instanceDialog.form.form_data_json"
+                placeholder="请输入表单数据JSON..."
+                :rows="8"
+                class="json-editor"
+                :class="{ 'json-error': formDataValidationError }"
+              />
 
               <div v-if="formDataValidationError" class="json-error-message">
-                <a-alert type="error" :message="formDataValidationError" show-icon closable
-                  @close="formDataValidationError = ''" />
+                <a-alert
+                  type="error"
+                  :message="formDataValidationError"
+                  show-icon
+                  closable
+                  @close="formDataValidationError = ''"
+                />
               </div>
 
               <div class="json-help">
-                <a-alert type="info" message="表单数据说明"
-                  description="请输入符合流程表单字段的JSON数据，例如：{&quot;name&quot;: &quot;张三&quot;, &quot;email&quot;: &quot;zhangsan@example.com&quot;}"
-                  show-icon />
+                <a-alert
+                  type="info"
+                  message="表单数据说明"
+                  description='请输入符合流程表单字段的JSON数据，例如：{"name": "张三", "email": "zhangsan@example.com"}'
+                  show-icon
+                />
               </div>
             </div>
           </div>
@@ -495,8 +872,18 @@
     </a-modal>
 
     <!-- 详情对话框 -->
-    <a-modal :open="detailDialog.visible" title="工单详情" :width="previewDialogWidth" :footer="null"
-      @cancel="() => { detailDialog.visible = false }" class="detail-dialog responsive-modal">
+    <a-modal
+      :open="detailDialog.visible"
+      title="工单详情"
+      :width="previewDialogWidth"
+      :footer="null"
+      @cancel="
+        () => {
+          detailDialog.visible = false;
+        }
+      "
+      class="detail-dialog responsive-modal"
+    >
       <div v-if="detailDialog.instance" class="instance-details">
         <div class="detail-header">
           <div class="title-section">
@@ -508,13 +895,18 @@
               <a-tag :color="getPriorityColor(detailDialog.instance.priority)">
                 {{ getPriorityText(detailDialog.instance.priority) }}
               </a-tag>
-              <span class="serial-number">{{ detailDialog.instance.serial_number }}</span>
+              <span class="serial-number">{{
+                detailDialog.instance.serial_number
+              }}</span>
             </div>
           </div>
         </div>
 
         <!-- 当前步骤信息 -->
-        <div class="current-step-section" v-if="detailDialog.currentStep || detailDialog.stepLoading">
+        <div
+          class="current-step-section"
+          v-if="detailDialog.currentStep || detailDialog.stepLoading"
+        >
           <div class="step-header">
             <div class="step-title-wrapper">
               <div class="step-indicator">
@@ -524,7 +916,10 @@
               <h3 class="step-title">当前步骤</h3>
             </div>
             <div class="step-status-badge" v-if="detailDialog.currentStep">
-              <a-tag :color="getStepStatusColor(detailDialog.currentStep.type)" class="step-status-tag">
+              <a-tag
+                :color="getStepStatusColor(detailDialog.currentStep.type)"
+                class="step-status-tag"
+              >
                 {{ getStepTypeText(detailDialog.currentStep.type) }}
               </a-tag>
             </div>
@@ -535,11 +930,16 @@
               <div class="step-main-info">
                 <div class="step-name-section">
                   <div class="step-name-label">步骤名称</div>
-                  <div class="step-name-value">{{ detailDialog.currentStep.name || '未命名步骤' }}</div>
+                  <div class="step-name-value">
+                    {{ detailDialog.currentStep.name || '未命名步骤' }}
+                  </div>
                 </div>
 
                 <div class="step-details-grid">
-                  <div class="step-detail-item" v-if="detailDialog.currentStep.id">
+                  <div
+                    class="step-detail-item"
+                    v-if="detailDialog.currentStep.id"
+                  >
                     <div class="detail-icon">
                       <NumberOutlined />
                     </div>
@@ -547,37 +947,71 @@
                       <div class="detail-label">步骤ID</div>
                       <div class="detail-value">
                         {{ detailDialog.currentStep.id }}
-                        <a-tag v-if="detailDialog.instance?.current_step_id === detailDialog.currentStep.id"
-                          color="green" size="small" style="margin-left: 8px;">
+                        <a-tag
+                          v-if="
+                            detailDialog.instance?.current_step_id ===
+                            detailDialog.currentStep.id
+                          "
+                          color="green"
+                          size="small"
+                          style="margin-left: 8px"
+                        >
                           已同步
                         </a-tag>
-                        <a-tag v-else-if="detailDialog.instance?.current_step_id" color="orange" size="small"
-                          style="margin-left: 8px;">
+                        <a-tag
+                          v-else-if="detailDialog.instance?.current_step_id"
+                          color="orange"
+                          size="small"
+                          style="margin-left: 8px"
+                        >
                           待同步
                         </a-tag>
                       </div>
                     </div>
                   </div>
 
-                  <div class="step-detail-item" v-if="detailDialog.currentStep.assignee">
+                  <div
+                    class="step-detail-item"
+                    v-if="detailDialog.currentStep.assignee"
+                  >
                     <div class="detail-icon">
                       <UserOutlined />
                     </div>
                     <div class="detail-content">
                       <div class="detail-label">处理人</div>
-                      <div class="detail-value">{{ detailDialog.currentStep.assignee }}</div>
+                      <div class="detail-value">
+                        {{ detailDialog.currentStep.assignee }}
+                      </div>
                     </div>
                   </div>
 
-                  <div class="step-detail-item" v-if="detailDialog.currentStep.deadline">
-                    <div class="detail-icon" :class="{ 'urgent': isDeadlineUrgent(detailDialog.currentStep.deadline) }">
+                  <div
+                    class="step-detail-item"
+                    v-if="detailDialog.currentStep.deadline"
+                  >
+                    <div
+                      class="detail-icon"
+                      :class="{
+                        urgent: isDeadlineUrgent(
+                          detailDialog.currentStep.deadline,
+                        ),
+                      }"
+                    >
                       <ClockCircleOutlined />
                     </div>
                     <div class="detail-content">
                       <div class="detail-label">截止时间</div>
-                      <div class="detail-value"
-                        :class="{ 'urgent-text': isDeadlineUrgent(detailDialog.currentStep.deadline) }">
-                        {{ formatFullDateTime(detailDialog.currentStep.deadline) }}
+                      <div
+                        class="detail-value"
+                        :class="{
+                          'urgent-text': isDeadlineUrgent(
+                            detailDialog.currentStep.deadline,
+                          ),
+                        }"
+                      >
+                        {{
+                          formatFullDateTime(detailDialog.currentStep.deadline)
+                        }}
                       </div>
                     </div>
                   </div>
@@ -595,8 +1029,13 @@
           </a-spin>
 
           <!-- 步骤导航 -->
-          <div v-if="detailDialog.currentStep && (detailDialog.previousStep || detailDialog.nextStep)"
-            class="step-navigation">
+          <div
+            v-if="
+              detailDialog.currentStep &&
+              (detailDialog.previousStep || detailDialog.nextStep)
+            "
+            class="step-navigation"
+          >
             <div class="navigation-header">
               <h4 class="navigation-title">
                 <MoreOutlined />
@@ -607,15 +1046,25 @@
             <div class="navigation-content">
               <div class="navigation-steps">
                 <!-- 前一步骤 -->
-                <div v-if="detailDialog.previousStep" class="nav-step prev-step">
+                <div
+                  v-if="detailDialog.previousStep"
+                  class="nav-step prev-step"
+                >
                   <div class="nav-step-header">
                     <LeftOutlined class="nav-step-icon" />
                     <span class="nav-step-label">前一步骤</span>
                   </div>
                   <div class="nav-step-content">
-                    <div class="nav-step-name">{{ detailDialog.previousStep.name }}</div>
+                    <div class="nav-step-name">
+                      {{ detailDialog.previousStep.name }}
+                    </div>
                     <div class="nav-step-type">
-                      <a-tag :color="getStepStatusColor(detailDialog.previousStep.type)" size="small">
+                      <a-tag
+                        :color="
+                          getStepStatusColor(detailDialog.previousStep.type)
+                        "
+                        size="small"
+                      >
                         {{ getStepTypeText(detailDialog.previousStep.type) }}
                       </a-tag>
                     </div>
@@ -629,9 +1078,16 @@
                     <span class="nav-step-label">当前步骤</span>
                   </div>
                   <div class="nav-step-content">
-                    <div class="nav-step-name">{{ detailDialog.currentStep.name }}</div>
+                    <div class="nav-step-name">
+                      {{ detailDialog.currentStep.name }}
+                    </div>
                     <div class="nav-step-type">
-                      <a-tag :color="getStepStatusColor(detailDialog.currentStep.type)" size="small">
+                      <a-tag
+                        :color="
+                          getStepStatusColor(detailDialog.currentStep.type)
+                        "
+                        size="small"
+                      >
                         {{ getStepTypeText(detailDialog.currentStep.type) }}
                       </a-tag>
                     </div>
@@ -645,9 +1101,14 @@
                     <span class="nav-step-label">下一步骤</span>
                   </div>
                   <div class="nav-step-content">
-                    <div class="nav-step-name">{{ detailDialog.nextStep.name }}</div>
+                    <div class="nav-step-name">
+                      {{ detailDialog.nextStep.name }}
+                    </div>
                     <div class="nav-step-type">
-                      <a-tag :color="getStepStatusColor(detailDialog.nextStep.type)" size="small">
+                      <a-tag
+                        :color="getStepStatusColor(detailDialog.nextStep.type)"
+                        size="small"
+                      >
                         {{ getStepTypeText(detailDialog.nextStep.type) }}
                       </a-tag>
                     </div>
@@ -656,13 +1117,21 @@
               </div>
 
               <!-- 步骤进度指示器 -->
-              <div class="step-progress" v-if="detailDialog.allSteps.length > 0">
+              <div
+                class="step-progress"
+                v-if="detailDialog.allSteps.length > 0"
+              >
                 <div class="progress-bar">
-                  <div class="progress-item" v-for="(step, index) in detailDialog.allSteps" :key="step.id" :class="{
-                    'completed': isStepCompleted(step, index),
-                    'current': step.id === detailDialog.currentStep?.id,
-                    'pending': isStepPending(step, index)
-                  }">
+                  <div
+                    class="progress-item"
+                    v-for="(step, index) in detailDialog.allSteps"
+                    :key="step.id"
+                    :class="{
+                      completed: isStepCompleted(step, index),
+                      current: step.id === detailDialog.currentStep?.id,
+                      pending: isStepPending(step, index),
+                    }"
+                  >
                     <div class="progress-dot"></div>
                     <div class="progress-label">{{ step.name }}</div>
                   </div>
@@ -673,17 +1142,23 @@
         </div>
 
         <a-descriptions bordered :column="2" :labelStyle="{ width: '120px' }">
-          <a-descriptions-item label="工单ID">{{ detailDialog.instance.id }}</a-descriptions-item>
-          <a-descriptions-item label="工单编号">{{ detailDialog.instance.serial_number }}</a-descriptions-item>
-          <a-descriptions-item label="创建人">{{ detailDialog.instance.operator_name }}</a-descriptions-item>
+          <a-descriptions-item label="工单ID">{{
+            detailDialog.instance.id
+          }}</a-descriptions-item>
+          <a-descriptions-item label="工单编号">{{
+            detailDialog.instance.serial_number
+          }}</a-descriptions-item>
+          <a-descriptions-item label="创建人">{{
+            detailDialog.instance.operator_name
+          }}</a-descriptions-item>
           <a-descriptions-item label="处理人">
             <span v-if="detailDialog.instance.assignee_id">
               {{ getAssigneeName(detailDialog.instance.assignee_id) }}
             </span>
-            <span v-else style="color: #ff7875;">
+            <span v-else style="color: #ff7875">
               未分配
               <a-tooltip title="需要先分配处理人才能执行审批、拒绝、完成等操作">
-                <InfoCircleOutlined style="margin-left: 4px;" />
+                <InfoCircleOutlined style="margin-left: 4px" />
               </a-tooltip>
             </span>
           </a-descriptions-item>
@@ -693,15 +1168,34 @@
           <a-descriptions-item label="更新时间">
             {{ formatFullDateTime(detailDialog.instance.updated_at || '') }}
           </a-descriptions-item>
-          <a-descriptions-item label="完成时间" :span="2" v-if="detailDialog.instance.completed_at">
+          <a-descriptions-item
+            label="完成时间"
+            :span="2"
+            v-if="detailDialog.instance.completed_at"
+          >
             {{ formatFullDateTime(detailDialog.instance.completed_at) }}
           </a-descriptions-item>
-          <a-descriptions-item label="截止时间" :span="2" v-if="detailDialog.instance.due_date">
+          <a-descriptions-item
+            label="截止时间"
+            :span="2"
+            v-if="detailDialog.instance.due_date"
+          >
             {{ formatFullDateTime(detailDialog.instance.due_date) }}
           </a-descriptions-item>
-          <a-descriptions-item label="标签" :span="2"
-            v-if="detailDialog.instance.tags && detailDialog.instance.tags.length > 0">
-            <a-tag v-for="tag in detailDialog.instance.tags" :key="tag" color="blue">{{ tag }}</a-tag>
+          <a-descriptions-item
+            label="标签"
+            :span="2"
+            v-if="
+              detailDialog.instance.tags &&
+              detailDialog.instance.tags.length > 0
+            "
+          >
+            <a-tag
+              v-for="tag in detailDialog.instance.tags"
+              :key="tag"
+              color="blue"
+              >{{ tag }}</a-tag
+            >
           </a-descriptions-item>
           <a-descriptions-item label="关联流程" :span="2">
             {{ getProcessName(detailDialog.instance.process_id) || '无' }}
@@ -714,61 +1208,106 @@
         <div class="form-data-preview" v-if="detailDialog.instance.form_data">
           <h3>表单数据</h3>
           <div class="form-data-content">
-            <pre class="json-content">{{ JSON.stringify(detailDialog.instance.form_data, null, 2) }}</pre>
+            <pre class="json-content">{{
+              JSON.stringify(detailDialog.instance.form_data, null, 2)
+            }}</pre>
           </div>
         </div>
 
         <!-- 可用动作 -->
-        <div class="available-actions-section"
-          v-if="(detailDialog.availableActions.length > 0 || detailDialog.actionsLoading) && detailDialog.instance?.status !== InstanceStatus.Completed && detailDialog.instance?.status !== InstanceStatus.Rejected">
+        <div
+          class="available-actions-section"
+          v-if="
+            (detailDialog.availableActions.length > 0 ||
+              detailDialog.actionsLoading) &&
+            detailDialog.instance?.status !== InstanceStatus.Completed &&
+            detailDialog.instance?.status !== InstanceStatus.Rejected
+          "
+        >
           <h3>可用操作</h3>
           <a-spin :spinning="detailDialog.actionsLoading">
             <div class="actions-buttons">
               <!-- 提交工单 -->
-              <a-button type="primary" @click="handleActionSubmit(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('submit')">
+              <a-button
+                type="primary"
+                @click="handleActionSubmit(detailDialog.instance)"
+                v-if="detailDialog.availableActions.includes('submit')"
+              >
                 提交工单
               </a-button>
 
               <!-- 分配处理人 -->
-              <a-button type="default" @click="handleActionAssign(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('assign')">
+              <a-button
+                type="default"
+                @click="handleActionAssign(detailDialog.instance)"
+                v-if="detailDialog.availableActions.includes('assign')"
+              >
                 分配处理人
               </a-button>
 
               <!-- 审批通过 -->
-              <a-button type="primary" @click="handleActionApprove(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('approve') && detailDialog.instance.assignee_id">
+              <a-button
+                type="primary"
+                @click="handleActionApprove(detailDialog.instance)"
+                v-if="
+                  detailDialog.availableActions.includes('approve') &&
+                  detailDialog.instance.assignee_id
+                "
+              >
                 审批通过
               </a-button>
 
               <!-- 拒绝 -->
-              <a-button danger @click="handleActionReject(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('reject') && detailDialog.instance.assignee_id">
+              <a-button
+                danger
+                @click="handleActionReject(detailDialog.instance)"
+                v-if="
+                  detailDialog.availableActions.includes('reject') &&
+                  detailDialog.instance.assignee_id
+                "
+              >
                 拒绝
               </a-button>
 
               <!-- 编辑 -->
-              <a-button type="default" @click="handleEditInstance(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('edit')">
+              <a-button
+                type="default"
+                @click="handleEditInstance(detailDialog.instance)"
+                v-if="detailDialog.availableActions.includes('edit')"
+              >
                 编辑
               </a-button>
 
               <!-- 取消 -->
-              <a-button danger @click="handleActionCancel(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('cancel')">
+              <a-button
+                danger
+                @click="handleActionCancel(detailDialog.instance)"
+                v-if="detailDialog.availableActions.includes('cancel')"
+              >
                 取消工单
               </a-button>
 
               <!-- 完成工单 -->
-              <a-button type="primary" @click="handleActionComplete(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('complete') && detailDialog.instance.assignee_id">
+              <a-button
+                type="primary"
+                @click="handleActionComplete(detailDialog.instance)"
+                v-if="
+                  detailDialog.availableActions.includes('complete') &&
+                  detailDialog.instance.assignee_id
+                "
+              >
                 完成工单
               </a-button>
 
               <!-- 退回工单 -->
-              <a-button type="default" @click="handleActionReturn(detailDialog.instance)"
-                v-if="detailDialog.availableActions.includes('return') && detailDialog.instance.assignee_id">
+              <a-button
+                type="default"
+                @click="handleActionReturn(detailDialog.instance)"
+                v-if="
+                  detailDialog.availableActions.includes('return') &&
+                  detailDialog.instance.assignee_id
+                "
+              >
                 退回工单
               </a-button>
             </div>
@@ -780,16 +1319,28 @@
             <a-button @click="detailDialog.visible = false">关闭</a-button>
           </div>
           <div class="footer-right">
-            <a-button type="default" @click="handleViewComments(detailDialog.instance)">
+            <a-button
+              type="default"
+              @click="handleViewComments(detailDialog.instance)"
+            >
               <MessageOutlined /> 查看评论
             </a-button>
-            <a-button type="default" @click="handleViewTimeline(detailDialog.instance)">
+            <a-button
+              type="default"
+              @click="handleViewTimeline(detailDialog.instance)"
+            >
               <HistoryOutlined /> 查看时间线
             </a-button>
-            <a-button type="default" @click="handleViewFlow(detailDialog.instance)">
+            <a-button
+              type="default"
+              @click="handleViewFlow(detailDialog.instance)"
+            >
               <PlayCircleOutlined /> 查看流转
             </a-button>
-            <a-button type="default" @click="handleViewNotificationLogs(detailDialog.instance)">
+            <a-button
+              type="default"
+              @click="handleViewNotificationLogs(detailDialog.instance)"
+            >
               <MessageOutlined /> 通知记录
             </a-button>
           </div>
@@ -798,16 +1349,28 @@
     </a-modal>
 
     <!-- 组件 -->
-    <WorkorderComments ref="commentsRef" :instance="detailDialog.instance || undefined"
-      @comment-added="loadInstances" />
+    <WorkorderComments
+      ref="commentsRef"
+      :instance="detailDialog.instance || undefined"
+      @comment-added="loadInstances"
+    />
     <WorkorderTimeline ref="timelineRef" />
     <WorkorderFlow ref="flowRef" />
 
     <!-- 通知记录对话框 -->
-    <a-modal :open="notificationLogsDialog.visible" title="通知发送记录" :width="800" :footer="null"
-      @cancel="handleCloseNotificationLogsDialog" class="notification-logs-dialog">
+    <a-modal
+      :open="notificationLogsDialog.visible"
+      title="通知发送记录"
+      :width="800"
+      :footer="null"
+      @cancel="handleCloseNotificationLogsDialog"
+      class="notification-logs-dialog"
+    >
       <a-spin :spinning="notificationLogsLoading">
-        <div v-if="notificationLogs.length > 0" class="notification-logs-content">
+        <div
+          v-if="notificationLogs.length > 0"
+          class="notification-logs-content"
+        >
           <a-list :data-source="notificationLogs" item-layout="vertical">
             <template #renderItem="{ item }">
               <a-list-item>
@@ -815,7 +1378,10 @@
                   <template #title>
                     <div class="notification-title">
                       <span class="event-type">{{ item.event_type }}</span>
-                      <a-tag :color="item.status === 1 ? 'green' : 'red'" class="status-tag">
+                      <a-tag
+                        :color="item.status === 1 ? 'green' : 'red'"
+                        class="status-tag"
+                      >
                         {{ item.status === 1 ? '发送成功' : '发送失败' }}
                       </a-tag>
                     </div>
@@ -824,7 +1390,9 @@
                     <div class="notification-meta">
                       <div class="meta-item">
                         <span class="label">发送时间：</span>
-                        <span class="value">{{ formatDateTime(item.send_at) }}</span>
+                        <span class="value">{{
+                          formatDateTime(item.send_at)
+                        }}</span>
                       </div>
                       <div class="meta-item" v-if="item.recipient_addr">
                         <span class="label">收件人：</span>
@@ -839,13 +1407,21 @@
                 </a-list-item-meta>
                 <template #extra>
                   <div class="notification-actions">
-                    <a-button size="small" type="text" @click="viewNotificationDetail(item)">
+                    <a-button
+                      size="small"
+                      type="text"
+                      @click="viewNotificationDetail(item)"
+                    >
                       查看详情
                     </a-button>
                   </div>
                 </template>
                 <div v-if="item.error_message" class="error-message">
-                  <a-alert :message="item.error_message" type="error" show-icon />
+                  <a-alert
+                    :message="item.error_message"
+                    type="error"
+                    show-icon
+                  />
                 </div>
               </a-list-item>
             </template>
@@ -853,11 +1429,17 @@
 
           <!-- 分页组件 -->
           <div class="notification-pagination">
-            <a-pagination v-model:current="notificationLogsPagination.current"
-              v-model:page-size="notificationLogsPagination.pageSize" :total="notificationLogsPagination.total"
-              :show-size-changer="true" :show-quick-jumper="true" :show-total="(total: number) => `共 ${total} 条`"
-              :page-size-options="['10', '20', '50']" @change="handleNotificationLogsPageChange"
-              @show-size-change="handleNotificationLogsPageChange" />
+            <a-pagination
+              v-model:current="notificationLogsPagination.current"
+              v-model:page-size="notificationLogsPagination.pageSize"
+              :total="notificationLogsPagination.total"
+              :show-size-changer="true"
+              :show-quick-jumper="true"
+              :show-total="(total: number) => `共 ${total} 条`"
+              :page-size-options="['10', '20', '50']"
+              @change="handleNotificationLogsPageChange"
+              @show-size-change="handleNotificationLogsPageChange"
+            />
           </div>
         </div>
         <div v-else class="no-notifications">
@@ -867,32 +1449,70 @@
     </a-modal>
 
     <!-- 分配处理人对话框 -->
-    <a-modal :open="assignDialog.visible" title="分配处理人" :width="dialogWidth" @ok="saveAssign"
-      @cancel="() => { assignDialog.visible = false }" :destroy-on-close="true" class="responsive-modal">
+    <a-modal
+      :open="assignDialog.visible"
+      title="分配处理人"
+      :width="dialogWidth"
+      @ok="saveAssign"
+      @cancel="
+        () => {
+          assignDialog.visible = false;
+        }
+      "
+      :destroy-on-close="true"
+      class="responsive-modal"
+    >
       <a-form :model="assignDialog.form" layout="vertical">
-        <a-form-item label="选择处理人" name="assignee_id" :rules="[{ required: true, message: '请选择处理人' }]">
-          <a-select v-model:value="assignDialog.form.assignee_id" placeholder="请选择处理人" style="width: 100%" show-search
-            :filter-option="false" option-label-prop="children"
-            :not-found-content="userSelectorLoading ? undefined : (userSearchKeyword ? '无搜索结果' : '无数据')"
-            @search="handleUserSearch" @dropdown-visible-change="handleUserDropdownChange" allow-clear
-            :loading="userSelectorLoading">
+        <a-form-item
+          label="选择处理人"
+          name="assignee_id"
+          :rules="[{ required: true, message: '请选择处理人' }]"
+        >
+          <a-select
+            v-model:value="assignDialog.form.assignee_id"
+            placeholder="请选择处理人"
+            style="width: 100%"
+            show-search
+            :filter-option="false"
+            option-label-prop="children"
+            :not-found-content="
+              userSelectorLoading
+                ? undefined
+                : userSearchKeyword
+                  ? '无搜索结果'
+                  : '无数据'
+            "
+            @search="handleUserSearch"
+            @dropdown-visible-change="handleUserDropdownChange"
+            allow-clear
+            :loading="userSelectorLoading"
+          >
             <template #notFoundContent>
               <div v-if="userSelectorLoading" class="selector-loading">
                 <a-spin size="small" />
-                <span style="margin-left: 8px;">加载中...</span>
+                <span style="margin-left: 8px">加载中...</span>
               </div>
               <div v-else class="selector-empty">
                 {{ userSearchKeyword ? '无搜索结果' : '暂无用户数据' }}
               </div>
             </template>
 
-            <a-select-option v-for="user in dialogUsers" :key="user.id" :value="user.id">
+            <a-select-option
+              v-for="user in dialogUsers"
+              :key="user.id"
+              :value="user.id"
+            >
               <div class="user-option">
-                <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(user.username) }">
+                <a-avatar
+                  size="small"
+                  :style="{ backgroundColor: getAvatarColor(user.username) }"
+                >
                   {{ getInitials(user.username) }}
                 </a-avatar>
                 <span class="user-name">{{ user.username }}</span>
-                <span v-if="user.real_name" class="user-real-name">({{ user.real_name }})</span>
+                <span v-if="user.real_name" class="user-real-name"
+                  >({{ user.real_name }})</span
+                >
               </div>
             </a-select-option>
           </a-select>
@@ -901,43 +1521,90 @@
     </a-modal>
 
     <!-- 从模板创建工单对话框 -->
-    <a-modal :open="templateDialog.visible" title="从模板创建工单" :width="formDialogWidth" @ok="handleTemplateSubmit"
-      @cancel="() => { templateDialog.visible = false }" :destroy-on-close="true" class="responsive-modal"
-      :confirm-loading="loading">
+    <a-modal
+      :open="templateDialog.visible"
+      title="从模板创建工单"
+      :width="formDialogWidth"
+      @ok="handleTemplateSubmit"
+      @cancel="
+        () => {
+          templateDialog.visible = false;
+        }
+      "
+      :destroy-on-close="true"
+      class="responsive-modal"
+      :confirm-loading="loading"
+    >
       <a-form :model="templateDialog.form" layout="vertical">
-        <a-form-item label="选择模板" name="template_id" :rules="[{ required: true, message: '请选择模板' }]">
-          <a-select v-model:value="templateDialog.form.template_id" placeholder="请选择工单模板" style="width: 100%"
-            show-search :filter-option="false" option-label-prop="children"
-            :not-found-content="templateSelectorLoading ? undefined : (templateSearchKeyword ? '无搜索结果' : '无数据')"
-            @search="handleTemplateSearch" @dropdown-visible-change="(open: boolean) => open && loadTemplates()"
-            allow-clear :loading="templateSelectorLoading">
+        <a-form-item
+          label="选择模板"
+          name="template_id"
+          :rules="[{ required: true, message: '请选择模板' }]"
+        >
+          <a-select
+            v-model:value="templateDialog.form.template_id"
+            placeholder="请选择工单模板"
+            style="width: 100%"
+            show-search
+            :filter-option="false"
+            option-label-prop="children"
+            :not-found-content="
+              templateSelectorLoading
+                ? undefined
+                : templateSearchKeyword
+                  ? '无搜索结果'
+                  : '无数据'
+            "
+            @search="handleTemplateSearch"
+            @dropdown-visible-change="
+              (open: boolean) => open && loadTemplates()
+            "
+            allow-clear
+            :loading="templateSelectorLoading"
+          >
             <template #notFoundContent>
               <div v-if="templateSelectorLoading" class="selector-loading">
                 <a-spin size="small" />
-                <span style="margin-left: 8px;">加载中...</span>
+                <span style="margin-left: 8px">加载中...</span>
               </div>
               <div v-else class="selector-empty">
                 {{ templateSearchKeyword ? '无搜索结果' : '暂无模板数据' }}
               </div>
             </template>
 
-            <a-select-option v-for="template in dialogTemplates" :key="template.id" :value="template.id">
+            <a-select-option
+              v-for="template in dialogTemplates"
+              :key="template.id"
+              :value="template.id"
+            >
               <div class="template-option">
                 <span class="template-name">{{ template.name }}</span>
-                <span v-if="template.description" class="template-desc">{{ template.description }}</span>
+                <span v-if="template.description" class="template-desc">{{
+                  template.description
+                }}</span>
               </div>
             </a-select-option>
           </a-select>
         </a-form-item>
 
-        <a-form-item label="工单标题" name="title" :rules="[{ required: true, message: '请输入工单标题' }]">
-          <a-input v-model:value="templateDialog.form.title" placeholder="请输入工单标题" />
+        <a-form-item
+          label="工单标题"
+          name="title"
+          :rules="[{ required: true, message: '请输入工单标题' }]"
+        >
+          <a-input
+            v-model:value="templateDialog.form.title"
+            placeholder="请输入工单标题"
+          />
         </a-form-item>
 
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="优先级" name="priority">
-              <a-select v-model:value="templateDialog.form.priority" placeholder="请选择优先级">
+              <a-select
+                v-model:value="templateDialog.form.priority"
+                placeholder="请选择优先级"
+              >
                 <a-select-option :value="Priority.Low">低</a-select-option>
                 <a-select-option :value="Priority.Normal">普通</a-select-option>
                 <a-select-option :value="Priority.High">高</a-select-option>
@@ -946,51 +1613,119 @@
           </a-col>
           <a-col :span="12">
             <a-form-item label="截止时间" name="due_date">
-              <a-date-picker v-model:value="templateDialog.form.due_date" placeholder="请选择截止时间" style="width: 100%"
-                format="YYYY-MM-DD HH:mm:ss" show-time :show-today="false"
-                :disabled-date="(current: any) => current && current < new Date().setHours(0, 0, 0, 0)" />
+              <a-date-picker
+                v-model:value="templateDialog.form.due_date"
+                placeholder="请选择截止时间"
+                style="width: 100%"
+                format="YYYY-MM-DD HH:mm:ss"
+                show-time
+                :show-today="false"
+                :disabled-date="
+                  (current: any) =>
+                    current && current < new Date().setHours(0, 0, 0, 0)
+                "
+              />
             </a-form-item>
           </a-col>
         </a-row>
 
         <a-form-item label="标签" name="tags">
-          <a-select v-model:value="templateDialog.form.tags" mode="tags" placeholder="请输入标签" style="width: 100%"
-            :max-tag-count="5" :max-tag-text-length="20" allow-clear />
+          <a-select
+            v-model:value="templateDialog.form.tags"
+            mode="tags"
+            placeholder="请输入标签"
+            style="width: 100%"
+            :max-tag-count="5"
+            :max-tag-text-length="20"
+            allow-clear
+          />
         </a-form-item>
 
         <a-form-item label="描述" name="description">
-          <a-textarea v-model:value="templateDialog.form.description" :rows="3" placeholder="请输入工单描述" />
+          <a-textarea
+            v-model:value="templateDialog.form.description"
+            :rows="3"
+            placeholder="请输入工单描述"
+          />
         </a-form-item>
       </a-form>
     </a-modal>
 
     <!-- 审批/拒绝对话框 -->
-    <a-modal :open="approvalDialog.visible" :title="getApprovalDialogTitle()" :width="dialogWidth" @ok="saveApproval"
-      @cancel="() => { approvalDialog.visible = false }" :destroy-on-close="true" class="responsive-modal">
+    <a-modal
+      :open="approvalDialog.visible"
+      :title="getApprovalDialogTitle()"
+      :width="dialogWidth"
+      @ok="saveApproval"
+      @cancel="
+        () => {
+          approvalDialog.visible = false;
+        }
+      "
+      :destroy-on-close="true"
+      class="responsive-modal"
+    >
       <!-- 步骤信息提示 -->
       <div v-if="detailDialog.currentStep" class="approval-step-info">
-        <a-alert :type="detailDialog.currentStep.type === 'end' ? 'warning' : 'info'" :message="getStepMessage()"
-          show-icon style="margin-bottom: 16px;" />
+        <a-alert
+          :type="detailDialog.currentStep.type === 'end' ? 'warning' : 'info'"
+          :message="getStepMessage()"
+          show-icon
+          style="margin-bottom: 16px"
+        />
       </div>
 
       <a-form :model="approvalDialog.form" layout="vertical">
-        <a-form-item :label="approvalDialog.type === 'approve' ? '审批意见' : '拒绝理由'" name="comment"
-          :rules="approvalDialog.type === 'reject' ? [{ required: true, message: '请输入拒绝理由' }] : []">
-          <a-textarea v-model:value="approvalDialog.form.comment" :rows="4"
-            :placeholder="approvalDialog.type === 'approve' ? '请输入审批意见(可选)' : '请输入拒绝理由'" />
+        <a-form-item
+          :label="approvalDialog.type === 'approve' ? '审批意见' : '拒绝理由'"
+          name="comment"
+          :rules="
+            approvalDialog.type === 'reject'
+              ? [{ required: true, message: '请输入拒绝理由' }]
+              : []
+          "
+        >
+          <a-textarea
+            v-model:value="approvalDialog.form.comment"
+            :rows="4"
+            :placeholder="
+              approvalDialog.type === 'approve'
+                ? '请输入审批意见(可选)'
+                : '请输入拒绝理由'
+            "
+          />
         </a-form-item>
       </a-form>
     </a-modal>
 
     <!-- 操作确认对话框（取消、完成、退回） -->
-    <a-modal :open="actionDialog.visible" :title="getActionDialogTitle()" :width="dialogWidth" @ok="saveActionComment"
-      @cancel="() => { actionDialog.visible = false }" :destroy-on-close="true" class="responsive-modal"
-      :confirm-loading="loading">
+    <a-modal
+      :open="actionDialog.visible"
+      :title="getActionDialogTitle()"
+      :width="dialogWidth"
+      @ok="saveActionComment"
+      @cancel="
+        () => {
+          actionDialog.visible = false;
+        }
+      "
+      :destroy-on-close="true"
+      class="responsive-modal"
+      :confirm-loading="loading"
+    >
       <a-form :model="actionDialog.form" layout="vertical">
-        <a-form-item :label="getActionCommentLabel()" name="comment"
-          :rules="[{ required: true, message: `请输入${getActionCommentLabel()}` }]">
-          <a-textarea v-model:value="actionDialog.form.comment" :rows="4"
-            :placeholder="`请输入${getActionCommentLabel()}`" />
+        <a-form-item
+          :label="getActionCommentLabel()"
+          name="comment"
+          :rules="[
+            { required: true, message: `请输入${getActionCommentLabel()}` },
+          ]"
+        >
+          <a-textarea
+            v-model:value="actionDialog.form.comment"
+            :rows="4"
+            :placeholder="`请输入${getActionCommentLabel()}`"
+          />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -1018,7 +1753,7 @@ import {
   NumberOutlined,
   MoreOutlined,
   LeftOutlined,
-  RightOutlined
+  RightOutlined,
 } from '@ant-design/icons-vue';
 
 import {
@@ -1050,18 +1785,15 @@ import {
   completeWorkorderInstance,
   returnWorkorderInstance,
   getAvailableActions,
-  getCurrentStep
+  getCurrentStep,
 } from '#/api/core/workorder/workorder_instance';
 
 // 导入新的组件
-import WorkorderComments from './components/WorkorderComments.vue'
-import WorkorderTimeline from './components/WorkorderTimeline.vue'
-import WorkorderFlow from './components/WorkorderFlow.vue'
+import WorkorderComments from './components/WorkorderComments.vue';
+import WorkorderTimeline from './components/WorkorderTimeline.vue';
+import WorkorderFlow from './components/WorkorderFlow.vue';
 
-import {
-  type GetUserListReq,
-  getUserList
-} from '#/api/core/system/user';
+import { type GetUserListReq, getUserList } from '#/api/core/system/user';
 
 interface UserListItem {
   id: number;
@@ -1076,7 +1808,7 @@ import {
   type ProcessStep,
   type ProcessDefinition,
   listWorkorderProcess,
-  detailWorkorderProcess
+  detailWorkorderProcess,
 } from '#/api/core/workorder/workorder_process';
 
 import {
@@ -1084,21 +1816,21 @@ import {
   type DetailWorkorderFormDesignReq,
   type FormField,
   FormFieldType,
-  detailWorkorderFormDesign
+  detailWorkorderFormDesign,
 } from '#/api/core/workorder/workorder_form_design';
 
 import {
   type WorkorderTemplateItem,
   type ListWorkorderTemplateReq,
   listWorkorderTemplate,
-  detailWorkorderTemplate
+  detailWorkorderTemplate,
 } from '#/api/core/workorder/workorder_template';
 
 // 导入通知相关API
 import {
   type NotificationLog,
   type ListSendLogReq,
-  getSendLogs
+  getSendLogs,
 } from '#/api/core/workorder/workorder_notification';
 
 // 列定义
@@ -1108,7 +1840,7 @@ const columns = [
     dataIndex: 'title',
     key: 'title',
     width: 250,
-    fixed: 'left'
+    fixed: 'left',
   },
   {
     title: '状态',
@@ -1147,7 +1879,7 @@ const columns = [
     key: 'action',
     width: 200,
     align: 'center' as const,
-    fixed: 'right'
+    fixed: 'right',
   },
 ];
 
@@ -1162,9 +1894,9 @@ const pageSize = ref(10);
 const total = ref(0);
 
 // 组件引用
-const commentsRef = ref()
-const timelineRef = ref()
-const flowRef = ref()
+const commentsRef = ref();
+const timelineRef = ref();
+const flowRef = ref();
 
 // 数据列表
 const instanceList = ref<WorkorderInstanceItem[]>([]);
@@ -1181,7 +1913,7 @@ const usersPagination = reactive({
   current: 1,
   pageSize: 20,
   total: 0,
-  hasMore: false
+  hasMore: false,
 });
 const usersLoading = ref(false);
 const usersSearchKeyword = ref('');
@@ -1191,12 +1923,12 @@ const notificationLogs = ref<NotificationLog[]>([]);
 const notificationLogsLoading = ref(false);
 const notificationLogsDialog = reactive({
   visible: false,
-  instanceId: 0
+  instanceId: 0,
 });
 const notificationLogsPagination = reactive({
   current: 1,
   pageSize: 10,
-  total: 0
+  total: 0,
 });
 
 // 统计数据
@@ -1204,7 +1936,7 @@ const stats = reactive({
   total: 0,
   pending: 0,
   processing: 0,
-  completed: 0
+  completed: 0,
 });
 
 // 分页配置
@@ -1233,22 +1965,25 @@ const instanceDialog = reactive({
     status: InstanceStatus.Draft,
     form_data: {},
     tags: [] as string[],
-    due_date: undefined as any
-  } as CreateWorkorderInstanceReq & { id?: number; form_data_json?: string; tags?: string[]; due_date?: any }
+    due_date: undefined as any,
+  } as CreateWorkorderInstanceReq & {
+    id?: number;
+    form_data_json?: string;
+    tags?: string[];
+    due_date?: any;
+  },
 });
 
 // 表单验证规则
 const formRules = {
   title: [
     { required: true, message: '请输入工单标题', trigger: 'blur' },
-    { min: 3, max: 100, message: '长度应为3到100个字符', trigger: 'blur' }
+    { min: 3, max: 100, message: '长度应为3到100个字符', trigger: 'blur' },
   ],
-  priority: [
-    { required: true, message: '请选择优先级', trigger: 'change' }
-  ],
+  priority: [{ required: true, message: '请选择优先级', trigger: 'change' }],
   process_id: [
-    { required: true, message: '请选择关联流程', trigger: 'change' }
-  ]
+    { required: true, message: '请选择关联流程', trigger: 'change' },
+  ],
 };
 
 // 从模板创建对话框
@@ -1260,8 +1995,8 @@ const templateDialog = reactive({
     description: '',
     priority: Priority.Normal,
     tags: [] as string[],
-    due_date: undefined as any
-  }
+    due_date: undefined as any,
+  },
 });
 
 // 详情对话框
@@ -1275,7 +2010,7 @@ const detailDialog = reactive({
   previousStep: null as ProcessStep | null,
   nextStep: null as ProcessStep | null,
   allSteps: [] as ProcessStep[],
-  processDefinition: null as ProcessDefinition | null
+  processDefinition: null as ProcessDefinition | null,
 });
 
 // 分配处理人对话框
@@ -1283,8 +2018,8 @@ const assignDialog = reactive({
   visible: false,
   instanceId: 0,
   form: {
-    assignee_id: undefined as number | undefined
-  }
+    assignee_id: undefined as number | undefined,
+  },
 });
 
 // 审批对话框
@@ -1293,8 +2028,8 @@ const approvalDialog = reactive({
   instanceId: 0,
   type: 'approve' as 'approve' | 'reject',
   form: {
-    comment: ''
-  }
+    comment: '',
+  },
 });
 
 // 操作确认对话框（取消、完成、退回）
@@ -1303,8 +2038,8 @@ const actionDialog = reactive({
   instanceId: 0,
   type: 'cancel' as 'cancel' | 'complete' | 'return',
   form: {
-    comment: ''
-  }
+    comment: '',
+  },
 });
 
 // JSON验证错误
@@ -1330,7 +2065,7 @@ const processPagination = reactive({
   current: 1,
   pageSize: 20,
   total: 0,
-  hasMore: false
+  hasMore: false,
 });
 
 // 用户选择器相关
@@ -1343,7 +2078,7 @@ const userPagination = reactive({
   current: 1,
   pageSize: 20,
   total: 0,
-  hasMore: false
+  hasMore: false,
 });
 
 // 清理定时器
@@ -1415,7 +2150,7 @@ const getStatusColor = (status: number): string => {
     [InstanceStatus.Processing]: 'blue',
     [InstanceStatus.Completed]: 'green',
     [InstanceStatus.Rejected]: 'red',
-    [InstanceStatus.Cancelled]: 'default'
+    [InstanceStatus.Cancelled]: 'default',
   };
   return colorMap[status as keyof typeof colorMap] || 'default';
 };
@@ -1427,7 +2162,7 @@ const getStatusText = (status: number): string => {
     [InstanceStatus.Processing]: '处理中',
     [InstanceStatus.Completed]: '已完成',
     [InstanceStatus.Rejected]: '已拒绝',
-    [InstanceStatus.Cancelled]: '已取消'
+    [InstanceStatus.Cancelled]: '已取消',
   };
   return textMap[status as keyof typeof textMap] || '未知';
 };
@@ -1436,7 +2171,7 @@ const getPriorityColor = (priority: number): string => {
   const colorMap = {
     [Priority.Low]: 'green',
     [Priority.Normal]: 'blue',
-    [Priority.High]: 'red'
+    [Priority.High]: 'red',
   };
   return colorMap[priority as keyof typeof colorMap] || 'blue';
 };
@@ -1445,7 +2180,7 @@ const getPriorityText = (priority: number): string => {
   const textMap = {
     [Priority.Low]: '低',
     [Priority.Normal]: '普通',
-    [Priority.High]: '高'
+    [Priority.High]: '高',
   };
   return textMap[priority as keyof typeof textMap] || '普通';
 };
@@ -1454,7 +2189,7 @@ const getPriorityClass = (priority: number): string => {
   const classMap = {
     [Priority.Low]: 'priority-low',
     [Priority.Normal]: 'priority-normal',
-    [Priority.High]: 'priority-high'
+    [Priority.High]: 'priority-high',
   };
   return classMap[priority as keyof typeof classMap] || 'priority-normal';
 };
@@ -1478,22 +2213,28 @@ const getAssigneeName = (assigneeId?: number): string => {
 };
 
 const getProcessName = (processId: number): string => {
-  const process = processes.value.find(p => p.id === processId);
+  const process = processes.value.find((p) => p.id === processId);
   return process?.name || `流程${processId}`;
 };
 
 // 检查是否可以删除工单
 const canDeleteInstance = (instance: WorkorderInstanceItem): boolean => {
   // 草稿、已完成、已拒绝状态的工单可以删除
-  return instance.status === InstanceStatus.Draft ||
+  return (
+    instance.status === InstanceStatus.Draft ||
     instance.status === InstanceStatus.Completed ||
-    instance.status === InstanceStatus.Rejected;
+    instance.status === InstanceStatus.Rejected
+  );
 };
 
 const formatDate = (dateStr: string | undefined) => {
   if (!dateStr) return '';
   const d = new Date(dateStr);
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return d.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
 };
 
 const formatTime = (dateStr: string | undefined) => {
@@ -1510,7 +2251,7 @@ const formatFullDateTime = (dateStr: string | undefined) => {
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   });
 };
 
@@ -1523,25 +2264,27 @@ const formatDateTime = (dateStr: string | undefined) => {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit'
+    second: '2-digit',
   });
 };
 
 const getInitials = (name: string | undefined) => {
   if (!name) return '';
-  return name
-    .split('')
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
+  return name.split('').slice(0, 2).join('').toUpperCase();
 };
 
 const getAvatarColor = (name: string | undefined) => {
   if (!name) return '#1890ff';
 
   const colors = [
-    '#1890ff', '#52c41a', '#faad14', '#f5222d',
-    '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16'
+    '#1890ff',
+    '#52c41a',
+    '#faad14',
+    '#f5222d',
+    '#722ed1',
+    '#13c2c2',
+    '#eb2f96',
+    '#fa8c16',
   ];
 
   let hash = 0;
@@ -1563,22 +2306,24 @@ const loadFormDesign = async (processId: number): Promise<void> => {
     formDesignLoading.value = true;
 
     // 先从已选择的流程中获取form_design_id
-    const selectedProcess = dialogProcesses.value.find(p => p.id === processId) ||
-      processes.value.find(p => p.id === processId);
+    const selectedProcess =
+      dialogProcesses.value.find((p) => p.id === processId) ||
+      processes.value.find((p) => p.id === processId);
 
     if (!selectedProcess?.form_design_id) {
       currentFormDesign.value = null;
       return;
     }
 
-    const res = await detailWorkorderFormDesign({ id: selectedProcess.form_design_id } as DetailWorkorderFormDesignReq);
+    const res = await detailWorkorderFormDesign({
+      id: selectedProcess.form_design_id,
+    } as DetailWorkorderFormDesignReq);
     if (res) {
       currentFormDesign.value = res;
       // 初始化可视化表单数据
       initializeVisualFormData();
     }
   } catch (error: any) {
-
     currentFormDesign.value = null;
   } finally {
     formDesignLoading.value = false;
@@ -1599,9 +2344,7 @@ const initializeVisualFormData = (): void => {
     try {
       const existingData = JSON.parse(instanceDialog.form.form_data_json);
       Object.assign(newData, existingData);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   // 根据表单字段设置默认值
@@ -1648,10 +2391,13 @@ const handleModeSwitch = (mode: 'visual' | 'json'): void => {
   if (mode === 'json') {
     // 从可视化模式切换到JSON模式
     try {
-      instanceDialog.form.form_data_json = JSON.stringify(visualFormData.value, null, 2);
+      instanceDialog.form.form_data_json = JSON.stringify(
+        visualFormData.value,
+        null,
+        2,
+      );
       formDataValidationError.value = '';
     } catch (error) {
-
       message.error('转换为JSON格式失败');
       return;
     }
@@ -1677,11 +2423,13 @@ const handleVisualFormChange = (): void => {
   if (formEditMode.value === 'visual') {
     // 同步更新JSON
     try {
-      instanceDialog.form.form_data_json = JSON.stringify(visualFormData.value, null, 2);
+      instanceDialog.form.form_data_json = JSON.stringify(
+        visualFormData.value,
+        null,
+        2,
+      );
       formDataValidationError.value = '';
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 };
 
@@ -1720,7 +2468,10 @@ const validateFormDataJson = (): void => {
 };
 
 // 主用户数据加载方法 - 实现真分页
-const loadUsers = async (reset: boolean = false, search?: string): Promise<void> => {
+const loadUsers = async (
+  reset: boolean = false,
+  search?: string,
+): Promise<void> => {
   if (usersLoading.value && !reset) {
     return;
   }
@@ -1731,7 +2482,7 @@ const loadUsers = async (reset: boolean = false, search?: string): Promise<void>
     const params: GetUserListReq = {
       page: reset ? 1 : usersPagination.current,
       size: usersPagination.pageSize,
-      search: search || usersSearchKeyword.value || ''
+      search: search || usersSearchKeyword.value || '',
     };
 
     const res = await getUserList(params);
@@ -1747,7 +2498,9 @@ const loadUsers = async (reset: boolean = false, search?: string): Promise<void>
       }
 
       usersPagination.total = res.total || 0;
-      usersPagination.hasMore = (usersPagination.current * usersPagination.pageSize) < usersPagination.total;
+      usersPagination.hasMore =
+        usersPagination.current * usersPagination.pageSize <
+        usersPagination.total;
     } else {
       if (reset) {
         users.value = [];
@@ -1757,7 +2510,6 @@ const loadUsers = async (reset: boolean = false, search?: string): Promise<void>
       }
     }
   } catch (error: any) {
-
     if (reset) {
       message.error(error.message || '加载用户数据失败');
       users.value = [];
@@ -1774,7 +2526,10 @@ const loadUsers = async (reset: boolean = false, search?: string): Promise<void>
 const loadMoreMainUsers = () => loadUsers(false);
 
 // 流程选择器方法 - 使用listWorkorderProcess接口实现动态分页
-const loadDialogProcesses = async (reset: boolean = false, search?: string): Promise<void> => {
+const loadDialogProcesses = async (
+  reset: boolean = false,
+  search?: string,
+): Promise<void> => {
   if (processSelectorLoading.value && !reset) {
     return;
   }
@@ -1785,7 +2540,7 @@ const loadDialogProcesses = async (reset: boolean = false, search?: string): Pro
     const params: ListWorkorderProcessReq = {
       page: reset ? 1 : processPagination.current,
       size: processPagination.pageSize,
-      search: search || processSearchKeyword.value || ''
+      search: search || processSearchKeyword.value || '',
     };
 
     const res = await listWorkorderProcess(params);
@@ -1801,7 +2556,9 @@ const loadDialogProcesses = async (reset: boolean = false, search?: string): Pro
       }
 
       processPagination.total = res.total || 0;
-      processPagination.hasMore = (processPagination.current * processPagination.pageSize) < processPagination.total;
+      processPagination.hasMore =
+        processPagination.current * processPagination.pageSize <
+        processPagination.total;
     } else {
       if (reset) {
         dialogProcesses.value = [];
@@ -1811,7 +2568,6 @@ const loadDialogProcesses = async (reset: boolean = false, search?: string): Pro
       }
     }
   } catch (error: any) {
-
     if (reset) {
       message.error(error.message || '加载流程列表失败');
       dialogProcesses.value = [];
@@ -1835,7 +2591,7 @@ const loadProcesses = async (search?: string): Promise<void> => {
       const params: ListWorkorderProcessReq = {
         page: currentPage,
         size: pageSize,
-        search: search || ''
+        search: search || '',
       };
 
       const res = await listWorkorderProcess(params);
@@ -1844,7 +2600,10 @@ const loadProcesses = async (search?: string): Promise<void> => {
         allProcesses = [...allProcesses, ...res.items];
 
         // 检查是否还有更多数据
-        if (res.items.length < pageSize || allProcesses.length >= (res.total || 0)) {
+        if (
+          res.items.length < pageSize ||
+          allProcesses.length >= (res.total || 0)
+        ) {
           hasMoreData = false;
         } else {
           currentPage++;
@@ -1856,7 +2615,6 @@ const loadProcesses = async (search?: string): Promise<void> => {
 
     processes.value = allProcesses;
   } catch (error: any) {
-
     processes.value = [];
   }
 };
@@ -1885,9 +2643,11 @@ const handleProcessScroll = (e: Event): void => {
   const element = target as HTMLElement;
   const { scrollTop, scrollHeight, clientHeight } = element;
 
-  if (scrollTop + clientHeight >= scrollHeight - 10 &&
+  if (
+    scrollTop + clientHeight >= scrollHeight - 10 &&
     processPagination.hasMore &&
-    !processSelectorLoading.value) {
+    !processSelectorLoading.value
+  ) {
     loadMoreProcesses();
   }
 };
@@ -1908,7 +2668,10 @@ const handleProcessSelectChange = (processId: number | undefined): void => {
 };
 
 // 用户选择器方法 - 实现真分页
-const loadDialogUsers = async (reset: boolean = false, search?: string): Promise<void> => {
+const loadDialogUsers = async (
+  reset: boolean = false,
+  search?: string,
+): Promise<void> => {
   if (userSelectorLoading.value && !reset) {
     return;
   }
@@ -1919,7 +2682,7 @@ const loadDialogUsers = async (reset: boolean = false, search?: string): Promise
     const params: GetUserListReq = {
       page: reset ? 1 : userPagination.current,
       size: userPagination.pageSize,
-      search: search || userSearchKeyword.value || ''
+      search: search || userSearchKeyword.value || '',
     };
 
     const res = await getUserList(params);
@@ -1935,7 +2698,8 @@ const loadDialogUsers = async (reset: boolean = false, search?: string): Promise
       }
 
       userPagination.total = res.total || 0;
-      userPagination.hasMore = (userPagination.current * userPagination.pageSize) < userPagination.total;
+      userPagination.hasMore =
+        userPagination.current * userPagination.pageSize < userPagination.total;
     } else {
       if (reset) {
         dialogUsers.value = [];
@@ -1945,7 +2709,6 @@ const loadDialogUsers = async (reset: boolean = false, search?: string): Promise
       }
     }
   } catch (error: any) {
-
     if (reset) {
       message.error(error.message || '加载用户列表失败');
       dialogUsers.value = [];
@@ -1982,9 +2745,11 @@ const handleUserScroll = (e: Event): void => {
   const element = target as HTMLElement;
   const { scrollTop, scrollHeight, clientHeight } = element;
 
-  if (scrollTop + clientHeight >= scrollHeight - 10 &&
+  if (
+    scrollTop + clientHeight >= scrollHeight - 10 &&
     userPagination.hasMore &&
-    !userSelectorLoading.value) {
+    !userSelectorLoading.value
+  ) {
     loadMoreUsers();
   }
 };
@@ -2019,7 +2784,7 @@ const loadInstances = async () => {
       search: searchQuery.value || undefined,
       status: statusFilter.value || undefined,
       priority: priorityFilter.value || undefined,
-      process_id: processFilter.value || undefined
+      process_id: processFilter.value || undefined,
     };
 
     const res = await listWorkorderInstance(params);
@@ -2032,7 +2797,6 @@ const loadInstances = async () => {
     }
   } catch (error) {
     message.error('加载工单数据失败');
-
   } finally {
     loading.value = false;
   }
@@ -2042,19 +2806,31 @@ const loadInstances = async () => {
 const loadStats = async () => {
   try {
     // 获取所有状态的统计数据，使用最小size=10来满足验证要求
-    const [totalRes, pendingRes, processingRes, completedRes] = await Promise.all([
-      listWorkorderInstance({ page: 1, size: 10 }),
-      listWorkorderInstance({ page: 1, size: 10, status: InstanceStatus.Pending }),
-      listWorkorderInstance({ page: 1, size: 10, status: InstanceStatus.Processing }),
-      listWorkorderInstance({ page: 1, size: 10, status: InstanceStatus.Completed })
-    ]);
+    const [totalRes, pendingRes, processingRes, completedRes] =
+      await Promise.all([
+        listWorkorderInstance({ page: 1, size: 10 }),
+        listWorkorderInstance({
+          page: 1,
+          size: 10,
+          status: InstanceStatus.Pending,
+        }),
+        listWorkorderInstance({
+          page: 1,
+          size: 10,
+          status: InstanceStatus.Processing,
+        }),
+        listWorkorderInstance({
+          page: 1,
+          size: 10,
+          status: InstanceStatus.Completed,
+        }),
+      ]);
 
     stats.total = totalRes?.total || 0;
     stats.pending = pendingRes?.total || 0;
     stats.processing = processingRes?.total || 0;
     stats.completed = completedRes?.total || 0;
   } catch (error) {
-
     // 如果统计API失败，回退到基于当前页的计算
     updateStatsFromCurrentPage();
   }
@@ -2063,9 +2839,15 @@ const loadStats = async () => {
 const updateStatsFromCurrentPage = () => {
   // 这只是一个回退方案，显示当前页的数据（不准确但比没有好）
   stats.total = total.value; // 使用分页的总数
-  stats.pending = instanceList.value.filter(item => item.status === InstanceStatus.Pending).length;
-  stats.processing = instanceList.value.filter(item => item.status === InstanceStatus.Processing).length;
-  stats.completed = instanceList.value.filter(item => item.status === InstanceStatus.Completed).length;
+  stats.pending = instanceList.value.filter(
+    (item) => item.status === InstanceStatus.Pending,
+  ).length;
+  stats.processing = instanceList.value.filter(
+    (item) => item.status === InstanceStatus.Processing,
+  ).length;
+  stats.completed = instanceList.value.filter(
+    (item) => item.status === InstanceStatus.Completed,
+  ).length;
 };
 
 // 事件处理 - 统一的筛选处理
@@ -2087,10 +2869,16 @@ const handleExport = () => {
 const handleCreateInstance = () => {
   instanceDialog.isEdit = false;
   instanceDialog.form = {
-    title: '', description: '', priority: Priority.Normal,
-    process_id: 0, assignee_id: undefined, form_data_json: '',
-    form_data: {}, status: InstanceStatus.Draft,
-    tags: [], due_date: undefined
+    title: '',
+    description: '',
+    priority: Priority.Normal,
+    process_id: 0,
+    assignee_id: undefined,
+    form_data_json: '',
+    form_data: {},
+    status: InstanceStatus.Draft,
+    tags: [],
+    due_date: undefined,
   };
 
   // 重置表单编辑状态
@@ -2110,7 +2898,7 @@ const handleCreateFromTemplate = () => {
     description: '',
     priority: Priority.Normal,
     tags: [],
-    due_date: undefined
+    due_date: undefined,
   };
   templateDialog.visible = true;
   loadTemplates();
@@ -2122,7 +2910,7 @@ const loadTemplates = async (search?: string) => {
     templateSelectorLoading.value = true;
     const params: ListWorkorderTemplateReq = {
       page: 1,
-      size: 50
+      size: 50,
     };
 
     if (search) {
@@ -2134,7 +2922,6 @@ const loadTemplates = async (search?: string) => {
       dialogTemplates.value = res.results || [];
     }
   } catch (error: any) {
-
     message.error(error.message || '加载模板失败');
   } finally {
     templateSelectorLoading.value = false;
@@ -2157,7 +2944,7 @@ const handleTemplateSubmit = async () => {
   try {
     // 获取模板详情
     const templateDetail = await detailWorkorderTemplate({
-      id: templateDialog.form.template_id
+      id: templateDialog.form.template_id,
     });
 
     if (!templateDetail) {
@@ -2172,15 +2959,20 @@ const handleTemplateSubmit = async () => {
     instanceDialog.isEdit = false;
     instanceDialog.form = {
       title: templateDialog.form.title || templateDetail.name,
-      description: templateDialog.form.description || templateDetail.description,
+      description:
+        templateDialog.form.description || templateDetail.description,
       priority: templateDialog.form.priority,
       process_id: templateDetail.process_id,
       assignee_id: undefined,
-      form_data_json: JSON.stringify(templateDetail.default_values || {}, null, 2),
+      form_data_json: JSON.stringify(
+        templateDetail.default_values || {},
+        null,
+        2,
+      ),
       form_data: templateDetail.default_values || {},
       status: InstanceStatus.Draft,
       tags: templateDialog.form.tags || [],
-      due_date: templateDialog.form.due_date
+      due_date: templateDialog.form.due_date,
     };
 
     // 重置表单编辑状态
@@ -2199,7 +2991,6 @@ const handleTemplateSubmit = async () => {
 
     message.success('已从模板创建工单，请完善信息后提交');
   } catch (error: any) {
-
     message.error(error.message || '从模板创建工单失败');
   }
 };
@@ -2209,16 +3000,22 @@ const handleEditInstance = async (row: WorkorderInstanceItem) => {
   loading.value = true;
 
   try {
-    const res = await detailWorkorderInstance({ id: row.id } as DetailWorkorderInstanceReq);
+    const res = await detailWorkorderInstance({
+      id: row.id,
+    } as DetailWorkorderInstanceReq);
     if (res) {
       instanceDialog.form = {
-        id: res.id, title: res.title, description: res.description,
-        priority: res.priority, process_id: res.process_id,
+        id: res.id,
+        title: res.title,
+        description: res.description,
+        priority: res.priority,
+        process_id: res.process_id,
         assignee_id: res.assignee_id != null ? res.assignee_id : undefined,
         form_data_json: JSON.stringify(res.form_data || {}, null, 2),
-        form_data: res.form_data, status: res.status,
+        form_data: res.form_data,
+        status: res.status,
         tags: res.tags || [],
-        due_date: res.due_date ? new Date(res.due_date) : undefined
+        due_date: res.due_date ? new Date(res.due_date) : undefined,
       };
 
       // 重置表单编辑相关状态
@@ -2235,20 +3032,23 @@ const handleEditInstance = async (row: WorkorderInstanceItem) => {
     }
   } catch (error) {
     message.error('获取工单详情失败');
-
   } finally {
     loading.value = false;
   }
 };
 
 // 获取可用动作
-const loadAvailableActions = async (instanceId: number, retryCount: number = 0) => {
+const loadAvailableActions = async (
+  instanceId: number,
+  retryCount: number = 0,
+) => {
   detailDialog.actionsLoading = true;
   try {
     const actions = await getAvailableActions(instanceId);
-    detailDialog.availableActions = actions ? actions.map((action: string) => action.toLowerCase()) : [];
+    detailDialog.availableActions = actions
+      ? actions.map((action: string) => action.toLowerCase())
+      : [];
   } catch (error) {
-
     // 如果是第一次失败且重试次数小于2次，则进行重试
     if (retryCount < 2) {
       setTimeout(() => {
@@ -2276,17 +3076,23 @@ const loadProcessStepsNavigation = async (instance: WorkorderInstanceItem) => {
 
   try {
     // 获取流程定义
-    const processDetail = await detailWorkorderProcess({ id: instance.process_id } as DetailWorkorderProcessReq);
+    const processDetail = await detailWorkorderProcess({
+      id: instance.process_id,
+    } as DetailWorkorderProcessReq);
     if (processDetail && processDetail.definition) {
       detailDialog.processDefinition = processDetail.definition;
       const steps = processDetail.definition.steps || [];
 
       // 按 sort_order 排序步骤
-      const sortedSteps = [...steps].sort((a, b) => a.sort_order - b.sort_order);
+      const sortedSteps = [...steps].sort(
+        (a, b) => a.sort_order - b.sort_order,
+      );
       detailDialog.allSteps = sortedSteps;
 
       // 找到当前步骤在排序后数组中的索引
-      const currentStepIndex = sortedSteps.findIndex(step => step.id === instance.current_step_id);
+      const currentStepIndex = sortedSteps.findIndex(
+        (step) => step.id === instance.current_step_id,
+      );
 
       if (currentStepIndex >= 0) {
         // 获取前一步骤
@@ -2308,7 +3114,6 @@ const loadProcessStepsNavigation = async (instance: WorkorderInstanceItem) => {
       }
     }
   } catch (error) {
-
     detailDialog.previousStep = null;
     detailDialog.nextStep = null;
     detailDialog.allSteps = [];
@@ -2317,7 +3122,11 @@ const loadProcessStepsNavigation = async (instance: WorkorderInstanceItem) => {
 };
 
 // 获取当前步骤 - 优化版本，基于 current_step_id 字段
-const loadCurrentStep = async (instanceId: number, instance?: WorkorderInstanceItem, retryCount: number = 0) => {
+const loadCurrentStep = async (
+  instanceId: number,
+  instance?: WorkorderInstanceItem,
+  retryCount: number = 0,
+) => {
   // 如果实例没有 current_step_id，说明工单可能未开始或已完成
   if (instance && !instance.current_step_id) {
     detailDialog.currentStep = null;
@@ -2330,13 +3139,11 @@ const loadCurrentStep = async (instanceId: number, instance?: WorkorderInstanceI
     const step = await getCurrentStep(instanceId);
 
     // 验证返回的步骤信息与 current_step_id 是否一致
-    if (instance?.current_step_id && step?.id && step.id !== instance.current_step_id) {
-      console.warn('Step ID mismatch detected', {
-        expected: instance.current_step_id,
-        received: step.id,
-        instanceId
-      });
-
+    if (
+      instance?.current_step_id &&
+      step?.id &&
+      step.id !== instance.current_step_id
+    ) {
       // 刷新实例数据以获取最新状态
       setTimeout(() => refreshInstanceData(instanceId), 500);
     }
@@ -2347,17 +3154,7 @@ const loadCurrentStep = async (instanceId: number, instance?: WorkorderInstanceI
     if (instance) {
       await loadProcessStepsNavigation(instance);
     }
-
-    // 记录步骤加载成功的日志
-    console.log('Step loaded successfully', {
-      instanceId,
-      stepId: step?.id,
-      stepName: step?.name,
-      stepType: step?.type
-    });
-
   } catch (error) {
-
     // 智能重试逻辑
     if (retryCount < 3) {
       const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 5000); // 指数退避，最大5秒
@@ -2379,15 +3176,15 @@ const loadCurrentStep = async (instanceId: number, instance?: WorkorderInstanceI
 // 刷新实例数据的辅助函数
 const refreshInstanceData = async (instanceId: number) => {
   try {
-    const res = await detailWorkorderInstance({ id: instanceId } as DetailWorkorderInstanceReq);
+    const res = await detailWorkorderInstance({
+      id: instanceId,
+    } as DetailWorkorderInstanceReq);
     if (res) {
       detailDialog.instance = res;
       // 重新加载当前步骤
       await loadCurrentStep(instanceId, res);
     }
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
 // 步骤状态同步函数 - 在执行操作后调用
@@ -2395,7 +3192,7 @@ const syncStepStatus = async (instanceId: number, _operationType: string) => {
   // Operation type parameter reserved for future use
   try {
     // 短暂延迟确保后端操作完成
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise((resolve) => setTimeout(resolve, 800));
 
     // 刷新实例和步骤数据
     await refreshInstanceData(instanceId);
@@ -2405,9 +3202,7 @@ const syncStepStatus = async (instanceId: number, _operationType: string) => {
 
     // 刷新列表数据
     await loadInstances();
-
   } catch (error) {
-
     message.warning('操作成功，但状态同步失败，请手动刷新页面查看最新状态');
   }
 };
@@ -2426,7 +3221,7 @@ const loadNotificationLogs = async (instanceId?: number, resetPage = false) => {
     const res = await getSendLogs({
       instance_id: targetInstanceId,
       page: notificationLogsPagination.current,
-      size: notificationLogsPagination.pageSize
+      size: notificationLogsPagination.pageSize,
     } as ListSendLogReq);
 
     if (res?.data) {
@@ -2437,7 +3232,6 @@ const loadNotificationLogs = async (instanceId?: number, resetPage = false) => {
       notificationLogsPagination.total = 0;
     }
   } catch (error) {
-
     message.error('获取通知记录失败');
     notificationLogs.value = [];
     notificationLogsPagination.total = 0;
@@ -2450,28 +3244,22 @@ const handleViewInstance = async (row: WorkorderInstanceItem) => {
   loading.value = true;
 
   try {
-    const res = await detailWorkorderInstance({ id: row.id } as DetailWorkorderInstanceReq);
+    const res = await detailWorkorderInstance({
+      id: row.id,
+    } as DetailWorkorderInstanceReq);
     if (res) {
       detailDialog.instance = res;
       detailDialog.visible = true;
-
-      console.log('Instance detail loaded', {
-        id: res.id,
-        current_step_id: res.current_step_id,
-        status: res.status,
-        title: res.title
-      });
 
       // 同时获取可用动作、当前步骤和通知发送记录，传入实例数据用于验证
       await Promise.all([
         loadAvailableActions(row.id),
         loadCurrentStep(row.id, res),
-        loadNotificationLogs(row.id)
+        loadNotificationLogs(row.id),
       ]);
     }
   } catch (error) {
     message.error('获取工单详情失败');
-    console.error('Failed to load instance detail', error);
   } finally {
     loading.value = false;
   }
@@ -2516,31 +3304,31 @@ const handleCommand = async (command: string, row: WorkorderInstanceItem) => {
 };
 
 const showCommentDialog = (instance: WorkorderInstanceItem) => {
-  commentsRef.value?.showCommentDialog(instance.id)
-}
+  commentsRef.value?.showCommentDialog(instance.id);
+};
 
 const handleViewComments = (instance: WorkorderInstanceItem) => {
-  commentsRef.value?.showCommentsView(instance.id)
-}
+  commentsRef.value?.showCommentsView(instance.id);
+};
 
 const handleViewTimeline = (instance: WorkorderInstanceItem) => {
-  timelineRef.value?.showTimeline(instance.id)
-}
+  timelineRef.value?.showTimeline(instance.id);
+};
 
 const handleViewFlow = (instance: WorkorderInstanceItem) => {
-  flowRef.value?.showFlow(instance.id)
-}
+  flowRef.value?.showFlow(instance.id);
+};
 
 const handleViewNotificationLogs = (instance: WorkorderInstanceItem) => {
   notificationLogsDialog.visible = true;
   notificationLogsDialog.instanceId = instance.id;
   loadNotificationLogs(instance.id, true);
-}
+};
 
 // 处理通知记录分页变化
 const handleNotificationLogsPageChange = () => {
   loadNotificationLogs();
-}
+};
 
 // 关闭通知记录对话框
 const handleCloseNotificationLogsDialog = () => {
@@ -2549,7 +3337,7 @@ const handleCloseNotificationLogsDialog = () => {
   notificationLogs.value = [];
   notificationLogsPagination.current = 1;
   notificationLogsPagination.total = 0;
-}
+};
 
 // 查看通知详情
 const viewNotificationDetail = (log: NotificationLog) => {
@@ -2582,34 +3370,49 @@ const viewNotificationDetail = (log: NotificationLog) => {
         ${log.error_message ? `<div style="margin-bottom: 12px;"><strong>错误信息：</strong> <span style="color: #ff4d4f;">${log.error_message}</span></div>` : ''}
       </div>
     `,
-    onOk() { }
+    onOk() {},
   });
-}
+};
 
 // 带权限检查的动作处理
-const handleActionWithPermission = async (instance: WorkorderInstanceItem, action: string, callback: (instance: WorkorderInstanceItem) => void | Promise<void>) => {
+const handleActionWithPermission = async (
+  instance: WorkorderInstanceItem,
+  action: string,
+  callback: (instance: WorkorderInstanceItem) => void | Promise<void>,
+) => {
   try {
     const actions = await getAvailableActions(instance.id);
-    const normalizedActions = actions ? actions.map((actionName: string) => actionName.toLowerCase()) : [];
+    const normalizedActions = actions
+      ? actions.map((actionName: string) => actionName.toLowerCase())
+      : [];
     if (!normalizedActions.includes(action)) {
       const actionMap: Record<string, string> = {
-        submit: '提交', assign: '分配', approve: '审批', reject: '拒绝', cancel: '取消', complete: '完成', return: '退回'
+        submit: '提交',
+        assign: '分配',
+        approve: '审批',
+        reject: '拒绝',
+        cancel: '取消',
+        complete: '完成',
+        return: '退回',
       };
       message.error(`您没有${actionMap[action] || action}此工单的权限`);
       return;
     }
 
     // 检查需要处理人的操作
-    const actionsRequiringAssignee = ['approve', 'reject', 'complete', 'return'];
+    const actionsRequiringAssignee = [
+      'approve',
+      'reject',
+      'complete',
+      'return',
+    ];
     if (actionsRequiringAssignee.includes(action) && !instance.assignee_id) {
       message.error('请先分配处理人后再执行此操作');
       return;
     }
 
     await callback(instance);
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
 const handleActionSubmit = (instance: WorkorderInstanceItem) =>
@@ -2619,10 +3422,14 @@ const handleActionAssign = (instance: WorkorderInstanceItem) =>
   handleActionWithPermission(instance, 'assign', showAssignDialog);
 
 const handleActionApprove = (instance: WorkorderInstanceItem) =>
-  handleActionWithPermission(instance, 'approve', (inst) => showApprovalDialog(inst, 'approve'));
+  handleActionWithPermission(instance, 'approve', (inst) =>
+    showApprovalDialog(inst, 'approve'),
+  );
 
 const handleActionReject = (instance: WorkorderInstanceItem) =>
-  handleActionWithPermission(instance, 'reject', (inst) => showApprovalDialog(inst, 'reject'));
+  handleActionWithPermission(instance, 'reject', (inst) =>
+    showApprovalDialog(inst, 'reject'),
+  );
 
 const handleActionCancel = (instance: WorkorderInstanceItem) =>
   handleActionWithPermission(instance, 'cancel', (instance) => {
@@ -2658,7 +3465,7 @@ const handleSubmitInstance = async (instance: WorkorderInstanceItem) => {
       try {
         loading.value = true;
         const params: SubmitWorkorderInstanceReq = {
-          id: instance.id
+          id: instance.id,
         };
 
         await submitWorkorderInstance(params);
@@ -2667,11 +3474,10 @@ const handleSubmitInstance = async (instance: WorkorderInstanceItem) => {
         await syncStepStatus(instance.id, 'submit');
       } catch (error: any) {
         message.error(`提交工单失败: ${error.message || '未知错误'}`);
-
       } finally {
         loading.value = false;
       }
-    }
+    },
   });
 };
 
@@ -2692,14 +3498,18 @@ const saveAssign = async () => {
     loading.value = true;
     const params: AssignWorkorderInstanceReq = {
       id: assignDialog.instanceId,
-      assignee_id: Number(assignDialog.form.assignee_id)
+      assignee_id: Number(assignDialog.form.assignee_id),
     };
 
     await assignWorkorderInstance(params);
 
     // 查找分配的用户名称
-    const assignedUser = users.value.find(user => user.id === Number(assignDialog.form.assignee_id));
-    const assigneeName = assignedUser ? (assignedUser.real_name || assignedUser.username) : '未知用户';
+    const assignedUser = users.value.find(
+      (user) => user.id === Number(assignDialog.form.assignee_id),
+    );
+    const assigneeName = assignedUser
+      ? assignedUser.real_name || assignedUser.username
+      : '未知用户';
 
     message.success(`工单已分配给 ${assigneeName}`);
 
@@ -2709,7 +3519,6 @@ const saveAssign = async () => {
     await syncStepStatus(assignDialog.instanceId, 'assign');
   } catch (error: any) {
     message.error(`分配处理人失败: ${error.message || '未知错误'}`);
-
   } finally {
     loading.value = false;
   }
@@ -2732,7 +3541,7 @@ const getActionDialogTitle = (): string => {
   const titleMap = {
     cancel: '取消工单',
     complete: '完成工单',
-    return: '退回工单'
+    return: '退回工单',
   };
   return titleMap[actionDialog.type] || '操作确认';
 };
@@ -2742,7 +3551,7 @@ const getActionCommentLabel = (): string => {
   const labelMap = {
     cancel: '取消原因',
     complete: '完成说明',
-    return: '退回原因'
+    return: '退回原因',
   };
   return labelMap[actionDialog.type] || '备注';
 };
@@ -2789,7 +3598,9 @@ const isStepCompleted = (_step: ProcessStep, index: number): boolean => {
     return false;
   }
 
-  const currentStepIndex = detailDialog.allSteps.findIndex(s => s.id === detailDialog.currentStep?.id);
+  const currentStepIndex = detailDialog.allSteps.findIndex(
+    (s) => s.id === detailDialog.currentStep?.id,
+  );
   return currentStepIndex >= 0 && index < currentStepIndex;
 };
 
@@ -2799,7 +3610,9 @@ const isStepPending = (_step: ProcessStep, index: number): boolean => {
     return true;
   }
 
-  const currentStepIndex = detailDialog.allSteps.findIndex(s => s.id === detailDialog.currentStep?.id);
+  const currentStepIndex = detailDialog.allSteps.findIndex(
+    (s) => s.id === detailDialog.currentStep?.id,
+  );
   return currentStepIndex >= 0 && index > currentStepIndex;
 };
 
@@ -2843,7 +3656,7 @@ const saveActionComment = async () => {
       case 'cancel':
         await cancelWorkorderInstance({
           id: actionDialog.instanceId,
-          comment: actionDialog.form.comment
+          comment: actionDialog.form.comment,
         } as CancelWorkorderInstanceReq);
         message.success('工单已取消');
 
@@ -2852,7 +3665,7 @@ const saveActionComment = async () => {
       case 'complete':
         await completeWorkorderInstance({
           id: actionDialog.instanceId,
-          comment: actionDialog.form.comment
+          comment: actionDialog.form.comment,
         } as CompleteWorkorderInstanceReq);
         message.success('工单已完成');
 
@@ -2861,7 +3674,7 @@ const saveActionComment = async () => {
       case 'return':
         await returnWorkorderInstance({
           id: actionDialog.instanceId,
-          comment: actionDialog.form.comment
+          comment: actionDialog.form.comment,
         } as ReturnWorkorderInstanceReq);
         message.success('工单已退回');
         break;
@@ -2872,17 +3685,18 @@ const saveActionComment = async () => {
 
     // 使用同步机制刷新状态
     await syncStepStatus(actionDialog.instanceId, actionDialog.type);
-
   } catch (error: any) {
     const actionName = getActionDialogTitle();
     message.error(`${actionName}失败: ${error.message || '未知错误'}`);
-
   } finally {
     loading.value = false;
   }
 };
 
-const showApprovalDialog = (instance: WorkorderInstanceItem, type: 'approve' | 'reject') => {
+const showApprovalDialog = (
+  instance: WorkorderInstanceItem,
+  type: 'approve' | 'reject',
+) => {
   approvalDialog.instanceId = instance.id;
   approvalDialog.type = type;
   approvalDialog.form.comment = '';
@@ -2891,7 +3705,10 @@ const showApprovalDialog = (instance: WorkorderInstanceItem, type: 'approve' | '
 
 const saveApproval = async () => {
   try {
-    if (approvalDialog.type === 'reject' && !approvalDialog.form.comment.trim()) {
+    if (
+      approvalDialog.type === 'reject' &&
+      !approvalDialog.form.comment.trim()
+    ) {
       message.error('请输入拒绝理由');
       return;
     }
@@ -2904,14 +3721,15 @@ const saveApproval = async () => {
         // 如果是结束步骤，确认是否要完成工单
         Modal.confirm({
           title: '审批确认',
-          content: '当前是最后一个审批步骤，审批通过后将完成工单。确定要继续吗？',
+          content:
+            '当前是最后一个审批步骤，审批通过后将完成工单。确定要继续吗？',
           okText: '确定审批并完成',
           cancelText: '取消',
           onOk: async () => {
             try {
               const params: ApproveWorkorderInstanceReq = {
                 id: approvalDialog.instanceId,
-                comment: approvalDialog.form.comment
+                comment: approvalDialog.form.comment,
               };
               await approveWorkorderInstance(params);
               message.success('审批通过，工单已完成');
@@ -2922,25 +3740,23 @@ const saveApproval = async () => {
               await syncStepStatus(approvalDialog.instanceId, 'approve');
             } catch (error: any) {
               message.error(`审批失败: ${error.message || '未知错误'}`);
-
             }
-          }
+          },
         });
         return; // 等待用户确认，不继续执行后面的代码
       } else {
         // 普通审批步骤，正常流转
         const params: ApproveWorkorderInstanceReq = {
           id: approvalDialog.instanceId,
-          comment: approvalDialog.form.comment
+          comment: approvalDialog.form.comment,
         };
         await approveWorkorderInstance(params);
         message.success('审批通过，工单已流转到下一步');
-
       }
     } else {
       const params: RejectWorkorderInstanceReq = {
         id: approvalDialog.instanceId,
-        comment: approvalDialog.form.comment
+        comment: approvalDialog.form.comment,
       };
       await rejectWorkorderInstance(params);
       message.success('拒绝工单成功');
@@ -2949,11 +3765,13 @@ const saveApproval = async () => {
     approvalDialog.visible = false;
 
     // 使用新的同步机制
-    const operationType = approvalDialog.type === 'approve' ? 'approve' : 'reject';
+    const operationType =
+      approvalDialog.type === 'approve' ? 'approve' : 'reject';
     await syncStepStatus(approvalDialog.instanceId, operationType);
   } catch (error: any) {
-    message.error(`${approvalDialog.type === 'approve' ? '审批' : '拒绝'}失败: ${error.message || '未知错误'}`);
-
+    message.error(
+      `${approvalDialog.type === 'approve' ? '审批' : '拒绝'}失败: ${error.message || '未知错误'}`,
+    );
   } finally {
     loading.value = false;
   }
@@ -2970,7 +3788,7 @@ const confirmDelete = (instance: WorkorderInstanceItem) => {
       try {
         loading.value = true;
         const params: DeleteWorkorderInstanceReq = {
-          id: instance.id
+          id: instance.id,
         };
 
         await deleteWorkorderInstance(params);
@@ -2983,11 +3801,10 @@ const confirmDelete = (instance: WorkorderInstanceItem) => {
         loadInstances();
       } catch (error: any) {
         message.error(`删除工单失败: ${error.message || '未知错误'}`);
-
       } finally {
         loading.value = false;
       }
-    }
+    },
   });
 };
 
@@ -2997,18 +3814,18 @@ const saveInstance = async () => {
       message.error('工单标题不能为空');
       return;
     }
-    
+
     // 验证工单标题长度和格式
     if (instanceDialog.form.title.trim().length < 3) {
       message.error('工单标题至少需要3个字符');
       return;
     }
-    
+
     if (instanceDialog.form.title.trim().length > 200) {
       message.error('工单标题不能超过200个字符');
       return;
     }
-    
+
     // 检查标题是否包含特殊字符或只有数字
     const titleTrimmed = instanceDialog.form.title.trim();
     if (/^[\d]+$/.test(titleTrimmed)) {
@@ -3045,10 +3862,14 @@ const saveInstance = async () => {
         title: instanceDialog.form.title,
         description: instanceDialog.form.description || '',
         priority: instanceDialog.form.priority,
-        ...(instanceDialog.form.assignee_id != null ? { assignee_id: Number(instanceDialog.form.assignee_id) } : {}),
+        ...(instanceDialog.form.assignee_id != null
+          ? { assignee_id: Number(instanceDialog.form.assignee_id) }
+          : {}),
         form_data: formData,
         tags: instanceDialog.form.tags,
-        due_date: instanceDialog.form.due_date ? new Date(instanceDialog.form.due_date).toISOString() : undefined
+        due_date: instanceDialog.form.due_date
+          ? new Date(instanceDialog.form.due_date).toISOString()
+          : undefined,
       };
 
       await updateWorkorderInstance(updateData);
@@ -3060,10 +3881,14 @@ const saveInstance = async () => {
         form_data: formData,
         status: InstanceStatus.Draft,
         priority: instanceDialog.form.priority,
-        ...(instanceDialog.form.assignee_id != null ? { assignee_id: Number(instanceDialog.form.assignee_id) } : {}),
+        ...(instanceDialog.form.assignee_id != null
+          ? { assignee_id: Number(instanceDialog.form.assignee_id) }
+          : {}),
         description: instanceDialog.form.description,
         tags: instanceDialog.form.tags,
-        due_date: instanceDialog.form.due_date ? new Date(instanceDialog.form.due_date).toISOString() : undefined
+        due_date: instanceDialog.form.due_date
+          ? new Date(instanceDialog.form.due_date).toISOString()
+          : undefined,
       };
 
       await createWorkorderInstance(createData);
@@ -3077,7 +3902,6 @@ const saveInstance = async () => {
   } catch (error: any) {
     const action = instanceDialog.isEdit ? '更新' : '创建';
     message.error(`${action}工单失败: ${error.message || '未知错误'}`);
-
   } finally {
     loading.value = false;
   }
@@ -3111,16 +3935,11 @@ const loadSelectorsForEdit = async (): Promise<void> => {
   resetSelectors();
 
   try {
-    await Promise.all([
-      loadDialogProcesses(true),
-      loadDialogUsers(true)
-    ]);
+    await Promise.all([loadDialogProcesses(true), loadDialogUsers(true)]);
 
     // 确保当前选中的处理人在用户列表中
     await ensureCurrentAssigneeInList();
-  } catch (error) {
-
-  }
+  } catch (error) {}
 };
 
 // 确保当前选中的处理人在用户列表中
@@ -3132,30 +3951,28 @@ const ensureCurrentAssigneeInList = async (): Promise<void> => {
   }
 
   // 检查当前处理人是否已经在dialogUsers中
-  const isAssigneeInList = dialogUsers.value.some((user: UserListItem) =>
-    user.id === Number(currentAssigneeId)
+  const isAssigneeInList = dialogUsers.value.some(
+    (user: UserListItem) => user.id === Number(currentAssigneeId),
   );
 
   if (!isAssigneeInList) {
     try {
       // 加载更多用户数据或搜索特定用户
       // 先尝试通过搜索当前处理人的ID来找到他
-      const assigneeUser = users.value.find((user: UserListItem) =>
-        user.id === Number(currentAssigneeId)
+      const assigneeUser = users.value.find(
+        (user: UserListItem) => user.id === Number(currentAssigneeId),
       );
 
       if (assigneeUser) {
         // 如果在主用户列表中找到了，添加到dialog用户列表中
-        const existsInDialog = dialogUsers.value.some((user: UserListItem) =>
-          user.id === assigneeUser.id
+        const existsInDialog = dialogUsers.value.some(
+          (user: UserListItem) => user.id === assigneeUser.id,
         );
         if (!existsInDialog) {
           dialogUsers.value.unshift(assigneeUser);
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 };
 
@@ -3166,11 +3983,12 @@ onMounted(async () => {
     await Promise.all([
       loadInstances(),
       loadUsers(true), // 初始化加载用户数据（第一页）
-      loadProcesses() // 初始化加载流程数据
+      loadProcesses(), // 初始化加载流程数据
     ]);
   } catch (error: any) {
-
-    message.error(`初始化数据加载失败: ${error.message || '未知错误'}, 请刷新页面重试`);
+    message.error(
+      `初始化数据加载失败: ${error.message || '未知错误'}, 请刷新页面重试`,
+    );
   } finally {
     loading.value = false;
   }

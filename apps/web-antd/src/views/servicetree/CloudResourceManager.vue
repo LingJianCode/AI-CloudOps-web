@@ -12,9 +12,7 @@
           <span class="btn-text">刷新</span>
         </a-button>
         <a-dropdown>
-          <a-button>
-            更多 <down-outlined />
-          </a-button>
+          <a-button> 更多 <down-outlined /> </a-button>
           <template #overlay>
             <a-menu>
               <a-menu-item key="history" @click="showSyncHistoryModal">
@@ -44,9 +42,9 @@
       <a-row :gutter="[16, 16]">
         <a-col :xs="12" :sm="6" :md="6" :lg="6">
           <a-card class="stats-card">
-            <a-statistic 
-              title="总资源数" 
-              :value="stats.total" 
+            <a-statistic
+              title="总资源数"
+              :value="stats.total"
               :value-style="{ color: '#3f8600' }"
             >
               <template #prefix>
@@ -57,9 +55,9 @@
         </a-col>
         <a-col :xs="12" :sm="6" :md="6" :lg="6">
           <a-card class="stats-card">
-            <a-statistic 
-              title="运行中" 
-              :value="stats.running" 
+            <a-statistic
+              title="运行中"
+              :value="stats.running"
               :value-style="{ color: '#52c41a' }"
             >
               <template #prefix>
@@ -70,9 +68,9 @@
         </a-col>
         <a-col :xs="12" :sm="6" :md="6" :lg="6">
           <a-card class="stats-card">
-            <a-statistic 
-              title="云服务器" 
-              :value="stats.ecs" 
+            <a-statistic
+              title="云服务器"
+              :value="stats.ecs"
               :value-style="{ color: '#faad14' }"
             >
               <template #prefix>
@@ -83,9 +81,9 @@
         </a-col>
         <a-col :xs="12" :sm="6" :md="6" :lg="6">
           <a-card class="stats-card">
-            <a-statistic 
-              title="已绑定" 
-              :value="stats.bound" 
+            <a-statistic
+              title="已绑定"
+              :value="stats.bound"
               :value-style="{ color: '#cf1322' }"
             >
               <template #prefix>
@@ -120,7 +118,11 @@
               style="width: 180px"
               @change="handleSearch"
             >
-              <a-select-option v-for="account in cloudAccounts" :key="account.id" :value="account.id">
+              <a-select-option
+                v-for="account in cloudAccounts"
+                :key="account.id"
+                :value="account.id"
+              >
                 <cloud-outlined /> {{ account.name }}
               </a-select-option>
             </a-select>
@@ -161,10 +163,18 @@
               style="width: 130px"
               @change="handleSearch"
             >
-              <a-select-option :value="CloudResourceStatus.RUNNING">运行中</a-select-option>
-              <a-select-option :value="CloudResourceStatus.STOPPED">已停止</a-select-option>
-              <a-select-option :value="CloudResourceStatus.STARTING">启动中</a-select-option>
-              <a-select-option :value="CloudResourceStatus.STOPPING">停止中</a-select-option>
+              <a-select-option :value="CloudResourceStatus.RUNNING"
+                >运行中</a-select-option
+              >
+              <a-select-option :value="CloudResourceStatus.STOPPED"
+                >已停止</a-select-option
+              >
+              <a-select-option :value="CloudResourceStatus.STARTING"
+                >启动中</a-select-option
+              >
+              <a-select-option :value="CloudResourceStatus.STOPPING"
+                >停止中</a-select-option
+              >
             </a-select>
           </a-form-item>
           <a-form-item label="环境">
@@ -216,7 +226,12 @@
                 <a class="resource-name" @click="handleViewDetail(record)">
                   {{ record.name }}
                 </a>
-                <a-tag v-if="record.environment" :color="getEnvironmentColor(record.environment)" size="small" class="env-tag">
+                <a-tag
+                  v-if="record.environment"
+                  :color="getEnvironmentColor(record.environment)"
+                  size="small"
+                  class="env-tag"
+                >
                   {{ getEnvironmentText(record.environment) }}
                 </a-tag>
               </div>
@@ -224,8 +239,14 @@
 
             <!-- 资源类型列 -->
             <template v-else-if="column.key === 'resource_type'">
-              <a-tag :color="getResourceTypeColor(record.resource_type)" class="type-tag">
-                <component :is="getResourceTypeIcon(record.resource_type)" class="tag-icon" />
+              <a-tag
+                :color="getResourceTypeColor(record.resource_type)"
+                class="type-tag"
+              >
+                <component
+                  :is="getResourceTypeIcon(record.resource_type)"
+                  class="tag-icon"
+                />
                 {{ getResourceTypeText(record.resource_type) }}
               </a-tag>
             </template>
@@ -244,7 +265,10 @@
               <div class="instance-info">
                 <div v-if="record.instance_id" class="info-row">
                   <span class="info-label">ID:</span>
-                  <a-typography-text :copyable="{ text: record.instance_id }" class="info-value">
+                  <a-typography-text
+                    :copyable="{ text: record.instance_id }"
+                    class="info-value"
+                  >
                     {{ truncateText(record.instance_id, 20) }}
                   </a-typography-text>
                 </div>
@@ -262,10 +286,13 @@
             <!-- 配置信息列 -->
             <template v-else-if="column.key === 'config'">
               <div class="config-info">
-              <a-tooltip v-if="record.cpu || record.memory || record.disk" title="CPU / 内存 / 磁盘">
-                <div class="config-item" v-if="record.cpu">
-                  <span>{{ record.cpu }}核</span>
-                </div>
+                <a-tooltip
+                  v-if="record.cpu || record.memory || record.disk"
+                  title="CPU / 内存 / 磁盘"
+                >
+                  <div class="config-item" v-if="record.cpu">
+                    <span>{{ record.cpu }}核</span>
+                  </div>
                   <div class="config-item">
                     <hdd-outlined class="config-icon" />
                     <span v-if="record.memory">{{ record.memory }}GB</span>
@@ -284,40 +311,62 @@
               <div class="ip-info">
                 <div v-if="record.public_ip" class="ip-row">
                   <global-outlined class="ip-icon public" />
-                  <a-typography-text :copyable="{ text: record.public_ip }" class="ip-text">
+                  <a-typography-text
+                    :copyable="{ text: record.public_ip }"
+                    class="ip-text"
+                  >
                     {{ record.public_ip }}
                   </a-typography-text>
                 </div>
                 <div v-if="record.private_ip" class="ip-row">
                   <lock-outlined class="ip-icon private" />
-                  <a-typography-text :copyable="{ text: record.private_ip }" class="ip-text">
+                  <a-typography-text
+                    :copyable="{ text: record.private_ip }"
+                    class="ip-text"
+                  >
                     {{ record.private_ip }}
                   </a-typography-text>
                 </div>
-                <span v-if="!record.public_ip && !record.private_ip" class="empty-text">-</span>
+                <span
+                  v-if="!record.public_ip && !record.private_ip"
+                  class="empty-text"
+                  >-</span
+                >
               </div>
             </template>
 
             <!-- 状态列 -->
             <template v-else-if="column.key === 'status'">
               <a-dropdown :trigger="['click']">
-                <a-badge 
-                  :status="getStatusBadgeType(record.status)" 
-                  :text="getStatusText(record.status)" 
+                <a-badge
+                  :status="getStatusBadgeType(record.status)"
+                  :text="getStatusText(record.status)"
                   class="status-badge clickable"
                 />
                 <template #overlay>
-                  <a-menu @click="({key}: {key: string}) => handleUpdateStatus(record, Number(key))">
-                    <a-menu-item :key="CloudResourceStatus.RUNNING" :disabled="record.status === CloudResourceStatus.RUNNING">
+                  <a-menu @click="handleStatusMenuClick(record, $event)">
+                    <a-menu-item
+                      :key="CloudResourceStatus.RUNNING"
+                      :disabled="record.status === CloudResourceStatus.RUNNING"
+                    >
                       <check-circle-outlined /> 运行中
                     </a-menu-item>
-                    <a-menu-item :key="CloudResourceStatus.STOPPED" :disabled="record.status === CloudResourceStatus.STOPPED">
+                    <a-menu-item
+                      :key="CloudResourceStatus.STOPPED"
+                      :disabled="record.status === CloudResourceStatus.STOPPED"
+                    >
                       <stop-outlined /> 已停止
                     </a-menu-item>
-                    <a-menu-item :key="CloudResourceStatus.STARTING" :disabled="record.status === CloudResourceStatus.STARTING">
+                    <a-menu-item
+                      :key="CloudResourceStatus.STARTING"
+                      :disabled="record.status === CloudResourceStatus.STARTING"
+                    >
                       <loading-outlined /> 启动中
                     </a-menu-item>
-                    <a-menu-item :key="CloudResourceStatus.STOPPING" :disabled="record.status === CloudResourceStatus.STOPPING">
+                    <a-menu-item
+                      :key="CloudResourceStatus.STOPPING"
+                      :disabled="record.status === CloudResourceStatus.STOPPING"
+                    >
                       <pause-circle-outlined /> 停止中
                     </a-menu-item>
                   </a-menu>
@@ -328,25 +377,33 @@
             <!-- 服务树节点列 -->
             <template v-else-if="column.key === 'tree_nodes'">
               <div class="nodes-wrapper">
-                <template v-if="record.tree_nodes && record.tree_nodes.length > 0">
-                  <a-tag 
-                    v-for="node in record.tree_nodes.slice(0, 2)" 
-                    :key="node.id" 
+                <template
+                  v-if="record.tree_nodes && record.tree_nodes.length > 0"
+                >
+                  <a-tag
+                    v-for="node in record.tree_nodes.slice(0, 2)"
+                    :key="node.id"
                     color="blue"
                     class="node-tag"
                   >
                     <apartment-outlined class="tag-icon" />
                     {{ node.name }}
                   </a-tag>
-                  <a-tooltip v-if="record.tree_nodes.length > 2" :title="record.tree_nodes.slice(2).map((n: any) => n.name).join(', ')">
+                  <a-tooltip
+                    v-if="record.tree_nodes.length > 2"
+                    :title="
+                      record.tree_nodes
+                        .slice(2)
+                        .map((n: any) => n.name)
+                        .join(', ')
+                    "
+                  >
                     <a-tag color="blue" class="node-tag">
                       +{{ record.tree_nodes.length - 2 }}
                     </a-tag>
                   </a-tooltip>
                 </template>
-                <a-tag v-else color="default" class="node-tag">
-                  未绑定
-                </a-tag>
+                <a-tag v-else color="default" class="node-tag"> 未绑定 </a-tag>
               </div>
             </template>
 
@@ -354,7 +411,9 @@
             <template v-else-if="column.key === 'cost'">
               <div v-if="record.monthly_cost" class="cost-cell">
                 <span class="cost-symbol">¥</span>
-                <span class="cost-amount">{{ formatCost(record.monthly_cost) }}</span>
+                <span class="cost-amount">{{
+                  formatCost(record.monthly_cost)
+                }}</span>
                 <span class="cost-unit">/月</span>
               </div>
               <span v-else class="empty-text">-</span>
@@ -364,22 +423,41 @@
             <template v-else-if="column.key === 'action'">
               <a-space :size="4" class="action-buttons">
                 <a-tooltip title="查看详情">
-                  <a-button type="text" size="small" @click="handleViewDetail(record)">
+                  <a-button
+                    type="text"
+                    size="small"
+                    @click="handleViewDetail(record)"
+                  >
                     <eye-outlined />
                   </a-button>
                 </a-tooltip>
                 <a-tooltip title="编辑">
-                  <a-button type="text" size="small" @click="handleEdit(record)">
+                  <a-button
+                    type="text"
+                    size="small"
+                    @click="handleEdit(record)"
+                  >
                     <edit-outlined />
                   </a-button>
                 </a-tooltip>
                 <a-tooltip title="绑定服务树">
-                  <a-button type="text" size="small" @click="showBindModal(record)">
+                  <a-button
+                    type="text"
+                    size="small"
+                    @click="showBindModal(record)"
+                  >
                     <apartment-outlined />
                   </a-button>
                 </a-tooltip>
-                <a-tooltip v-if="record.resource_type === CloudResourceType.ECS" title="连接终端">
-                  <a-button type="text" size="small" @click="handleConnectTerminal(record)">
+                <a-tooltip
+                  v-if="record.resource_type === CloudResourceType.ECS"
+                  title="连接终端"
+                >
+                  <a-button
+                    type="text"
+                    size="small"
+                    @click="handleConnectTerminal(record)"
+                  >
                     <code-outlined />
                   </a-button>
                 </a-tooltip>
@@ -389,11 +467,21 @@
                   </a-button>
                   <template #overlay>
                     <a-menu>
-                      <a-menu-item key="unbind" @click="showUnbindModal(record)" :disabled="!record.tree_nodes || record.tree_nodes.length === 0">
+                      <a-menu-item
+                        key="unbind"
+                        @click="showUnbindModal(record)"
+                        :disabled="
+                          !record.tree_nodes || record.tree_nodes.length === 0
+                        "
+                      >
                         <disconnect-outlined /> 解绑节点
                       </a-menu-item>
                       <a-menu-divider />
-                      <a-menu-item key="delete" danger @click="handleDelete(record)">
+                      <a-menu-item
+                        key="delete"
+                        danger
+                        @click="handleDelete(record)"
+                      >
                         <delete-outlined /> 删除资源
                       </a-menu-item>
                     </a-menu>
@@ -423,7 +511,10 @@
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item label="环境标识">
-              <a-select v-model:value="editForm.environment" placeholder="选择环境">
+              <a-select
+                v-model:value="editForm.environment"
+                placeholder="选择环境"
+              >
                 <a-select-option value="dev">
                   <tag-outlined /> 开发环境
                 </a-select-option>
@@ -441,9 +532,9 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="资源描述">
-              <a-textarea 
-                v-model:value="editForm.description" 
-                placeholder="请输入资源描述信息" 
+              <a-textarea
+                v-model:value="editForm.description"
+                placeholder="请输入资源描述信息"
                 :rows="3"
                 :maxlength="500"
                 show-count
@@ -452,16 +543,28 @@
           </a-col>
         </a-row>
 
-        <a-divider orientation="left" v-if="currentResource && currentResource.resource_type === CloudResourceType.ECS">
+        <a-divider
+          orientation="left"
+          v-if="
+            currentResource &&
+            currentResource.resource_type === CloudResourceType.ECS
+          "
+        >
           <safety-outlined /> SSH配置（仅云服务器）
         </a-divider>
-        <a-row :gutter="16" v-if="currentResource && currentResource.resource_type === CloudResourceType.ECS">
+        <a-row
+          :gutter="16"
+          v-if="
+            currentResource &&
+            currentResource.resource_type === CloudResourceType.ECS
+          "
+        >
           <a-col :span="12">
             <a-form-item label="SSH端口">
-              <a-input-number 
-                v-model:value="editForm.port" 
-                :min="1" 
-                :max="65535" 
+              <a-input-number
+                v-model:value="editForm.port"
+                :min="1"
+                :max="65535"
                 placeholder="22"
                 style="width: 100%"
               />
@@ -476,7 +579,10 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="认证方式">
-              <a-radio-group v-model:value="editForm.auth_mode" button-style="solid">
+              <a-radio-group
+                v-model:value="editForm.auth_mode"
+                button-style="solid"
+              >
                 <a-radio-button :value="AuthMode.PASSWORD">
                   <lock-outlined /> 密码认证
                 </a-radio-button>
@@ -488,8 +594,8 @@
           </a-col>
           <a-col :span="24" v-if="editForm.auth_mode === AuthMode.PASSWORD">
             <a-form-item label="登录密码">
-              <a-input-password 
-                v-model:value="editForm.password" 
+              <a-input-password
+                v-model:value="editForm.password"
                 placeholder="请输入密码（留空则不修改）"
                 autocomplete="new-password"
               >
@@ -499,21 +605,22 @@
           </a-col>
           <a-col :span="24" v-if="editForm.auth_mode === AuthMode.KEY">
             <a-form-item label="SSH私钥">
-              <a-textarea 
-                v-model:value="editForm.key" 
+              <a-textarea
+                v-model:value="editForm.key"
                 placeholder="请粘贴SSH私钥内容（留空则不修改）"
                 :rows="6"
-                style="font-family: 'Courier New', monospace;"
+                style="font-family: 'Courier New', monospace"
               />
             </a-form-item>
           </a-col>
         </a-row>
 
-        <a-divider orientation="left">
-          <tags-outlined /> 资源标签
-        </a-divider>
+        <a-divider orientation="left"> <tags-outlined /> 资源标签 </a-divider>
         <div class="tags-editor">
-          <div v-if="editForm.tags && editForm.tags.length > 0" class="tags-list">
+          <div
+            v-if="editForm.tags && editForm.tags.length > 0"
+            class="tags-list"
+          >
             <a-tag
               v-for="(tag, index) in editForm.tags"
               :key="`${tag.key}-${tag.value}-${index}`"
@@ -522,7 +629,8 @@
               @close="removeTag(index)"
               class="tag-item"
             >
-              <strong>{{ tag.key }}</strong>: {{ tag.value }}
+              <strong>{{ tag.key }}</strong
+              >: {{ tag.value }}
             </a-tag>
           </div>
           <div class="tag-input-group">
@@ -555,12 +663,12 @@
       :width="700"
       class="modern-modal"
     >
-      <a-alert 
-        message="同步说明" 
+      <a-alert
+        message="同步说明"
         description="从云厂商同步最新的资源信息到本地数据库，支持全量同步和增量同步两种模式。全量同步会更新所有资源，增量同步仅同步新增和变更的资源。"
-        type="info" 
-        show-icon 
-        style="margin-bottom: 24px;"
+        type="info"
+        show-icon
+        style="margin-bottom: 24px"
       />
       <a-form layout="vertical" class="sync-form">
         <a-form-item label="云账户" required>
@@ -569,14 +677,21 @@
             placeholder="请选择要同步的云账户"
             size="large"
           >
-            <a-select-option v-for="account in cloudAccounts" :key="account.id" :value="account.id">
+            <a-select-option
+              v-for="account in cloudAccounts"
+              :key="account.id"
+              :value="account.id"
+            >
               <cloud-outlined /> {{ account.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
-        
+
         <a-form-item label="资源类型">
-          <a-checkbox-group v-model:value="syncForm.resource_types" style="width: 100%">
+          <a-checkbox-group
+            v-model:value="syncForm.resource_types"
+            style="width: 100%"
+          >
             <a-row :gutter="[8, 8]">
               <a-col :span="12">
                 <a-checkbox :value="CloudResourceType.ECS">
@@ -612,17 +727,13 @@
           <a-radio-group v-model:value="syncForm.sync_mode" size="large">
             <a-radio :value="SyncMode.FULL" class="sync-mode-radio">
               <div class="radio-content">
-                <div class="radio-title">
-                  <sync-outlined /> 全量同步
-                </div>
+                <div class="radio-title"><sync-outlined /> 全量同步</div>
                 <div class="radio-desc">同步所有资源，更新已有资源信息</div>
               </div>
             </a-radio>
             <a-radio :value="SyncMode.INCREMENTAL" class="sync-mode-radio">
               <div class="radio-content">
-                <div class="radio-title">
-                  <cloud-sync-outlined /> 增量同步
-                </div>
+                <div class="radio-title"><cloud-sync-outlined /> 增量同步</div>
                 <div class="radio-desc">只同步新增和变更的资源</div>
               </div>
             </a-radio>
@@ -633,7 +744,9 @@
           <a-row align="middle">
             <a-col flex="auto">
               <a-switch v-model:checked="syncForm.auto_bind" />
-              <span style="margin-left: 12px">自动将同步的资源绑定到指定节点</span>
+              <span style="margin-left: 12px"
+                >自动将同步的资源绑定到指定节点</span
+              >
             </a-col>
           </a-row>
         </a-form-item>
@@ -680,12 +793,23 @@
             style="width: 100%"
           />
         </a-form-item>
-        <a-alert v-if="currentResource?.tree_nodes && currentResource.tree_nodes.length > 0" type="info" show-icon style="margin-top: 16px">
+        <a-alert
+          v-if="
+            currentResource?.tree_nodes && currentResource.tree_nodes.length > 0
+          "
+          type="info"
+          show-icon
+          style="margin-top: 16px"
+        >
           <template #message>
             <div class="current-bindings">
               <div class="binding-title">当前已绑定节点：</div>
               <div class="binding-tags">
-                <a-tag v-for="node in currentResource.tree_nodes" :key="node.id" color="blue">
+                <a-tag
+                  v-for="node in currentResource.tree_nodes"
+                  :key="node.id"
+                  color="blue"
+                >
                   <apartment-outlined /> {{ node.name }}
                 </a-tag>
               </div>
@@ -705,18 +829,25 @@
       :width="600"
       class="modern-modal"
     >
-      <a-alert 
-        message="请选择要解绑的节点" 
+      <a-alert
+        message="请选择要解绑的节点"
         description="解绑后，该资源将不再关联到所选的服务树节点。"
-        type="warning" 
-        show-icon 
-        style="margin-bottom: 16px;"
+        type="warning"
+        show-icon
+        style="margin-bottom: 16px"
       />
       <a-form layout="vertical">
         <a-form-item label="选择要解绑的节点">
-          <a-checkbox-group v-model:value="selectedUnbindNodeIds" style="width: 100%">
+          <a-checkbox-group
+            v-model:value="selectedUnbindNodeIds"
+            style="width: 100%"
+          >
             <a-row :gutter="[8, 8]">
-              <a-col :span="24" v-for="node in currentResource?.tree_nodes" :key="node.id">
+              <a-col
+                :span="24"
+                v-for="node in currentResource?.tree_nodes"
+                :key="node.id"
+              >
                 <a-checkbox :value="node.id" class="unbind-checkbox">
                   <apartment-outlined /> {{ node.name }}
                 </a-checkbox>
@@ -746,16 +877,23 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'sync_status'">
-            <a-badge 
-              :status="record.sync_status === 'success' ? 'success' : 'error'" 
-              :text="record.sync_status === 'success' ? '成功' : '失败'" 
+            <a-badge
+              :status="record.sync_status === 'success' ? 'success' : 'error'"
+              :text="record.sync_status === 'success' ? '成功' : '失败'"
             />
           </template>
           <template v-else-if="column.key === 'stats'">
             <a-space>
-              <a-tag color="green"><plus-outlined /> 新增: {{ record.new_count }}</a-tag>
-              <a-tag color="blue"><sync-outlined /> 更新: {{ record.update_count }}</a-tag>
-              <a-tag color="red" v-if="record.failed_count > 0"><close-circle-outlined /> 失败: {{ record.failed_count }}</a-tag>
+              <a-tag color="green"
+                ><plus-outlined /> 新增: {{ record.new_count }}</a-tag
+              >
+              <a-tag color="blue"
+                ><sync-outlined /> 更新: {{ record.update_count }}</a-tag
+              >
+              <a-tag color="red" v-if="record.failed_count > 0"
+                ><close-circle-outlined /> 失败:
+                {{ record.failed_count }}</a-tag
+              >
             </a-space>
           </template>
           <template v-else-if="column.key === 'sync_mode'">
@@ -802,15 +940,20 @@
                 <tag-outlined /> <strong>字段：</strong>{{ record.field_name }}
               </div>
               <div v-if="record.old_value" class="change-old">
-                <arrow-left-outlined /> <strong>旧值：</strong>{{ record.old_value }}
+                <arrow-left-outlined /> <strong>旧值：</strong
+                >{{ record.old_value }}
               </div>
               <div v-if="record.new_value" class="change-new">
-                <arrow-right-outlined /> <strong>新值：</strong>{{ record.new_value }}
+                <arrow-right-outlined /> <strong>新值：</strong
+                >{{ record.new_value }}
               </div>
             </div>
           </template>
           <template v-else-if="column.key === 'operator'">
-            <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(record.operator_name) }">
+            <a-avatar
+              size="small"
+              :style="{ backgroundColor: getAvatarColor(record.operator_name) }"
+            >
               {{ getInitials(record.operator_name) }}
             </a-avatar>
             <span style="margin-left: 8px">{{ record.operator_name }}</span>
@@ -840,27 +983,45 @@
                   :status="getStatusBadgeType(currentDetail.status)"
                   :text="getStatusText(currentDetail.status)"
                 />
-                <a-tag :color="getResourceTypeColor(currentDetail.resource_type)">
+                <a-tag
+                  :color="getResourceTypeColor(currentDetail.resource_type)"
+                >
                   {{ getResourceTypeText(currentDetail.resource_type) }}
                 </a-tag>
-                <a-tag v-if="currentDetail.environment" :color="getEnvironmentColor(currentDetail.environment)">
+                <a-tag
+                  v-if="currentDetail.environment"
+                  :color="getEnvironmentColor(currentDetail.environment)"
+                >
                   {{ getEnvironmentText(currentDetail.environment) }}
                 </a-tag>
               </div>
             </div>
 
             <!-- 基本信息 -->
-            <a-descriptions bordered :column="2" size="small" class="detail-descriptions" title="基本信息">
+            <a-descriptions
+              bordered
+              :column="2"
+              size="small"
+              class="detail-descriptions"
+              title="基本信息"
+            >
               <a-descriptions-item label="资源ID" :span="1">
                 {{ currentDetail.id }}
               </a-descriptions-item>
               <a-descriptions-item label="实例ID" :span="1">
-                <a-typography-text v-if="currentDetail.instance_id" :copyable="{ text: currentDetail.instance_id }">
+                <a-typography-text
+                  v-if="currentDetail.instance_id"
+                  :copyable="{ text: currentDetail.instance_id }"
+                >
                   {{ currentDetail.instance_id }}
                 </a-typography-text>
                 <span v-else>-</span>
               </a-descriptions-item>
-              <a-descriptions-item label="云账户" :span="2" v-if="currentDetail.cloud_account">
+              <a-descriptions-item
+                label="云账户"
+                :span="2"
+                v-if="currentDetail.cloud_account"
+              >
                 <cloud-outlined /> {{ currentDetail.cloud_account.name }}
               </a-descriptions-item>
               <a-descriptions-item label="区域" :span="1">
@@ -875,7 +1036,14 @@
             </a-descriptions>
 
             <!-- 配置信息 -->
-            <a-descriptions bordered :column="2" size="small" class="detail-descriptions" title="配置信息" style="margin-top: 16px;">
+            <a-descriptions
+              bordered
+              :column="2"
+              size="small"
+              class="detail-descriptions"
+              title="配置信息"
+              style="margin-top: 16px"
+            >
               <a-descriptions-item label="实例规格" :span="2">
                 {{ currentDetail.instance_type || '-' }}
               </a-descriptions-item>
@@ -883,23 +1051,38 @@
                 {{ currentDetail.cpu ? currentDetail.cpu + ' 核' : '-' }}
               </a-descriptions-item>
               <a-descriptions-item label="内存" :span="1">
-                <hdd-outlined /> {{ currentDetail.memory ? currentDetail.memory + ' GB' : '-' }}
+                <hdd-outlined />
+                {{ currentDetail.memory ? currentDetail.memory + ' GB' : '-' }}
               </a-descriptions-item>
               <a-descriptions-item label="磁盘" :span="2">
-                <database-outlined /> {{ currentDetail.disk ? currentDetail.disk + ' GB' : '-' }}
+                <database-outlined />
+                {{ currentDetail.disk ? currentDetail.disk + ' GB' : '-' }}
               </a-descriptions-item>
             </a-descriptions>
 
             <!-- 网络信息 -->
-            <a-descriptions bordered :column="2" size="small" class="detail-descriptions" title="网络信息" style="margin-top: 16px;">
+            <a-descriptions
+              bordered
+              :column="2"
+              size="small"
+              class="detail-descriptions"
+              title="网络信息"
+              style="margin-top: 16px"
+            >
               <a-descriptions-item label="公网IP" :span="2">
-                <a-typography-text v-if="currentDetail.public_ip" :copyable="{ text: currentDetail.public_ip }">
+                <a-typography-text
+                  v-if="currentDetail.public_ip"
+                  :copyable="{ text: currentDetail.public_ip }"
+                >
                   <global-outlined /> {{ currentDetail.public_ip }}
                 </a-typography-text>
                 <span v-else>-</span>
               </a-descriptions-item>
               <a-descriptions-item label="私网IP" :span="2">
-                <a-typography-text v-if="currentDetail.private_ip" :copyable="{ text: currentDetail.private_ip }">
+                <a-typography-text
+                  v-if="currentDetail.private_ip"
+                  :copyable="{ text: currentDetail.private_ip }"
+                >
                   <lock-outlined /> {{ currentDetail.private_ip }}
                 </a-typography-text>
                 <span v-else>-</span>
@@ -907,7 +1090,14 @@
             </a-descriptions>
 
             <!-- 系统信息 -->
-            <a-descriptions bordered :column="2" size="small" class="detail-descriptions" title="系统信息" style="margin-top: 16px;">
+            <a-descriptions
+              bordered
+              :column="2"
+              size="small"
+              class="detail-descriptions"
+              title="系统信息"
+              style="margin-top: 16px"
+            >
               <a-descriptions-item label="操作系统" :span="2">
                 {{ currentDetail.os_name || currentDetail.os_type || '-' }}
               </a-descriptions-item>
@@ -920,23 +1110,47 @@
             </a-descriptions>
 
             <!-- 费用信息 -->
-            <a-descriptions bordered :column="2" size="small" class="detail-descriptions" title="费用信息" style="margin-top: 16px;">
+            <a-descriptions
+              bordered
+              :column="2"
+              size="small"
+              class="detail-descriptions"
+              title="费用信息"
+              style="margin-top: 16px"
+            >
               <a-descriptions-item label="计费方式" :span="1">
-                {{ currentDetail.charge_type === ChargeType.PRE_PAID ? '包年包月' : '按量付费' }}
+                {{
+                  currentDetail.charge_type === ChargeType.PRE_PAID
+                    ? '包年包月'
+                    : '按量付费'
+                }}
               </a-descriptions-item>
               <a-descriptions-item label="月度费用" :span="1">
                 <span v-if="currentDetail.monthly_cost" class="cost-display">
-                  ¥{{ formatCost(currentDetail.monthly_cost) }} {{ currentDetail.currency }}
+                  ¥{{ formatCost(currentDetail.monthly_cost) }}
+                  {{ currentDetail.currency }}
                 </span>
                 <span v-else>-</span>
               </a-descriptions-item>
-              <a-descriptions-item label="到期时间" :span="2" v-if="currentDetail.expire_time">
-                <clock-circle-outlined /> {{ formatDateTime(currentDetail.expire_time) }}
+              <a-descriptions-item
+                label="到期时间"
+                :span="2"
+                v-if="currentDetail.expire_time"
+              >
+                <clock-circle-outlined />
+                {{ formatDateTime(currentDetail.expire_time) }}
               </a-descriptions-item>
             </a-descriptions>
 
             <!-- 其他信息 -->
-            <a-descriptions bordered :column="1" size="small" class="detail-descriptions" title="其他信息" style="margin-top: 16px;">
+            <a-descriptions
+              bordered
+              :column="1"
+              size="small"
+              class="detail-descriptions"
+              title="其他信息"
+              style="margin-top: 16px"
+            >
               <a-descriptions-item label="描述信息">
                 {{ currentDetail.description || '-' }}
               </a-descriptions-item>
@@ -953,51 +1167,65 @@
 
             <!-- 资源标签 -->
             <div class="detail-section">
-              <div class="section-title">
-                <tags-outlined /> 资源标签
-              </div>
+              <div class="section-title"><tags-outlined /> 资源标签</div>
               <div class="section-content">
-                <template v-if="currentDetail.tags && currentDetail.tags.length > 0">
-                  <a-tag 
-                    v-for="(tag, index) in currentDetail.tags" 
+                <template
+                  v-if="currentDetail.tags && currentDetail.tags.length > 0"
+                >
+                  <a-tag
+                    v-for="(tag, index) in currentDetail.tags"
                     :key="`${tag.key}-${tag.value}-${index}`"
                     color="blue"
                     class="detail-tag"
                   >
-                    <strong>{{ tag.key }}</strong>: {{ tag.value }}
+                    <strong>{{ tag.key }}</strong
+                    >: {{ tag.value }}
                   </a-tag>
                 </template>
-                <a-empty v-else :image="Empty.PRESENTED_IMAGE_SIMPLE" description="暂无标签" />
+                <a-empty
+                  v-else
+                  :image="Empty.PRESENTED_IMAGE_SIMPLE"
+                  description="暂无标签"
+                />
               </div>
             </div>
 
             <!-- 绑定的服务树节点 -->
             <div class="detail-section">
-              <div class="section-title">
-                <apartment-outlined /> 服务树节点
-              </div>
+              <div class="section-title"><apartment-outlined /> 服务树节点</div>
               <div class="section-content">
-                <template v-if="currentDetail.tree_nodes && currentDetail.tree_nodes.length > 0">
-                  <a-tag 
-                    v-for="node in currentDetail.tree_nodes" 
-                    :key="node.id" 
+                <template
+                  v-if="
+                    currentDetail.tree_nodes &&
+                    currentDetail.tree_nodes.length > 0
+                  "
+                >
+                  <a-tag
+                    v-for="node in currentDetail.tree_nodes"
+                    :key="node.id"
                     color="blue"
                     class="detail-tag"
                   >
                     <apartment-outlined /> {{ node.name }}
                   </a-tag>
                 </template>
-                <a-empty v-else :image="Empty.PRESENTED_IMAGE_SIMPLE" description="暂未绑定节点" />
+                <a-empty
+                  v-else
+                  :image="Empty.PRESENTED_IMAGE_SIMPLE"
+                  description="暂未绑定节点"
+                />
               </div>
             </div>
-            
+
             <!-- 操作按钮 -->
             <div class="drawer-actions">
               <a-button-group>
-                <a-button 
-                  type="primary" 
+                <a-button
+                  type="primary"
                   @click="handleConnectTerminal(currentDetail)"
-                  :disabled="currentDetail.resource_type !== CloudResourceType.ECS"
+                  :disabled="
+                    currentDetail.resource_type !== CloudResourceType.ECS
+                  "
                 >
                   <code-outlined /> 连接终端
                 </a-button>
@@ -1213,9 +1441,15 @@ const changeLogPagination = reactive({
 // 统计数据
 const stats = computed(() => {
   const total = pagination.total;
-  const running = resources.value.filter(r => r.status === CloudResourceStatus.RUNNING).length;
-  const ecs = resources.value.filter(r => r.resource_type === CloudResourceType.ECS).length;
-  const bound = resources.value.filter(r => r.tree_nodes && r.tree_nodes.length > 0).length;
+  const running = resources.value.filter(
+    (r) => r.status === CloudResourceStatus.RUNNING,
+  ).length;
+  const ecs = resources.value.filter(
+    (r) => r.resource_type === CloudResourceType.ECS,
+  ).length;
+  const bound = resources.value.filter(
+    (r) => r.tree_nodes && r.tree_nodes.length > 0,
+  ).length;
   return { total, running, ecs, bound };
 });
 
@@ -1232,16 +1466,38 @@ const paginationConfig = computed(() => ({
 
 // 表格列定义
 const columns = [
-  { title: '资源名称', dataIndex: 'name', key: 'name', width: 200, fixed: 'left' as const },
-  { title: '类型', dataIndex: 'resource_type', key: 'resource_type', width: 130 },
-  { title: '云账户', dataIndex: 'cloud_account', key: 'cloud_account', width: 150 },
+  {
+    title: '资源名称',
+    dataIndex: 'name',
+    key: 'name',
+    width: 200,
+    fixed: 'left' as const,
+  },
+  {
+    title: '类型',
+    dataIndex: 'resource_type',
+    key: 'resource_type',
+    width: 130,
+  },
+  {
+    title: '云账户',
+    dataIndex: 'cloud_account',
+    key: 'cloud_account',
+    width: 150,
+  },
   { title: '实例信息', key: 'instance', width: 200 },
   { title: '配置', key: 'config', width: 150 },
   { title: 'IP地址', key: 'ip', width: 160 },
   { title: '状态', dataIndex: 'status', key: 'status', width: 110 },
   { title: '服务树', key: 'tree_nodes', width: 180 },
   { title: '月费用', key: 'cost', width: 120 },
-  { title: '操作', key: 'action', width: 200, fixed: 'right' as const, align: 'center' as const },
+  {
+    title: '操作',
+    key: 'action',
+    width: 200,
+    fixed: 'right' as const,
+    align: 'center' as const,
+  },
 ];
 
 // 同步历史列
@@ -1321,7 +1577,9 @@ const getEnvironmentText = (environment?: string): string => {
   return texts[environment || ''] || '-';
 };
 
-const getStatusBadgeType = (status: CloudResourceStatus): 'success' | 'error' | 'processing' | 'warning' | 'default' => {
+const getStatusBadgeType = (
+  status: CloudResourceStatus,
+): 'success' | 'error' | 'processing' | 'warning' | 'default' => {
   const types: Record<CloudResourceStatus, any> = {
     [CloudResourceStatus.RUNNING]: 'success',
     [CloudResourceStatus.STOPPED]: 'error',
@@ -1366,7 +1624,14 @@ const getChangeTypeText = (type: string): string => {
 };
 
 const getAvatarColor = (name: string): string => {
-  const colors = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae', '#1890ff', '#52c41a'];
+  const colors = [
+    '#f56a00',
+    '#7265e6',
+    '#ffbf00',
+    '#00a2ae',
+    '#1890ff',
+    '#52c41a',
+  ];
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -1420,22 +1685,22 @@ const fetchCloudAccounts = async (): Promise<void> => {
     let hasMore = true;
 
     while (hasMore) {
-      const response = await getCloudAccountListApi({ 
-        page: currentPage, 
-        size: pageSize 
+      const response = await getCloudAccountListApi({
+        page: currentPage,
+        size: pageSize,
       });
       const items = (response as any).items || [];
       const total = (response as any).total || 0;
-      
+
       allAccounts = [...allAccounts, ...items];
-      
+
       if (items.length < pageSize || allAccounts.length >= total) {
         hasMore = false;
       } else {
         currentPage++;
       }
     }
-    
+
     cloudAccounts.value = allAccounts;
   } catch (error) {
     console.error('获取云账户列表失败', error);
@@ -1458,7 +1723,7 @@ const fetchResources = async (): Promise<void> => {
     };
 
     const response = await getTreeCloudResourceListApi(params);
-    const data = (response as any);
+    const data = response as any;
     resources.value = (data.items || []).map((item: TreeCloudResource) => ({
       ...item,
       tree_nodes: item.tree_nodes || [],
@@ -1482,7 +1747,7 @@ const fetchSyncHistory = async (): Promise<void> => {
       page: syncHistoryPagination.current,
       size: syncHistoryPagination.pageSize,
     });
-    const data = (response as any);
+    const data = response as any;
     syncHistoryList.value = data.items || [];
     syncHistoryPagination.total = data.total || 0;
   } catch (error) {
@@ -1500,7 +1765,7 @@ const fetchChangeLog = async (): Promise<void> => {
       page: changeLogPagination.current,
       size: changeLogPagination.pageSize,
     });
-    const data = (response as any);
+    const data = response as any;
     changeLogList.value = data.items || [];
     changeLogPagination.total = data.total || 0;
   } catch (error) {
@@ -1597,7 +1862,7 @@ const handleViewDetail = async (record: TreeCloudResource): Promise<void> => {
     const data = (response as any).data || response;
     currentDetail.value = {
       ...data,
-      tree_nodes: data.tree_nodes || []
+      tree_nodes: data.tree_nodes || [],
     };
   } catch (error) {
     message.error('获取资源详情失败');
@@ -1610,12 +1875,12 @@ const handleViewDetail = async (record: TreeCloudResource): Promise<void> => {
 const addTag = (): void => {
   const key = newTagKey.value.trim();
   const value = newTagValue.value.trim();
-  
+
   if (!key || !value) {
     message.warning('请输入完整的标签信息');
     return;
   }
-  
+
   if (!Array.isArray(editForm.tags)) {
     editForm.tags = [];
   }
@@ -1624,7 +1889,7 @@ const addTag = (): void => {
     message.warning('标签Key已存在');
     return;
   }
-  
+
   editForm.tags.push({ key, value });
   newTagKey.value = '';
   newTagValue.value = '';
@@ -1641,11 +1906,14 @@ const handleUpdate = async (): Promise<void> => {
   try {
     submitLoading.value = true;
     const { id, ...updateData } = editForm;
-    await updateTreeCloudResourceApi(id, updateData as Omit<UpdateTreeCloudResourceReq, 'id'>);
+    await updateTreeCloudResourceApi(
+      id,
+      updateData as Omit<UpdateTreeCloudResourceReq, 'id'>,
+    );
     message.success('更新成功');
     editModalVisible.value = false;
     await fetchResources();
-    
+
     if (detailVisible.value && currentDetail.value?.id === id) {
       const response = await getTreeCloudResourceDetailApi(id);
       currentDetail.value = (response as any).data || response;
@@ -1668,7 +1936,9 @@ const handleSync = async (): Promise<void> => {
   try {
     const response = await syncTreeCloudResourceApi(syncForm);
     const result = (response as any).data || response;
-    message.success(`同步成功！新增${result.new_count || 0}，更新${result.update_count || 0}`);
+    message.success(
+      `同步成功！新增${result.new_count || 0}，更新${result.update_count || 0}`,
+    );
     syncModalVisible.value = false;
     await fetchResources();
   } catch (error) {
@@ -1693,7 +1963,7 @@ const handleChangeLogTableChange = (pag: any): void => {
 // 绑定服务树
 const showBindModal = (record: TreeCloudResource): void => {
   currentResource.value = record;
-  selectedTreeNodeIds.value = record.tree_nodes?.map(n => n.id) || [];
+  selectedTreeNodeIds.value = record.tree_nodes?.map((n) => n.id) || [];
   bindModalVisible.value = true;
 };
 
@@ -1711,9 +1981,14 @@ const handleBind = async (): Promise<void> => {
     message.success('绑定成功');
     bindModalVisible.value = false;
     await fetchResources();
-    
-    if (detailVisible.value && currentDetail.value?.id === currentResource.value.id) {
-      const response = await getTreeCloudResourceDetailApi(currentResource.value.id);
+
+    if (
+      detailVisible.value &&
+      currentDetail.value?.id === currentResource.value.id
+    ) {
+      const response = await getTreeCloudResourceDetailApi(
+        currentResource.value.id,
+      );
       currentDetail.value = (response as any).data || response;
     }
   } catch (error) {
@@ -1745,9 +2020,14 @@ const handleUnbind = async (): Promise<void> => {
     unbindModalVisible.value = false;
     selectedUnbindNodeIds.value = [];
     await fetchResources();
-    
-    if (detailVisible.value && currentDetail.value?.id === currentResource.value.id) {
-      const response = await getTreeCloudResourceDetailApi(currentResource.value.id);
+
+    if (
+      detailVisible.value &&
+      currentDetail.value?.id === currentResource.value.id
+    ) {
+      const response = await getTreeCloudResourceDetailApi(
+        currentResource.value.id,
+      );
       currentDetail.value = (response as any).data || response;
     }
   } catch (error) {
@@ -1758,12 +2038,15 @@ const handleUnbind = async (): Promise<void> => {
 };
 
 // 更新资源状态
-const handleUpdateStatus = async (record: TreeCloudResource, newStatus: CloudResourceStatus): Promise<void> => {
+const handleUpdateStatus = async (
+  record: TreeCloudResource,
+  newStatus: CloudResourceStatus,
+): Promise<void> => {
   try {
     await updateCloudResourceStatusApi(record.id, { status: newStatus });
     message.success('状态更新成功');
     await fetchResources();
-    
+
     if (detailVisible.value && currentDetail.value?.id === record.id) {
       const response = await getTreeCloudResourceDetailApi(record.id);
       currentDetail.value = (response as any).data || response;
@@ -1773,15 +2056,22 @@ const handleUpdateStatus = async (record: TreeCloudResource, newStatus: CloudRes
   }
 };
 
+const handleStatusMenuClick = (
+  record: TreeCloudResource,
+  event: { key: string | number },
+): void => {
+  handleUpdateStatus(record, Number(event.key) as CloudResourceStatus);
+};
+
 // 连接终端
 const handleConnectTerminal = (record: TreeCloudResource): void => {
   if (record.resource_type !== CloudResourceType.ECS) {
     message.warning('只有云服务器支持终端连接');
     return;
   }
-  router.push({ 
-    name: 'TerminalConnect', 
-    query: { id: String(record.id), type: 'cloud' } 
+  router.push({
+    name: 'TerminalConnect',
+    query: { id: String(record.id), type: 'cloud' },
   });
 };
 
@@ -1797,11 +2087,11 @@ const handleDelete = async (record: TreeCloudResource): Promise<void> => {
       try {
         await deleteTreeCloudResourceApi(record.id);
         message.success('删除成功');
-        
+
         if (detailVisible.value && currentDetail.value?.id === record.id) {
           detailVisible.value = false;
         }
-        
+
         await fetchResources();
       } catch (error) {
         message.error('删除失败');
@@ -1835,7 +2125,7 @@ const handleExportAll = async () => {
       };
 
       const response = await getTreeCloudResourceListApi(params);
-      const data = (response as any);
+      const data = response as any;
       const items = (data.items || []).map((item: TreeCloudResource) => ({
         ...item,
         tree_nodes: item.tree_nodes || [],
@@ -1868,29 +2158,30 @@ const exportToExcel = (data: TreeCloudResource[]) => {
 
   // 准备导出数据
   const exportData = data.map((item) => ({
-    '资源名称': item.name,
-    '资源类型': getResourceTypeText(item.resource_type),
-    '云账户': item.cloud_account?.name || '-',
-    '实例ID': item.instance_id || '-',
-    '实例类型': item.instance_type || '-',
-    '状态': getStatusText(item.status),
-    '环境': item.environment ? getEnvironmentText(item.environment) : '-',
-    '地域': item.region || '-',
-    '可用区': item.zone_id || '-',
-    'CPU核数': item.cpu || 0,
+    资源名称: item.name,
+    资源类型: getResourceTypeText(item.resource_type),
+    云账户: item.cloud_account?.name || '-',
+    实例ID: item.instance_id || '-',
+    实例类型: item.instance_type || '-',
+    状态: getStatusText(item.status),
+    环境: item.environment ? getEnvironmentText(item.environment) : '-',
+    地域: item.region || '-',
+    可用区: item.zone_id || '-',
+    CPU核数: item.cpu || 0,
     '内存(GB)': item.memory || 0,
     '磁盘(GB)': item.disk || 0,
-    '公网IP': item.public_ip || '-',
-    '私网IP': item.private_ip || '-',
-    '操作系统': item.os_name || '-',
-    '计费方式': item.charge_type === ChargeType.PRE_PAID ? '包年包月' : '按量付费',
-    '月成本': `${item.monthly_cost || 0} ${item.currency || 'CNY'}`,
-    '到期时间': item.expire_time ? formatDateTime(item.expire_time) : '-',
-    '服务树节点': item.tree_nodes?.map(n => n.name).join(', ') || '-',
-    '创建人': item.create_user_name || '-',
-    '创建时间': formatDateTime(item.created_at),
-    '更新时间': formatDateTime(item.updated_at),
-    '描述': item.description || '-',
+    公网IP: item.public_ip || '-',
+    私网IP: item.private_ip || '-',
+    操作系统: item.os_name || '-',
+    计费方式:
+      item.charge_type === ChargeType.PRE_PAID ? '包年包月' : '按量付费',
+    月成本: `${item.monthly_cost || 0} ${item.currency || 'CNY'}`,
+    到期时间: item.expire_time ? formatDateTime(item.expire_time) : '-',
+    服务树节点: item.tree_nodes?.map((n) => n.name).join(', ') || '-',
+    创建人: item.create_user_name || '-',
+    创建时间: formatDateTime(item.created_at),
+    更新时间: formatDateTime(item.updated_at),
+    描述: item.description || '-',
   }));
 
   // 创建工作簿和工作表
@@ -1909,7 +2200,7 @@ const exportToExcel = (data: TreeCloudResource[]) => {
     { wch: 10 }, // 环境
     { wch: 15 }, // 地域
     { wch: 15 }, // 可用区
-    { wch: 8 },  // CPU
+    { wch: 8 }, // CPU
     { wch: 10 }, // 内存
     { wch: 10 }, // 磁盘
     { wch: 15 }, // 公网IP
@@ -1927,7 +2218,10 @@ const exportToExcel = (data: TreeCloudResource[]) => {
   worksheet['!cols'] = colWidths;
 
   // 导出文件
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+  const timestamp = new Date()
+    .toISOString()
+    .replace(/[:.]/g, '-')
+    .substring(0, 19);
   const filename = `云资源列表_${timestamp}.xlsx`;
   XLSX.writeFile(workbook, filename);
   message.success(`导出成功：${filename}`);
@@ -1954,7 +2248,7 @@ onMounted(async () => {
   .page-header {
     margin-bottom: 20px;
   }
-  
+
   .header-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1965,7 +2259,7 @@ onMounted(async () => {
   .btn-create {
     flex-shrink: 0;
   }
-  
+
   .btn-action {
     flex-shrink: 0;
   }
@@ -2016,7 +2310,7 @@ onMounted(async () => {
 
   .table-section {
     margin-bottom: 24px;
-    
+
     .table-card {
       border-radius: 8px;
       border: 1px solid #f0f0f0;
@@ -2385,7 +2679,7 @@ onMounted(async () => {
       gap: 12px;
       margin-bottom: 20px;
       flex-wrap: wrap;
-      
+
       h2 {
         margin: 0;
         font-size: 24px;
@@ -2402,7 +2696,7 @@ onMounted(async () => {
 
     .detail-section {
       margin-top: 24px;
-      
+
       .section-title {
         font-size: 16px;
         font-weight: 600;
@@ -2411,7 +2705,7 @@ onMounted(async () => {
         padding-left: 12px;
         border-left: 4px solid #1890ff;
       }
-      
+
       .section-content {
         .detail-tag {
           margin-right: 8px;
@@ -2442,7 +2736,7 @@ onMounted(async () => {
     .header-actions {
       flex-direction: column;
       align-items: stretch;
-      
+
       .btn-text {
         display: inline;
       }
@@ -2473,7 +2767,7 @@ onMounted(async () => {
 
     .action-buttons {
       gap: 2px;
-      
+
       .ant-btn {
         padding: 0 4px;
         font-size: 12px;
@@ -2483,7 +2777,7 @@ onMounted(async () => {
     .drawer-actions {
       flex-direction: column;
       gap: 8px;
-      
+
       .ant-btn-group {
         display: flex;
         flex-direction: column;
@@ -2494,7 +2788,7 @@ onMounted(async () => {
         width: 100%;
       }
     }
-    
+
     .modern-modal :deep(.ant-modal-body) {
       padding: 16px;
       max-height: calc(100vh - 160px);
@@ -2504,11 +2798,11 @@ onMounted(async () => {
 
   @media (max-width: 480px) {
     padding: 4px;
-    
+
     .stats-card {
       text-align: center;
     }
-    
+
     .modern-modal :deep(.ant-modal) {
       margin: 4px;
       max-width: calc(100vw - 8px);

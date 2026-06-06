@@ -1,5 +1,5 @@
 import { requestClient } from '#/api/request';
-import type { WorkorderProcessItem } from '../workorder_process';
+import type { WorkorderProcessItem } from './workorder_process';
 import type { WorkorderFormDesignItem } from './workorder_form_design';
 import type { WorkorderCategoryItem } from './workorder_category';
 
@@ -92,9 +92,7 @@ export async function deleteWorkorderTemplate(
   return requestClient.delete(`/workorder/template/delete/${data.id}`);
 }
 
-export async function listWorkorderTemplate(
-  params: ListWorkorderTemplateReq,
-) {
+export async function listWorkorderTemplate(params: ListWorkorderTemplateReq) {
   return requestClient.get('/workorder/template/list', { params });
 }
 

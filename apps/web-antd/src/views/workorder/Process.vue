@@ -2,39 +2,51 @@
   <div class="process-management-container">
     <div class="page-header">
       <div class="header-actions">
-        <a-button type="primary" @click="handleCreateProcess" class="btn-create">
+        <a-button
+          type="primary"
+          @click="handleCreateProcess"
+          class="btn-create"
+        >
           <template #icon>
             <PlusOutlined />
           </template>
           创建新流程
         </a-button>
         <div class="search-filters">
-          <a-input-search 
-            v-model:value="searchQuery" 
-            placeholder="搜索流程..." 
-            class="search-input" 
+          <a-input-search
+            v-model:value="searchQuery"
+            placeholder="搜索流程..."
+            class="search-input"
             @search="handleSearch"
-            allow-clear 
+            allow-clear
           />
-          <a-select 
-            v-model:value="statusFilter" 
-            placeholder="状态" 
-            class="status-filter" 
+          <a-select
+            v-model:value="statusFilter"
+            placeholder="状态"
+            class="status-filter"
             @change="handleStatusChange"
           >
             <a-select-option :value="null">全部</a-select-option>
             <a-select-option :value="ProcessStatus.Draft">草稿</a-select-option>
-            <a-select-option :value="ProcessStatus.Published">已发布</a-select-option>
-            <a-select-option :value="ProcessStatus.Archived">已归档</a-select-option>
+            <a-select-option :value="ProcessStatus.Published"
+              >已发布</a-select-option
+            >
+            <a-select-option :value="ProcessStatus.Archived"
+              >已归档</a-select-option
+            >
           </a-select>
-          <a-select 
-            v-model:value="categoryFilter" 
-            placeholder="分类" 
+          <a-select
+            v-model:value="categoryFilter"
+            placeholder="分类"
             class="category-filter"
             @change="handleCategoryChange"
           >
             <a-select-option :value="null">全部分类</a-select-option>
-            <a-select-option v-for="category in categories" :key="category.id" :value="category.id">
+            <a-select-option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.id"
+            >
               {{ category.name }}
             </a-select-option>
           </a-select>
@@ -46,7 +58,11 @@
       <a-row :gutter="16">
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="总流程数" :value="stats.total" :value-style="{ color: '#3f8600' }">
+            <a-statistic
+              title="总流程数"
+              :value="stats.total"
+              :value-style="{ color: '#3f8600' }"
+            >
               <template #prefix>
                 <ApartmentOutlined />
               </template>
@@ -55,7 +71,11 @@
         </a-col>
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="已发布" :value="stats.published" :value-style="{ color: '#52c41a' }">
+            <a-statistic
+              title="已发布"
+              :value="stats.published"
+              :value-style="{ color: '#52c41a' }"
+            >
               <template #prefix>
                 <CheckCircleOutlined />
               </template>
@@ -64,7 +84,11 @@
         </a-col>
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="草稿" :value="stats.draft" :value-style="{ color: '#faad14' }">
+            <a-statistic
+              title="草稿"
+              :value="stats.draft"
+              :value-style="{ color: '#faad14' }"
+            >
               <template #prefix>
                 <EditOutlined />
               </template>
@@ -73,7 +97,11 @@
         </a-col>
         <a-col :span="6">
           <a-card class="stats-card">
-            <a-statistic title="已归档" :value="stats.archived" :value-style="{ color: '#cf1322' }">
+            <a-statistic
+              title="已归档"
+              :value="stats.archived"
+              :value-style="{ color: '#cf1322' }"
+            >
               <template #prefix>
                 <StopOutlined />
               </template>
@@ -85,26 +113,31 @@
 
     <div class="table-container">
       <a-card>
-        <a-table 
-          :data-source="processList" 
-          :columns="columns" 
-          :pagination="paginationConfig" 
+        <a-table
+          :data-source="processList"
+          :columns="columns"
+          :pagination="paginationConfig"
           :loading="loading"
-          row-key="id" 
-          bordered 
-          :scroll="{ x: 1200 }" 
+          row-key="id"
+          bordered
+          :scroll="{ x: 1200 }"
           @change="handleTableChange"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">
               <div class="process-name-cell">
-                <div class="process-badge" :class="getStatusClass(record.status)"></div>
+                <div
+                  class="process-badge"
+                  :class="getStatusClass(record.status)"
+                ></div>
                 <span class="process-name-text">{{ record.name }}</span>
               </div>
             </template>
 
             <template v-if="column.key === 'description'">
-              <span class="description-text">{{ record.description || '无描述' }}</span>
+              <span class="description-text">{{
+                record.description || '无描述'
+              }}</span>
             </template>
 
             <template v-if="column.key === 'status'">
@@ -123,7 +156,12 @@
 
             <template v-if="column.key === 'operator'">
               <div class="creator-info">
-                <a-avatar size="small" :style="{ backgroundColor: getAvatarColor(record.operator_name) }">
+                <a-avatar
+                  size="small"
+                  :style="{
+                    backgroundColor: getAvatarColor(record.operator_name),
+                  }"
+                >
                   {{ getInitials(record.operator_name) }}
                 </a-avatar>
                 <span class="creator-name">{{ record.operator_name }}</span>
@@ -131,8 +169,12 @@
             </template>
 
             <template v-if="column.key === 'is_default'">
-              <a-tag :color="record.is_default ? 'green' : 'default'">
-                {{ record.is_default ? '是' : '否' }}
+              <a-tag
+                :color="
+                  isDefaultProcess(record.is_default) ? 'green' : 'default'
+                "
+              >
+                {{ isDefaultProcess(record.is_default) ? '是' : '否' }}
               </a-tag>
             </template>
 
@@ -141,7 +183,11 @@
                 <a-tag v-for="tag in record.tags" :key="tag" color="blue">
                   {{ tag }}
                 </a-tag>
-                <span v-if="!record.tags || record.tags.length === 0" class="no-tags">无标签</span>
+                <span
+                  v-if="!record.tags || record.tags.length === 0"
+                  class="no-tags"
+                  >无标签</span
+                >
               </div>
             </template>
 
@@ -154,19 +200,43 @@
 
             <template v-if="column.key === 'action'">
               <div class="action-buttons">
-                <a-button type="primary" size="small" @click="handleViewProcess(record)">
+                <a-button
+                  type="primary"
+                  size="small"
+                  @click="handleViewProcess(record)"
+                >
                   查看
                 </a-button>
-                <a-button type="default" size="small" @click="handleEditProcess(record)">
+                <a-button
+                  type="default"
+                  size="small"
+                  @click="handleEditProcess(record)"
+                >
                   编辑
                 </a-button>
                 <a-dropdown>
                   <template #overlay>
                     <a-menu @click="(e: any) => handleCommand(e.key, record)">
-                      <a-menu-item key="publish" v-if="record.status === ProcessStatus.Draft">发布</a-menu-item>
-                      <a-menu-item key="archive" v-if="record.status === ProcessStatus.Published">归档</a-menu-item>
-                      <a-menu-item key="activate" v-if="record.status === ProcessStatus.Archived">激活</a-menu-item>
-                      <a-menu-item key="setDefault" v-if="!record.is_default">设为默认</a-menu-item>
+                      <a-menu-item
+                        key="publish"
+                        v-if="record.status === ProcessStatus.Draft"
+                        >发布</a-menu-item
+                      >
+                      <a-menu-item
+                        key="archive"
+                        v-if="record.status === ProcessStatus.Published"
+                        >归档</a-menu-item
+                      >
+                      <a-menu-item
+                        key="activate"
+                        v-if="record.status === ProcessStatus.Archived"
+                        >激活</a-menu-item
+                      >
+                      <a-menu-item
+                        key="setDefault"
+                        v-if="!isDefaultProcess(record.is_default)"
+                        >设为默认</a-menu-item
+                      >
                       <a-menu-divider />
                       <a-menu-item key="delete" danger>删除</a-menu-item>
                     </a-menu>
@@ -184,14 +254,14 @@
     </div>
 
     <!-- 流程创建/编辑对话框 -->
-    <a-modal 
-      :open="processDialog.visible" 
-      :title="processDialog.isEdit ? '编辑流程' : '创建流程'" 
+    <a-modal
+      :open="processDialog.visible"
+      :title="processDialog.isEdit ? '编辑流程' : '创建流程'"
       :width="formDialogWidth"
-      @ok="saveProcess" 
-      @cancel="closeProcessDialog" 
+      @ok="saveProcess"
+      @cancel="closeProcessDialog"
       :destroy-on-close="true"
-      class="responsive-modal process-design-modal" 
+      class="responsive-modal process-design-modal"
       :confirm-loading="loading"
     >
       <div class="modal-content">
@@ -212,12 +282,12 @@
     </a-modal>
 
     <!-- 详情对话框 -->
-    <a-modal 
-      :open="detailDialog.visible" 
-      title="流程详情" 
-      :width="previewDialogWidth" 
+    <a-modal
+      :open="detailDialog.visible"
+      title="流程详情"
+      :width="previewDialogWidth"
       :footer="null"
-      @cancel="closeDetailDialog" 
+      @cancel="closeDetailDialog"
       class="detail-dialog responsive-modal"
     >
       <div v-if="detailDialog.process" class="process-details">
@@ -229,34 +299,66 @@
         </div>
 
         <a-descriptions bordered :column="2">
-          <a-descriptions-item label="ID">{{ detailDialog.process.id }}</a-descriptions-item>
-          <a-descriptions-item label="操作人">{{ detailDialog.process.operator_name }}</a-descriptions-item>
-          <a-descriptions-item label="创建时间">{{ formatFullDateTime(detailDialog.process.created_at) }}</a-descriptions-item>
-          <a-descriptions-item label="更新时间">{{ formatFullDateTime(detailDialog.process.updated_at) }}</a-descriptions-item>
-          <a-descriptions-item label="关联表单">{{ getFormName(detailDialog.process.form_design_id) }}</a-descriptions-item>
-          <a-descriptions-item label="分类">{{ getCategoryName(detailDialog.process.category_id) }}</a-descriptions-item>
-          <a-descriptions-item label="是否默认">{{ detailDialog.process.is_default ? '是' : '否' }}</a-descriptions-item>
+          <a-descriptions-item label="ID">{{
+            detailDialog.process.id
+          }}</a-descriptions-item>
+          <a-descriptions-item label="操作人">{{
+            detailDialog.process.operator_name
+          }}</a-descriptions-item>
+          <a-descriptions-item label="创建时间">{{
+            formatFullDateTime(detailDialog.process.created_at)
+          }}</a-descriptions-item>
+          <a-descriptions-item label="更新时间">{{
+            formatFullDateTime(detailDialog.process.updated_at)
+          }}</a-descriptions-item>
+          <a-descriptions-item label="关联表单">{{
+            getFormName(detailDialog.process.form_design_id)
+          }}</a-descriptions-item>
+          <a-descriptions-item label="分类">{{
+            getCategoryName(detailDialog.process.category_id)
+          }}</a-descriptions-item>
+          <a-descriptions-item label="是否默认">{{
+            isDefaultProcess(detailDialog.process.is_default) ? '是' : '否'
+          }}</a-descriptions-item>
           <a-descriptions-item label="标签">
             <div class="tags-container">
-              <a-tag v-for="tag in detailDialog.process.tags" :key="tag" color="blue">
+              <a-tag
+                v-for="tag in detailDialog.process.tags"
+                :key="tag"
+                color="blue"
+              >
                 {{ tag }}
               </a-tag>
-              <span v-if="!detailDialog.process.tags || detailDialog.process.tags.length === 0">无标签</span>
+              <span
+                v-if="
+                  !detailDialog.process.tags ||
+                  detailDialog.process.tags.length === 0
+                "
+                >无标签</span
+              >
             </div>
           </a-descriptions-item>
-          <a-descriptions-item label="描述" :span="2">{{ detailDialog.process.description || '无描述' }}</a-descriptions-item>
+          <a-descriptions-item label="描述" :span="2">{{
+            detailDialog.process.description || '无描述'
+          }}</a-descriptions-item>
         </a-descriptions>
 
         <div class="process-preview">
           <h3>流程定义</h3>
           <a-card>
-            <pre class="definition-json">{{ formatDefinitionForDisplay(detailDialog.process.definition) }}</pre>
+            <pre class="definition-json">{{
+              formatDefinitionForDisplay(detailDialog.process.definition)
+            }}</pre>
           </a-card>
         </div>
 
         <div class="detail-footer">
           <a-button @click="closeDetailDialog">关闭</a-button>
-          <a-button type="primary" @click="handleEditProcess(detailDialog.process)">编辑</a-button>
+          <a-button
+            type="primary"
+            @click="handleEditProcess(detailDialog.process)"
+            >编辑</a-button
+          >
         </div>
       </div>
     </a-modal>
@@ -272,7 +374,7 @@ import {
   CheckCircleOutlined,
   EditOutlined,
   StopOutlined,
-  DownOutlined
+  DownOutlined,
 } from '@ant-design/icons-vue';
 
 import {
@@ -281,22 +383,23 @@ import {
   type UpdateWorkorderProcessReq,
   type ListWorkorderProcessReq,
   ProcessStatus,
+  createDefaultProcessDefinition,
   listWorkorderProcess,
   detailWorkorderProcess,
   createWorkorderProcess,
   updateWorkorderProcess,
-  deleteWorkorderProcess
+  deleteWorkorderProcess,
 } from '#/api/core/workorder/workorder_process';
 
-import { 
-  type WorkorderCategoryItem, 
-  listWorkorderCategory 
+import {
+  type WorkorderCategoryItem,
+  listWorkorderCategory,
 } from '#/api/core/workorder/workorder_category';
 
-import { 
-  type WorkorderFormDesignItem, 
+import {
+  type WorkorderFormDesignItem,
   listWorkorderFormDesign,
-  FormDesignStatus
+  FormDesignStatus,
 } from '#/api/core/workorder/workorder_form_design';
 
 import ProcessBasicConfig from './components/ProcessBasicConfig.vue';
@@ -388,7 +491,7 @@ const stats = reactive({
   total: 0,
   published: 0,
   draft: 0,
-  archived: 0
+  archived: 0,
 });
 
 // 数据列表
@@ -420,17 +523,14 @@ const processDialog = reactive({
     status: ProcessStatus.Draft,
     tags: [],
     is_default: 2,
-    definition: {
-      steps: [],
-      connections: []
-    }
-  } as CreateWorkorderProcessReq & { id?: number }
+    definition: createDefaultProcessDefinition(),
+  } as CreateWorkorderProcessReq & { id?: number },
 });
 
 // 详情对话框
 const detailDialog = reactive({
   visible: false,
-  process: null as WorkorderProcessItem | null
+  process: null as WorkorderProcessItem | null,
 });
 
 const formDialogWidth = computed(() => {
@@ -476,10 +576,10 @@ const loadProcesses = async (): Promise<void> => {
       size: pageSize.value,
       search: searchQuery.value || undefined,
       status: statusFilter.value || undefined,
-      category_id: categoryFilter.value || undefined
+      category_id: categoryFilter.value || undefined,
     };
 
-    const res = await listWorkorderProcess(params) as any;
+    const res = (await listWorkorderProcess(params)) as any;
     if (res && res.items) {
       processList.value = res.items || [];
       total.value = res.total || 0;
@@ -487,13 +587,18 @@ const loadProcesses = async (): Promise<void> => {
       // 更新统计数据
       const allProcesses = res.items || [];
       stats.total = res.total || 0;
-      stats.published = allProcesses.filter((p: WorkorderProcessItem) => p.status === ProcessStatus.Published).length;
-      stats.draft = allProcesses.filter((p: WorkorderProcessItem) => p.status === ProcessStatus.Draft).length;
-      stats.archived = allProcesses.filter((p: WorkorderProcessItem) => p.status === ProcessStatus.Archived).length;
+      stats.published = allProcesses.filter(
+        (p: WorkorderProcessItem) => p.status === ProcessStatus.Published,
+      ).length;
+      stats.draft = allProcesses.filter(
+        (p: WorkorderProcessItem) => p.status === ProcessStatus.Draft,
+      ).length;
+      stats.archived = allProcesses.filter(
+        (p: WorkorderProcessItem) => p.status === ProcessStatus.Archived,
+      ).length;
     }
   } catch (error: any) {
     message.error('加载流程数据失败');
-
   } finally {
     loading.value = false;
   }
@@ -513,15 +618,18 @@ const loadCategories = async (): Promise<void> => {
       const params = {
         page: currentPage,
         size: pageSize,
-        search: undefined
+        search: undefined,
       };
 
-      const res = await listWorkorderCategory(params) as any;
+      const res = (await listWorkorderCategory(params)) as any;
       if (res && res.items && res.items.length > 0) {
         allCategories = [...allCategories, ...res.items];
-        
+
         // 检查是否还有更多数据
-        if (res.items.length < pageSize || allCategories.length >= (res.total || 0)) {
+        if (
+          res.items.length < pageSize ||
+          allCategories.length >= (res.total || 0)
+        ) {
           hasMoreData = false;
         } else {
           currentPage++;
@@ -533,7 +641,6 @@ const loadCategories = async (): Promise<void> => {
 
     categories.value = allCategories;
   } catch (error: any) {
-
     categories.value = [];
   }
 };
@@ -553,15 +660,18 @@ const loadFormDesigns = async (): Promise<void> => {
         page: currentPage,
         size: pageSize,
         search: undefined,
-        status: FormDesignStatus.Published // 只获取已发布的表单
+        status: FormDesignStatus.Published, // 只获取已发布的表单
       };
 
-      const res = await listWorkorderFormDesign(params) as any;
+      const res = (await listWorkorderFormDesign(params)) as any;
       if (res && res.items && res.items.length > 0) {
         allForms = [...allForms, ...res.items];
-        
+
         // 检查是否还有更多数据
-        if (res.items.length < pageSize || allForms.length >= (res.total || 0)) {
+        if (
+          res.items.length < pageSize ||
+          allForms.length >= (res.total || 0)
+        ) {
           hasMoreData = false;
         } else {
           currentPage++;
@@ -573,7 +683,6 @@ const loadFormDesigns = async (): Promise<void> => {
 
     formDesigns.value = allForms;
   } catch (error: any) {
-
     formDesigns.value = [];
   }
 };
@@ -604,10 +713,7 @@ const handleCreateProcess = (): void => {
     status: ProcessStatus.Draft,
     tags: [],
     is_default: 2,
-    definition: {
-      steps: [],
-      connections: []
-    }
+    definition: createDefaultProcessDefinition(),
   };
   editMode.value = 'basic';
   processDialog.visible = true;
@@ -618,7 +724,9 @@ const handleEditProcess = async (row: WorkorderProcessItem): Promise<void> => {
   loading.value = true;
 
   try {
-    const res = await detailWorkorderProcess({ id: row.id! }) as WorkorderProcessItem;
+    const res = (await detailWorkorderProcess({
+      id: row.id!,
+    })) as WorkorderProcessItem;
     if (res) {
       processDialog.form = {
         id: res.id,
@@ -629,7 +737,7 @@ const handleEditProcess = async (row: WorkorderProcessItem): Promise<void> => {
         status: res.status,
         tags: res.tags || [],
         is_default: res.is_default as 1 | 2,
-        definition: res.definition
+        definition: res.definition || createDefaultProcessDefinition(),
       };
 
       editMode.value = 'basic';
@@ -638,7 +746,6 @@ const handleEditProcess = async (row: WorkorderProcessItem): Promise<void> => {
     }
   } catch (error: any) {
     message.error('获取流程详情失败');
-
   } finally {
     loading.value = false;
   }
@@ -648,20 +755,24 @@ const handleViewProcess = async (row: WorkorderProcessItem): Promise<void> => {
   loading.value = true;
 
   try {
-    const res = await detailWorkorderProcess({ id: row.id! }) as WorkorderProcessItem;
+    const res = (await detailWorkorderProcess({
+      id: row.id!,
+    })) as WorkorderProcessItem;
     if (res) {
       detailDialog.process = res;
       detailDialog.visible = true;
     }
   } catch (error: any) {
     message.error('获取流程详情失败');
-
   } finally {
     loading.value = false;
   }
 };
 
-const handleCommand = async (command: string, row: WorkorderProcessItem): Promise<void> => {
+const handleCommand = async (
+  command: string,
+  row: WorkorderProcessItem,
+): Promise<void> => {
   switch (command) {
     case 'publish':
       await publishProcess(row);
@@ -693,7 +804,7 @@ const publishProcess = async (process: WorkorderProcessItem): Promise<void> => {
       status: ProcessStatus.Published,
       tags: process.tags,
       is_default: process.is_default as 1 | 2,
-      definition: process.definition
+      definition: process.definition,
     };
 
     await updateWorkorderProcess(params);
@@ -718,7 +829,7 @@ const archiveProcess = async (process: WorkorderProcessItem): Promise<void> => {
       status: ProcessStatus.Archived,
       tags: process.tags,
       is_default: process.is_default as 1 | 2,
-      definition: process.definition
+      definition: process.definition,
     };
 
     await updateWorkorderProcess(params);
@@ -731,7 +842,9 @@ const archiveProcess = async (process: WorkorderProcessItem): Promise<void> => {
   }
 };
 
-const activateProcess = async (process: WorkorderProcessItem): Promise<void> => {
+const activateProcess = async (
+  process: WorkorderProcessItem,
+): Promise<void> => {
   loading.value = true;
   try {
     const params: UpdateWorkorderProcessReq = {
@@ -743,7 +856,7 @@ const activateProcess = async (process: WorkorderProcessItem): Promise<void> => 
       status: ProcessStatus.Draft,
       tags: process.tags,
       is_default: process.is_default as 1 | 2,
-      definition: process.definition
+      definition: process.definition,
     };
 
     await updateWorkorderProcess(params);
@@ -756,7 +869,9 @@ const activateProcess = async (process: WorkorderProcessItem): Promise<void> => 
   }
 };
 
-const setDefaultProcess = async (process: WorkorderProcessItem): Promise<void> => {
+const setDefaultProcess = async (
+  process: WorkorderProcessItem,
+): Promise<void> => {
   loading.value = true;
   try {
     const params: UpdateWorkorderProcessReq = {
@@ -768,7 +883,7 @@ const setDefaultProcess = async (process: WorkorderProcessItem): Promise<void> =
       status: process.status,
       tags: process.tags,
       is_default: 1 as 1 | 2,
-      definition: process.definition
+      definition: process.definition,
     };
 
     await updateWorkorderProcess(params);
@@ -805,7 +920,7 @@ const confirmDelete = (process: WorkorderProcessItem): void => {
       } finally {
         loading.value = false;
       }
-    }
+    },
   });
 };
 
@@ -841,7 +956,7 @@ const saveProcess = async (): Promise<void> => {
         category_id: processDialog.form.category_id,
         status: processDialog.form.status,
         tags: processDialog.form.tags,
-        is_default: processDialog.form.is_default
+        is_default: processDialog.form.is_default,
       };
 
       await updateWorkorderProcess(updateData);
@@ -855,7 +970,7 @@ const saveProcess = async (): Promise<void> => {
         category_id: processDialog.form.category_id,
         status: processDialog.form.status,
         tags: processDialog.form.tags,
-        is_default: processDialog.form.is_default
+        is_default: processDialog.form.is_default,
       };
 
       await createWorkorderProcess(createData);
@@ -866,9 +981,10 @@ const saveProcess = async (): Promise<void> => {
     processDialog.visible = false;
     loadProcesses();
   } catch (error: any) {
-    message.error(processDialog.isEdit
-      ? `更新流程失败: ${error.message || '未知错误'}`
-      : `创建流程失败: ${error.message || '未知错误'}`
+    message.error(
+      processDialog.isEdit
+        ? `更新流程失败: ${error.message || '未知错误'}`
+        : `创建流程失败: ${error.message || '未知错误'}`,
     );
   } finally {
     loading.value = false;
@@ -887,7 +1003,11 @@ const closeDetailDialog = (): void => {
 const formatDate = (dateStr: string | undefined): string => {
   if (!dateStr) return '';
   const d = new Date(dateStr);
-  return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return d.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
 };
 
 const formatTime = (dateStr: string | undefined): string => {
@@ -904,43 +1024,53 @@ const formatFullDateTime = (dateStr: string | undefined): string => {
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   });
 };
 
+const isDefaultProcess = (value: number | undefined): boolean => value === 1;
+
 const getInitials = (name: string | undefined): string => {
   if (!name) return '';
-  return name
-    .split('')
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
+  return name.split('').slice(0, 2).join('').toUpperCase();
 };
 
 const getStatusClass = (status: number): string => {
   switch (status) {
-    case ProcessStatus.Draft: return 'status-draft';
-    case ProcessStatus.Published: return 'status-published';
-    case ProcessStatus.Archived: return 'status-archived';
-    default: return '';
+    case ProcessStatus.Draft:
+      return 'status-draft';
+    case ProcessStatus.Published:
+      return 'status-published';
+    case ProcessStatus.Archived:
+      return 'status-archived';
+    default:
+      return '';
   }
 };
 
 const getStatusColor = (status: number): string => {
   switch (status) {
-    case ProcessStatus.Draft: return 'orange';
-    case ProcessStatus.Published: return 'green';
-    case ProcessStatus.Archived: return 'default';
-    default: return 'default';
+    case ProcessStatus.Draft:
+      return 'orange';
+    case ProcessStatus.Published:
+      return 'green';
+    case ProcessStatus.Archived:
+      return 'default';
+    default:
+      return 'default';
   }
 };
 
 const getStatusText = (status: number): string => {
   switch (status) {
-    case ProcessStatus.Draft: return '草稿';
-    case ProcessStatus.Published: return '已发布';
-    case ProcessStatus.Archived: return '已归档';
-    default: return '未知';
+    case ProcessStatus.Draft:
+      return '草稿';
+    case ProcessStatus.Published:
+      return '已发布';
+    case ProcessStatus.Archived:
+      return '已归档';
+    default:
+      return '未知';
   }
 };
 
@@ -948,8 +1078,14 @@ const getAvatarColor = (name: string | undefined): string => {
   if (!name) return '#1890ff';
 
   const colors = [
-    '#1890ff', '#52c41a', '#faad14', '#f5222d',
-    '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16'
+    '#1890ff',
+    '#52c41a',
+    '#faad14',
+    '#f5222d',
+    '#722ed1',
+    '#13c2c2',
+    '#eb2f96',
+    '#fa8c16',
   ];
 
   let hash = 0;
@@ -962,13 +1098,13 @@ const getAvatarColor = (name: string | undefined): string => {
 
 const getFormName = (formId: number | undefined): string => {
   if (!formId) return '未知表单';
-  const form = formDesigns.value.find(f => f.id === formId);
+  const form = formDesigns.value.find((f) => f.id === formId);
   return form ? form.name : `表单${formId}`;
 };
 
 const getCategoryName = (categoryId: number | undefined): string => {
   if (!categoryId) return '无分类';
-  const category = categories.value.find(c => c.id === categoryId);
+  const category = categories.value.find((c) => c.id === categoryId);
   return category ? category.name : `分类${categoryId}`;
 };
 
@@ -988,13 +1124,8 @@ const formatDefinitionForDisplay = (definition: any): string => {
 onMounted(async (): Promise<void> => {
   loading.value = true;
   try {
-    await Promise.all([
-      loadProcesses(),
-      loadCategories(),
-      loadFormDesigns()
-    ]);
+    await Promise.all([loadProcesses(), loadCategories(), loadFormDesigns()]);
   } catch (error: any) {
-
     message.error(`初始化数据加载失败: ${error.message || '未知错误'}`);
   } finally {
     loading.value = false;

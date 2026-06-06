@@ -1,13 +1,17 @@
 <template>
   <div>
     <!-- 快速评论对话框 -->
-    <a-modal 
-      :open="commentDialog.visible" 
-      title="添加评论" 
-      :width="dialogWidth" 
+    <a-modal
+      :open="commentDialog.visible"
+      title="添加评论"
+      :width="dialogWidth"
       @ok="saveComment"
-      @cancel="() => { commentDialog.visible = false }" 
-      :destroy-on-close="true" 
+      @cancel="
+        () => {
+          commentDialog.visible = false;
+        }
+      "
+      :destroy-on-close="true"
       class="responsive-modal comment-modal"
       :confirm-loading="loading"
       ok-text="发布评论"
@@ -15,10 +19,14 @@
     >
       <div class="comment-form-wrapper">
         <a-form :model="commentDialog.form" layout="vertical">
-          <a-form-item label="评论内容" name="content" :rules="[{ required: true, message: '请输入评论内容' }]">
-            <a-textarea 
-              v-model:value="commentDialog.form.content" 
-              :rows="5" 
+          <a-form-item
+            label="评论内容"
+            name="content"
+            :rules="[{ required: true, message: '请输入评论内容' }]"
+          >
+            <a-textarea
+              v-model:value="commentDialog.form.content"
+              :rows="5"
               placeholder="分享你的想法或意见..."
               show-count
               :max-length="500"
@@ -26,7 +34,10 @@
             />
           </a-form-item>
           <div class="comment-options">
-            <a-checkbox v-model:checked="commentDialog.form.is_system" class="system-checkbox">
+            <a-checkbox
+              v-model:checked="commentDialog.form.is_system"
+              class="system-checkbox"
+            >
               <span class="checkbox-text">
                 <IconComponent icon="system" /> 系统评论
               </span>
@@ -49,12 +60,16 @@
     </a-modal>
 
     <!-- 评论查看对话框 -->
-    <a-modal 
-      :open="commentsViewDialog.visible" 
+    <a-modal
+      :open="commentsViewDialog.visible"
       title=""
-      :width="previewDialogWidth" 
+      :width="previewDialogWidth"
       :footer="null"
-      @cancel="() => { commentsViewDialog.visible = false }" 
+      @cancel="
+        () => {
+          commentsViewDialog.visible = false;
+        }
+      "
       class="comments-dialog responsive-modal"
       centered
     >
@@ -87,7 +102,7 @@
           </div>
         </div>
       </template>
-      
+
       <div class="comments-content">
         <!-- 快速评论输入框 -->
         <div class="quick-comment-section">
@@ -96,18 +111,29 @@
             <div class="quote-header">
               <div class="quote-info">
                 <IconComponent icon="quote" />
-                <span class="quote-label">引用 @{{ quotedComment.operator_name }} 的评论</span>
-                <span class="quote-time">{{ formatRelativeTime(quotedComment.created_at) }}</span>
+                <span class="quote-label"
+                  >引用 @{{ quotedComment.operator_name }} 的评论</span
+                >
+                <span class="quote-time">{{
+                  formatRelativeTime(quotedComment.created_at)
+                }}</span>
               </div>
-              <a-button type="text" size="small" class="quote-close" @click="clearQuote">
+              <a-button
+                type="text"
+                size="small"
+                class="quote-close"
+                @click="clearQuote"
+              >
                 <IconComponent icon="close" />
               </a-button>
             </div>
             <div class="quote-content">
-              <div class="quoted-text">{{ truncateText(quotedComment.content, 80) }}</div>
+              <div class="quoted-text">
+                {{ truncateText(quotedComment.content, 80) }}
+              </div>
             </div>
           </div>
-          
+
           <div class="quick-comment-input">
             <a-textarea
               ref="quickTextareaRef"
@@ -119,7 +145,12 @@
             />
             <div class="quick-comment-actions">
               <span class="keyboard-hint">Ctrl + Enter 快速发送</span>
-              <a-button type="primary" size="small" @click="submitQuickComment" :loading="quickCommenting">
+              <a-button
+                type="primary"
+                size="small"
+                @click="submitQuickComment"
+                :loading="quickCommenting"
+              >
                 <IconComponent icon="send" /> 发送
               </a-button>
             </div>
@@ -127,7 +158,10 @@
         </div>
 
         <!-- 评论列表 -->
-        <div v-if="commentsList.length === 0 && !loading" class="empty-comments">
+        <div
+          v-if="commentsList.length === 0 && !loading"
+          class="empty-comments"
+        >
           <a-empty description="">
             <template #image>
               <div class="empty-icon">
@@ -142,15 +176,26 @@
             </template>
           </a-empty>
         </div>
-        
+
         <a-spin :spinning="loading" tip="加载评论中...">
           <div v-if="commentsList.length > 0" class="comments-list">
-            <div v-for="(comment, index) in sortedComments" :key="comment.id" class="comment-item" :class="{ 'comment-highlight': comment.id === highlightCommentId }">
+            <div
+              v-for="(comment, index) in sortedComments"
+              :key="comment.id"
+              class="comment-item"
+              :class="{
+                'comment-highlight': comment.id === highlightCommentId,
+              }"
+            >
               <div class="comment-wrapper">
                 <div class="comment-avatar">
-                  <a-avatar 
-                    :size="40" 
-                    :style="{ backgroundColor: getAvatarColor(comment.operator_name || '') }"
+                  <a-avatar
+                    :size="40"
+                    :style="{
+                      backgroundColor: getAvatarColor(
+                        comment.operator_name || '',
+                      ),
+                    }"
                     class="user-avatar"
                   >
                     {{ getInitials(comment.operator_name) }}
@@ -159,31 +204,49 @@
                     <IconComponent icon="system" />
                   </div>
                 </div>
-                
+
                 <div class="comment-body">
                   <div class="comment-header">
                     <div class="commenter-info">
-                      <span class="commenter-name">{{ comment.operator_name }}</span>
-                      <a-tag v-if="comment.is_system === 1" color="orange" size="small" class="system-tag">
+                      <span class="commenter-name">{{
+                        comment.operator_name
+                      }}</span>
+                      <a-tag
+                        v-if="comment.is_system === 1"
+                        color="orange"
+                        size="small"
+                        class="system-tag"
+                      >
                         <IconComponent icon="system" /> 系统
                       </a-tag>
                       <span class="comment-floor">#{{ index + 1 }}</span>
                     </div>
                     <div class="comment-meta">
-                      <span class="comment-time">{{ formatRelativeTime(comment.created_at) }}</span>
+                      <span class="comment-time">{{
+                        formatRelativeTime(comment.created_at)
+                      }}</span>
                       <a-dropdown trigger="click" placement="bottomRight">
                         <a-button type="text" size="small" class="more-actions">
                           <IconComponent icon="more" />
                         </a-button>
                         <template #overlay>
                           <a-menu>
-                            <a-menu-item key="reply" @click="showReplyInput(comment.id)">
+                            <a-menu-item
+                              key="reply"
+                              @click="showReplyInput(comment.id)"
+                            >
                               <IconComponent icon="reply" /> 回复
                             </a-menu-item>
-                            <a-menu-item key="quote" @click="quoteComment(comment)">
+                            <a-menu-item
+                              key="quote"
+                              @click="quoteComment(comment)"
+                            >
                               <IconComponent icon="quote" /> 引用
                             </a-menu-item>
-                            <a-menu-item key="copy" @click="copyComment(comment.content)">
+                            <a-menu-item
+                              key="copy"
+                              @click="copyComment(comment.content)"
+                            >
                               <IconComponent icon="copy" /> 复制
                             </a-menu-item>
                           </a-menu>
@@ -191,22 +254,40 @@
                       </a-dropdown>
                     </div>
                   </div>
-                  
+
                   <div class="comment-content">
-                    <div class="comment-text" v-html="formatCommentContent(comment.content)"></div>
+                    <div
+                      class="comment-text"
+                      v-html="formatCommentContent(comment.content)"
+                    ></div>
                   </div>
-                  
+
                   <div class="comment-actions">
-                    <a-button type="text" size="small" @click="showReplyInput(comment.id)" class="action-btn">
+                    <a-button
+                      type="text"
+                      size="small"
+                      @click="showReplyInput(comment.id)"
+                      class="action-btn"
+                    >
                       <IconComponent icon="reply" /> 回复
                     </a-button>
-                    <a-button type="text" size="small" @click="likeComment(comment.id)" class="action-btn like-btn" :class="{ 'liked': isCommentLiked(comment.id) }">
-                      <IconComponent icon="like" /> {{ getCommentLikes(comment.id) }}
+                    <a-button
+                      type="text"
+                      size="small"
+                      @click="likeComment(comment.id)"
+                      class="action-btn like-btn"
+                      :class="{ liked: isCommentLiked(comment.id) }"
+                    >
+                      <IconComponent icon="like" />
+                      {{ getCommentLikes(comment.id) }}
                     </a-button>
                   </div>
-                  
+
                   <!-- 回复输入框 -->
-                  <div v-if="replyInputVisible[comment.id]" class="reply-input-section">
+                  <div
+                    v-if="replyInputVisible[comment.id]"
+                    class="reply-input-section"
+                  >
                     <div class="reply-input-wrapper">
                       <a-textarea
                         v-model:value="replyText[comment.id]"
@@ -216,40 +297,72 @@
                         @keydown.ctrl.enter="submitReply(comment.id)"
                       />
                       <div class="reply-actions">
-                        <a-button size="small" @click="cancelReply(comment.id)">取消</a-button>
-                        <a-button type="primary" size="small" @click="submitReply(comment.id)" :loading="replySubmitting[comment.id]">
+                        <a-button size="small" @click="cancelReply(comment.id)"
+                          >取消</a-button
+                        >
+                        <a-button
+                          type="primary"
+                          size="small"
+                          @click="submitReply(comment.id)"
+                          :loading="replySubmitting[comment.id]"
+                        >
                           回复
                         </a-button>
                       </div>
                     </div>
                   </div>
-                  
+
                   <!-- 回复列表 -->
-                  <div v-if="comment.children && comment.children.length > 0" class="comment-replies">
+                  <div
+                    v-if="comment.children && comment.children.length > 0"
+                    class="comment-replies"
+                  >
                     <div class="replies-header">
                       <IconComponent icon="replies" />
                       <span>{{ comment.children.length }} 条回复</span>
-                      <a-button type="text" size="small" @click="toggleReplies(comment.id)">
+                      <a-button
+                        type="text"
+                        size="small"
+                        @click="toggleReplies(comment.id)"
+                      >
                         {{ repliesExpanded[comment.id] ? '收起' : '展开' }}
                       </a-button>
                     </div>
-                    
-                    <div v-show="repliesExpanded[comment.id]" class="replies-list">
-                      <div v-for="reply in comment.children" :key="reply.id" class="reply-item">
+
+                    <div
+                      v-show="repliesExpanded[comment.id]"
+                      class="replies-list"
+                    >
+                      <div
+                        v-for="reply in comment.children"
+                        :key="reply.id"
+                        class="reply-item"
+                      >
                         <div class="reply-avatar">
-                          <a-avatar 
-                            :size="32" 
-                            :style="{ backgroundColor: getAvatarColor(reply.operator_name || '') }"
+                          <a-avatar
+                            :size="32"
+                            :style="{
+                              backgroundColor: getAvatarColor(
+                                reply.operator_name || '',
+                              ),
+                            }"
                           >
                             {{ getInitials(reply.operator_name) }}
                           </a-avatar>
                         </div>
                         <div class="reply-body">
                           <div class="reply-header">
-                            <span class="replier-name">{{ reply.operator_name }}</span>
-                            <span class="reply-time">{{ formatRelativeTime(reply.created_at) }}</span>
+                            <span class="replier-name">{{
+                              reply.operator_name
+                            }}</span>
+                            <span class="reply-time">{{
+                              formatRelativeTime(reply.created_at)
+                            }}</span>
                           </div>
-                          <div class="reply-content" v-html="formatCommentContent(reply.content)"></div>
+                          <div
+                            class="reply-content"
+                            v-html="formatCommentContent(reply.content)"
+                          ></div>
                         </div>
                       </div>
                     </div>
@@ -265,16 +378,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, nextTick } from 'vue'
-import { message } from 'ant-design-vue'
+import { ref, reactive, computed, nextTick } from 'vue';
+import { message } from 'ant-design-vue';
 import {
   type WorkorderInstanceCommentItem,
   type CreateWorkorderInstanceCommentReq,
   type GetInstanceCommentsTreeReq,
   createWorkorderInstanceComment,
-  getInstanceCommentsTree
-} from '#/api/core/workorder/workorder_instance_comment'
-import type { WorkorderInstanceItem } from '#/api/core/workorder/workorder_instance'
+  getInstanceCommentsTree,
+} from '#/api/core/workorder/workorder_instance_comment';
+import type { WorkorderInstanceItem } from '#/api/core/workorder/workorder_instance';
 
 // 图标组件
 const IconComponent = ({ icon }: { icon: string }) => {
@@ -293,42 +406,42 @@ const IconComponent = ({ icon }: { icon: string }) => {
     copy: '📋',
     like: '👍',
     replies: '💬',
-    close: '✕'
-  }
-  return iconMap[icon] || ''
-}
+    close: '✕',
+  };
+  return iconMap[icon] || '';
+};
 
 // 定义emits
 const emit = defineEmits<{
-  commentAdded: []
-}>()
+  commentAdded: [];
+}>();
 
 // 定义props
 interface Props {
-  instance?: WorkorderInstanceItem
+  instance?: WorkorderInstanceItem;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  instance: undefined
-})
+withDefaults(defineProps<Props>(), {
+  instance: undefined,
+});
 
 // 状态数据
-const loading = ref(false)
-const commentsList = ref<WorkorderInstanceCommentItem[]>([])
-const quickCommenting = ref(false)
-const quickCommentText = ref('')
-const highlightCommentId = ref<number | null>(null)
-const sortOrder = ref<'newest' | 'oldest'>('newest')
+const loading = ref(false);
+const commentsList = ref<WorkorderInstanceCommentItem[]>([]);
+const quickCommenting = ref(false);
+const quickCommentText = ref('');
+const highlightCommentId = ref<number | null>(null);
+const sortOrder = ref<'newest' | 'oldest'>('newest');
 
 // 回复相关状态
-const replyInputVisible = ref<Record<number, boolean>>({})
-const replyText = ref<Record<number, string>>({})
-const replySubmitting = ref<Record<number, boolean>>({})
-const repliesExpanded = ref<Record<number, boolean>>({})
+const replyInputVisible = ref<Record<number, boolean>>({});
+const replyText = ref<Record<number, string>>({});
+const replySubmitting = ref<Record<number, boolean>>({});
+const repliesExpanded = ref<Record<number, boolean>>({});
 
 // 点赞相关（模拟数据，实际应该从后端获取）
-const commentLikes = ref<Record<number, number>>({})
-const userLikedComments = ref<Set<number>>(new Set())
+const commentLikes = ref<Record<number, number>>({});
+const userLikedComments = ref<Set<number>>(new Set());
 
 // 评论对话框
 const commentDialog = reactive({
@@ -336,433 +449,438 @@ const commentDialog = reactive({
   form: {
     instance_id: 0,
     content: '',
-    is_system: 0
-  } as CreateWorkorderInstanceCommentReq
-})
+    is_system: 0,
+  } as CreateWorkorderInstanceCommentReq,
+});
 
 // 评论查看对话框
 const commentsViewDialog = reactive({
   visible: false,
-  instanceId: 0
-})
+  instanceId: 0,
+});
 
 // 响应式对话框宽度
 const dialogWidth = computed(() => {
   if (typeof window !== 'undefined') {
-    const width = window.innerWidth
-    if (width < 768) return '95%'
-    if (width < 1024) return '80%'
-    return '600px'
+    const width = window.innerWidth;
+    if (width < 768) return '95%';
+    if (width < 1024) return '80%';
+    return '600px';
   }
-  return '600px'
-})
+  return '600px';
+});
 
 const previewDialogWidth = computed(() => {
   if (typeof window !== 'undefined') {
-    const width = window.innerWidth
-    if (width < 768) return '95%'
-    if (width < 1024) return '90%'
-    return '80%'
+    const width = window.innerWidth;
+    if (width < 768) return '95%';
+    if (width < 1024) return '90%';
+    return '80%';
   }
-  return '80%'
-})
+  return '80%';
+});
 
 // 工具方法
 const formatFullDateTime = (dateStr: string | undefined) => {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
   return d.toLocaleString('zh-CN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
-  })
-}
+    minute: '2-digit',
+  });
+};
 
 const formatRelativeTime = (dateStr: string | undefined) => {
-  if (!dateStr) return ''
-  const now = new Date()
-  const date = new Date(dateStr)
-  const diff = now.getTime() - date.getTime()
-  
-  const minute = 60 * 1000
-  const hour = 60 * minute
-  const day = 24 * hour
-  const week = 7 * day
-  const month = 30 * day
-  
+  if (!dateStr) return '';
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diff = now.getTime() - date.getTime();
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+
   if (diff < minute) {
-    return '刚刚'
+    return '刚刚';
   } else if (diff < hour) {
-    return `${Math.floor(diff / minute)}分钟前`
+    return `${Math.floor(diff / minute)}分钟前`;
   } else if (diff < day) {
-    return `${Math.floor(diff / hour)}小时前`
+    return `${Math.floor(diff / hour)}小时前`;
   } else if (diff < week) {
-    return `${Math.floor(diff / day)}天前`
+    return `${Math.floor(diff / day)}天前`;
   } else if (diff < month) {
-    return `${Math.floor(diff / week)}周前`
+    return `${Math.floor(diff / week)}周前`;
   } else {
-    return formatFullDateTime(dateStr)
+    return formatFullDateTime(dateStr);
   }
-}
+};
 
 const formatCommentContent = (content: string) => {
   // 简单的内容格式化，可以扩展支持更多格式
   return content
     .replace(/\n/g, '<br>')
     .replace(/@(\w+)/g, '<span class="mention">@$1</span>')
-    .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>')
-}
+    .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
+};
 
 const getInitials = (name: string | undefined) => {
-  if (!name) return ''
-  return name
-    .split('')
-    .slice(0, 2)
-    .join('')
-    .toUpperCase()
-}
+  if (!name) return '';
+  return name.split('').slice(0, 2).join('').toUpperCase();
+};
 
 const getAvatarColor = (name: string | undefined) => {
-  if (!name) return '#1890ff'
+  if (!name) return '#1890ff';
 
   const colors = [
-    '#1890ff', '#52c41a', '#faad14', '#f5222d',
-    '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16'
-  ]
+    '#1890ff',
+    '#52c41a',
+    '#faad14',
+    '#f5222d',
+    '#722ed1',
+    '#13c2c2',
+    '#eb2f96',
+    '#fa8c16',
+  ];
 
-  let hash = 0
+  let hash = 0;
   for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash)
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
 
-  return colors[Math.abs(hash) % colors.length]
-}
+  return colors[Math.abs(hash) % colors.length];
+};
 
 // 计算属性
 const sortedComments = computed(() => {
   const sorted = [...commentsList.value].sort((a, b) => {
-    const dateA = new Date(a.created_at || '')
-    const dateB = new Date(b.created_at || '')
-    return sortOrder.value === 'newest' ? dateB.getTime() - dateA.getTime() : dateA.getTime() - dateB.getTime()
-  })
-  return sorted
-})
+    const dateA = new Date(a.created_at || '');
+    const dateB = new Date(b.created_at || '');
+    return sortOrder.value === 'newest'
+      ? dateB.getTime() - dateA.getTime()
+      : dateA.getTime() - dateB.getTime();
+  });
+  return sorted;
+});
 
 // 主要方法
 const showCommentDialog = (instanceId: number) => {
   commentDialog.form = {
     instance_id: instanceId,
     content: '',
-    is_system: 0
-  }
-  commentDialog.visible = true
-}
+    is_system: 0,
+  };
+  commentDialog.visible = true;
+};
 
 // 快速评论
 const submitQuickComment = async () => {
   if (!quickCommentText.value.trim()) {
-    message.warning('请输入评论内容')
-    return
+    message.warning('请输入评论内容');
+    return;
   }
-  
+
   try {
-    quickCommenting.value = true
+    quickCommenting.value = true;
     const commentData: CreateWorkorderInstanceCommentReq = {
       instance_id: commentsViewDialog.instanceId,
       content: quickCommentText.value,
-      is_system: 0
-    }
-    
-    await createWorkorderInstanceComment(commentData)
-    
-    quickCommentText.value = ''
-    quotedComment.value = null // 清除引用状态
-    message.success('评论发布成功')
-    await refreshComments()
-    emit('commentAdded')
+      is_system: 0,
+    };
+
+    await createWorkorderInstanceComment(commentData);
+
+    quickCommentText.value = '';
+    quotedComment.value = null; // 清除引用状态
+    message.success('评论发布成功');
+    await refreshComments();
+    emit('commentAdded');
   } catch (error: any) {
-    message.error(`发布评论失败: ${error.message || '未知错误'}`)
+    message.error(`发布评论失败: ${error.message || '未知错误'}`);
   } finally {
-    quickCommenting.value = false
+    quickCommenting.value = false;
   }
-}
+};
 
 // 快速操作
 const insertCurrentTime = () => {
-  const currentTime = new Date().toLocaleString('zh-CN')
-  commentDialog.form.content += `\n处理时间: ${currentTime}\n`
-}
+  const currentTime = new Date().toLocaleString('zh-CN');
+  commentDialog.form.content += `\n处理时间: ${currentTime}\n`;
+};
 
 const insertSuggestion = () => {
-  commentDialog.form.content += '\n建议: '
-}
+  commentDialog.form.content += '\n建议: ';
+};
 
 // 回复相关方法
 const showReplyInput = (commentId: number) => {
-  replyInputVisible.value[commentId] = true
-  replyText.value[commentId] = ''
+  replyInputVisible.value[commentId] = true;
+  replyText.value[commentId] = '';
   nextTick(() => {
     // 聚焦到回复输入框
-  })
-}
+  });
+};
 
 const cancelReply = (commentId: number) => {
-  replyInputVisible.value[commentId] = false
-  replyText.value[commentId] = ''
-}
+  replyInputVisible.value[commentId] = false;
+  replyText.value[commentId] = '';
+};
 
 const submitReply = async (commentId: number) => {
   if (!replyText.value[commentId]?.trim()) {
-    message.warning('请输入回复内容')
-    return
+    message.warning('请输入回复内容');
+    return;
   }
-  
+
   try {
-    replySubmitting.value[commentId] = true
-    
+    replySubmitting.value[commentId] = true;
+
     // 创建回复评论
     const replyData: CreateWorkorderInstanceCommentReq = {
       instance_id: commentsViewDialog.instanceId,
       content: replyText.value[commentId].trim(),
       parent_id: commentId,
       type: 'normal',
-      is_system: 0
-    }
-    
-    await createWorkorderInstanceComment(replyData)
-    
-    message.success('回复成功')
-    replyInputVisible.value[commentId] = false
-    replyText.value[commentId] = ''
-    await refreshComments()
-    
+      is_system: 0,
+    };
+
+    await createWorkorderInstanceComment(replyData);
+
+    message.success('回复成功');
+    replyInputVisible.value[commentId] = false;
+    replyText.value[commentId] = '';
+    await refreshComments();
+
     // 触发父组件的评论添加事件
-    emit('commentAdded')
+    emit('commentAdded');
   } catch (error: any) {
-    message.error(`回复失败: ${error.message || '未知错误'}`)
+    message.error(`回复失败: ${error.message || '未知错误'}`);
   } finally {
-    replySubmitting.value[commentId] = false
+    replySubmitting.value[commentId] = false;
   }
-}
+};
 
 // 切换回复展开/收起
 const toggleReplies = (commentId: number) => {
-  repliesExpanded.value[commentId] = !repliesExpanded.value[commentId]
-}
+  repliesExpanded.value[commentId] = !repliesExpanded.value[commentId];
+};
 
 // 点赞功能
 const likeComment = (commentId: number) => {
   if (userLikedComments.value.has(commentId)) {
-    userLikedComments.value.delete(commentId)
-    commentLikes.value[commentId] = (commentLikes.value[commentId] || 0) - 1
+    userLikedComments.value.delete(commentId);
+    commentLikes.value[commentId] = (commentLikes.value[commentId] || 0) - 1;
   } else {
-    userLikedComments.value.add(commentId)
-    commentLikes.value[commentId] = (commentLikes.value[commentId] || 0) + 1
+    userLikedComments.value.add(commentId);
+    commentLikes.value[commentId] = (commentLikes.value[commentId] || 0) + 1;
   }
-}
+};
 
 const isCommentLiked = (commentId: number) => {
-  return userLikedComments.value.has(commentId)
-}
+  return userLikedComments.value.has(commentId);
+};
 
 const getCommentLikes = (commentId: number) => {
-  return commentLikes.value[commentId] || 0
-}
+  return commentLikes.value[commentId] || 0;
+};
 
 // 引用评论相关状态
-const quotedComment = ref<WorkorderInstanceCommentItem | null>(null)
-const quickTextareaRef = ref()
+const quotedComment = ref<WorkorderInstanceCommentItem | null>(null);
+const quickTextareaRef = ref();
 
 // 其他功能 - 优化后的引用评论功能
 const quoteComment = async (comment: WorkorderInstanceCommentItem) => {
   // 格式化引用内容
-  const quotedContent = formatQuotedContent(comment)
-  
+  const quotedContent = formatQuotedContent(comment);
+
   // 设置引用内容到快速评论框
   if (quickCommentText.value.trim()) {
     // 如果已经有内容，追加引用
-    quickCommentText.value = `${quickCommentText.value}\n\n${quotedContent}`
+    quickCommentText.value = `${quickCommentText.value}\n\n${quotedContent}`;
   } else {
     // 如果没有内容，直接设置引用
-    quickCommentText.value = quotedContent
+    quickCommentText.value = quotedContent;
   }
-  
+
   // 设置当前引用的评论
-  quotedComment.value = comment
-  
+  quotedComment.value = comment;
+
   // 自动滚动到快速评论输入框并聚焦
-  await nextTick()
-  scrollToQuickComment()
-  focusQuickComment()
-  
+  await nextTick();
+  scrollToQuickComment();
+  focusQuickComment();
+
   // 显示成功反馈
-  message.success(`已引用 ${comment.operator_name} 的评论`)
-}
+  message.success(`已引用 ${comment.operator_name} 的评论`);
+};
 
 // 格式化引用内容
 const formatQuotedContent = (comment: WorkorderInstanceCommentItem): string => {
-  const userName = comment.operator_name || '匿名用户'
-  const timeStr = formatRelativeTime(comment.created_at)
-  
+  const userName = comment.operator_name || '匿名用户';
+  const timeStr = formatRelativeTime(comment.created_at);
+
   // 截断长内容
-  let content = comment.content || ''
-  const maxLength = 100
+  let content = comment.content || '';
+  const maxLength = 100;
   if (content.length > maxLength) {
-    content = content.substring(0, maxLength) + '...'
+    content = content.substring(0, maxLength) + '...';
   }
-  
+
   // 处理多行内容，每行都加上引用符号
-  const quotedLines = content.split('\n').map(line => `> ${line}`).join('\n')
-  
-  return `**引用 @${userName} 在 ${timeStr} 的评论：**\n${quotedLines}\n\n`
-}
+  const quotedLines = content
+    .split('\n')
+    .map((line) => `> ${line}`)
+    .join('\n');
+
+  return `**引用 @${userName} 在 ${timeStr} 的评论：**\n${quotedLines}\n\n`;
+};
 
 // 滚动到快速评论输入框
 const scrollToQuickComment = () => {
-  const quickCommentElement = document.querySelector('.quick-comment-section')
+  const quickCommentElement = document.querySelector('.quick-comment-section');
   if (quickCommentElement) {
-    quickCommentElement.scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'center'
-    })
+    quickCommentElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
   }
-}
+};
 
 // 聚焦快速评论输入框
 const focusQuickComment = () => {
   nextTick(() => {
     if (quickTextareaRef.value) {
-      quickTextareaRef.value.focus()
+      quickTextareaRef.value.focus();
       // 将光标移动到末尾
-      const textarea = quickTextareaRef.value.$el.querySelector('textarea')
+      const textarea = quickTextareaRef.value.$el.querySelector('textarea');
       if (textarea) {
-        const length = textarea.value.length
-        textarea.setSelectionRange(length, length)
+        const length = textarea.value.length;
+        textarea.setSelectionRange(length, length);
       }
     }
-  })
-}
+  });
+};
 
 // 清除引用
 const clearQuote = () => {
-  quotedComment.value = null
+  quotedComment.value = null;
   // 清除引用内容（只清除引用部分，保留用户自己的内容）
   if (quickCommentText.value) {
     // 简单的处理方式：清除以 "**引用" 开头的内容块
-    const lines = quickCommentText.value.split('\n')
-    let filteredLines: string[] = []
-    let inQuoteBlock = false
-    
+    const lines = quickCommentText.value.split('\n');
+    let filteredLines: string[] = [];
+    let inQuoteBlock = false;
+
     for (const line of lines) {
       if (line.startsWith('**引用 @')) {
-        inQuoteBlock = true
-        continue
+        inQuoteBlock = true;
+        continue;
       }
       if (inQuoteBlock && line.trim() === '') {
-        inQuoteBlock = false
-        continue
+        inQuoteBlock = false;
+        continue;
       }
       if (inQuoteBlock && line.startsWith('>')) {
-        continue
+        continue;
       }
       if (!inQuoteBlock) {
-        filteredLines.push(line)
+        filteredLines.push(line);
       }
     }
-    
-    quickCommentText.value = filteredLines.join('\n').trim()
+
+    quickCommentText.value = filteredLines.join('\n').trim();
   }
-}
+};
 
 // 文本截断工具函数
 const truncateText = (text: string, maxLength: number): string => {
-  if (!text) return ''
-  if (text.length <= maxLength) return text
-  return text.substring(0, maxLength) + '...'
-}
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
+};
 
 const copyComment = async (content: string) => {
   try {
-    await navigator.clipboard.writeText(content)
-    message.success('内容已复制到剪贴板')
+    await navigator.clipboard.writeText(content);
+    message.success('内容已复制到剪贴板');
   } catch {
-    message.error('复制失败')
+    message.error('复制失败');
   }
-}
+};
 
 // 排序和刷新
 const handleSortChange = ({ key }: { key: string }) => {
-  sortOrder.value = key as 'newest' | 'oldest'
-}
+  sortOrder.value = key as 'newest' | 'oldest';
+};
 
 const refreshComments = async () => {
   if (commentsViewDialog.instanceId) {
-    await loadComments(commentsViewDialog.instanceId)
+    await loadComments(commentsViewDialog.instanceId);
   }
-}
+};
 
 // 加载评论
 const loadComments = async (instanceId: number) => {
   try {
-    loading.value = true
-    const params: GetInstanceCommentsTreeReq = { id: instanceId }
-    const res = await getInstanceCommentsTree(params)
-    
+    loading.value = true;
+    const params: GetInstanceCommentsTreeReq = { id: instanceId };
+    const res = await getInstanceCommentsTree(params);
+
     if (res) {
-      commentsList.value = res
+      commentsList.value = res;
       // 初始化回复展开状态
       res.forEach((comment: WorkorderInstanceCommentItem) => {
         if (comment.children && comment.children.length > 0) {
-          repliesExpanded.value[comment.id] = false
+          repliesExpanded.value[comment.id] = false;
         }
-      })
+      });
     } else {
-      commentsList.value = []
+      commentsList.value = [];
     }
   } catch (error: any) {
-
-    message.error(`加载评论失败: ${error.message || '未知错误'}`)
-    commentsList.value = []
+    message.error(`加载评论失败: ${error.message || '未知错误'}`);
+    commentsList.value = [];
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const saveComment = async () => {
   try {
     if (!commentDialog.form.content.trim()) {
-      message.error('请输入评论内容')
-      return
+      message.error('请输入评论内容');
+      return;
     }
 
-    loading.value = true
-    await createWorkorderInstanceComment(commentDialog.form)
-    
-    message.success('评论添加成功')
-    commentDialog.visible = false
-    emit('commentAdded')
-  } catch (error: any) {
-    message.error(`添加评论失败: ${error.message || '未知错误'}`)
+    loading.value = true;
+    await createWorkorderInstanceComment(commentDialog.form);
 
+    message.success('评论添加成功');
+    commentDialog.visible = false;
+    emit('commentAdded');
+  } catch (error: any) {
+    message.error(`添加评论失败: ${error.message || '未知错误'}`);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const showCommentsView = async (instanceId: number) => {
-  commentsViewDialog.instanceId = instanceId
-  commentsViewDialog.visible = true
-  quickCommentText.value = ''
-  await loadComments(instanceId)
-}
+  commentsViewDialog.instanceId = instanceId;
+  commentsViewDialog.visible = true;
+  quickCommentText.value = '';
+  await loadComments(instanceId);
+};
 
 // 导出方法供父组件调用
 defineExpose({
   showCommentDialog,
-  showCommentsView
-})
+  showCommentsView,
+});
 </script>
 
 <style scoped>
@@ -1395,49 +1513,49 @@ defineExpose({
     gap: 12px;
     align-items: flex-start;
   }
-  
+
   .comment-wrapper {
     padding: 16px;
     gap: 12px;
   }
-  
+
   .user-avatar {
     width: 32px !important;
     height: 32px !important;
   }
-  
+
   .comment-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .commenter-info {
     gap: 8px;
   }
-  
+
   .comment-text {
     padding: 16px;
     font-size: 14px;
   }
-  
+
   .quick-comment-section {
     padding: 16px;
   }
-  
+
   .quick-textarea {
     padding: 12px;
   }
-  
+
   .comments-list {
     padding: 16px;
     gap: 16px;
   }
-  
+
   .reply-item {
     padding: 12px;
   }
-  
+
   .reply-avatar .ant-avatar {
     width: 28px !important;
     height: 28px !important;
@@ -1450,27 +1568,27 @@ defineExpose({
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .comment-avatar {
     align-self: flex-start;
   }
-  
+
   .comment-text {
     padding: 12px;
     font-size: 13px;
   }
-  
+
   .reply-item {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .quick-comment-actions {
     flex-direction: column;
     gap: 8px;
     align-items: stretch;
   }
-  
+
   .keyboard-hint {
     text-align: center;
   }
