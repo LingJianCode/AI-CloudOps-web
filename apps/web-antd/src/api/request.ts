@@ -16,7 +16,32 @@ import { useAuthStore } from '#/store';
 
 import { refreshTokenApi } from './core';
 
-const { apiURL, aiopsURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
+const { apiURL, aiopsURL: configuredAiopsURL } = useAppConfig(
+  import.meta.env,
+  import.meta.env.PROD,
+);
+
+function resolveAiopsURL(aiopsURL: string) {
+  if (import.meta.env.PROD) {
+    return aiopsURL;
+  }
+
+  try {
+    const parsed = new URL(aiopsURL);
+    if (
+      ['127.0.0.1', 'localhost'].includes(parsed.hostname) &&
+      parsed.pathname.startsWith('/api/v1')
+    ) {
+      return '/api/v1';
+    }
+  } catch {
+    return aiopsURL;
+  }
+
+  return aiopsURL;
+}
+
+const aiopsURL = resolveAiopsURL(configuredAiopsURL);
 
 function createRequestClient(baseURL: string) {
   const client = new RequestClient({

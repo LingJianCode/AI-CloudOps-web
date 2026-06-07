@@ -24,4 +24,5 @@ export * from './workorder/workorder_instance';
 export * from './workorder/workorder_process';
 export * from './workorder/workorder_template';
 export * from './aiops/assistant';
+export * from './aiops/autofix';
 export * from './aiops/rca';
